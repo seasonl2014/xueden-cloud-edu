@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>cn.xueden</groupId>
+    <artifactId>moyu-cloud</artifactId>
+    <version>1.0.0</version>
+    <modules>
+        <module>moyu-common</module>
+        <module>moyu-api</module>
+        <module>moyu-gateway</module>
+        <module>moyu-auth</module>
+        <module>moyu-modules</module>
+    </modules>
+    <packaging>pom</packaging>
+    <name>moyu-cloud</name>
+    <description>权限管理系统父工程</description>
+
+    <properties>
+        <moyu.version>1.0.0</moyu.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <java.version>1.8</java.version>
+        <spring-boot.version>2.3.4.RELEASE</spring-boot.version>
+        <spring-cloud.version>Hoxton.SR8</spring-cloud.version>
+        <spring-cloud-alibaba.version>2.2.3.RELEASE</spring-cloud-alibaba.version>
+        <spring-boot-admin.version>2.3.0</spring-boot-admin.version>
+        <spring-boot.mybatis>2.1.2</spring-boot.mybatis>
+        <swagger.fox.version>2.9.2</swagger.fox.version>
+        <swagger.core.version>1.5.24</swagger.core.version>
+        <kaptcha.version>2.3.2</kaptcha.version>
+        <pagehelper.boot.version>1.2.12</pagehelper.boot.version>
+        <mybatisplus-spring-boot-starter.version>1.0.5</mybatisplus-spring-boot-starter.version>
+        <mybatisplus.version>2.1.4</mybatisplus.version>
+        <commons.io.version>2.5</commons.io.version>
+        <commons.fileupload.version>1.3.3</commons.fileupload.version>
+        <velocity.version>1.7</velocity.version>
+        <fastjson.version>1.2.73</fastjson.version>
+        <poi.version>3.17</poi.version>
+        <common-pool.version>2.6.2</common-pool.version>
+        <commons-codec.version>1.10</commons-codec.version>
+        <guava.version>17.0</guava.version>
+        <org-lionsoul.vversion>1.7</org-lionsoul.vversion>
+    </properties>
+
+    <!-- 依赖声明 -->
+    <dependencyManagement>
+        <dependencies>
+
+            <!-- SpringCloud 微服务 -->
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring-cloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <!-- SpringCloud Alibaba 微服务 -->
+            <dependency>
+                <groupId>com.alibaba.cloud</groupId>
+                <artifactId>spring-cloud-alibaba-dependencies</artifactId>
+                <version>${spring-cloud-alibaba.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <!-- SpringBoot 依赖配置 -->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${spring-boot.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <!--  SpringBoot 监控客户端 -->
+            <dependency>
+                <groupId>de.codecentric</groupId>
+                <artifactId>spring-boot-admin-starter-client</artifactId>
+                <version>${spring-boot-admin.version}</version>
+            </dependency>
+
+            <!-- Mybatis 依赖配置 -->
+            <dependency>
+                <groupId>org.mybatis.spring.boot</groupId>
+                <artifactId>mybatis-spring-boot-starter</artifactId>
+                <version>${spring-boot.mybatis}</version>
+            </dependency>
+
+            <!-- Swagger 依赖配置 -->
+            <dependency>
+                <groupId>io.swagger</groupId>
+                <artifactId>swagger-models</artifactId>
+                <version>${swagger.core.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.swagger</groupId>
+                <artifactId>swagger-annotations</artifactId>
+                <version>${swagger.core.version}</version>
+            </dependency>
+
+            <!-- 验证码 -->
+            <dependency>
+                <groupId>com.github.penggle</groupId>
+                <artifactId>kaptcha</artifactId>
+                <version>${kaptcha.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatisplus-spring-boot-starter</artifactId>
+                <version>${mybatisplus-spring-boot-starter.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus</artifactId>
+                <version>${mybatisplus.version}</version>
+            </dependency>
+
+            <!-- io常用工具类 -->
+            <dependency>
+                <groupId>commons-io</groupId>
+                <artifactId>commons-io</artifactId>
+                <version>${commons.io.version}</version>
+            </dependency>
+
+            <!-- excel工具 -->
+            <dependency>
+                <groupId>org.apache.poi</groupId>
+                <artifactId>poi-ooxml</artifactId>
+                <version>${poi.version}</version>
+            </dependency>
+
+            <!-- 文件上传工具类 -->
+            <dependency>
+                <groupId>commons-fileupload</groupId>
+                <artifactId>commons-fileupload</artifactId>
+                <version>${commons.fileupload.version}</version>
+            </dependency>
+
+            <!-- 代码生成使用模板 -->
+            <dependency>
+                <groupId>org.apache.velocity</groupId>
+                <artifactId>velocity</artifactId>
+                <version>${velocity.version}</version>
+            </dependency>
+
+            <!-- JSON 解析器和生成器 -->
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>fastjson</artifactId>
+                <version>${fastjson.version}</version>
+            </dependency>
+
+            <!-- 公共资源池 -->
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-pool2</artifactId>
+                <version>${common-pool.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.lionsoul</groupId>
+                <artifactId>ip2region</artifactId>
+                <version>${org-lionsoul.vversion}</version>
+            </dependency>
+
+            <!-- 核心模块 -->
+            <dependency>
+                <groupId>cn.xueden</groupId>
+                <artifactId>moyu-common-core</artifactId>
+                <version>${moyu.version}</version>
+            </dependency>
+
+            <!-- 接口模块 -->
+            <dependency>
+                <groupId>cn.xueden</groupId>
+                <artifactId>moyu-common-swagger</artifactId>
+                <version>${moyu.version}</version>
+            </dependency>
+
+            <!-- 安全模块 -->
+            <dependency>
+                <groupId>cn.xueden</groupId>
+                <artifactId>moyu-common-security</artifactId>
+                <version>${moyu.version}</version>
+            </dependency>
+
+            <!-- mybatis-plus模块-->
+            <dependency>
+                <groupId>cn.xueden</groupId>
+                <artifactId>moyu-common-mybatis-plus</artifactId>
+                <version>${moyu.version}</version>
+            </dependency>
+
+            <!-- 日志记录 -->
+            <dependency>
+                <groupId>cn.xueden</groupId>
+                <artifactId>moyu-common-log</artifactId>
+                <version>${moyu.version}</version>
+            </dependency>
+
+            <!-- 缓存服务 -->
+            <dependency>
+                <groupId>cn.xueden</groupId>
+                <artifactId>moyu-common-redis</artifactId>
+                <version>${moyu.version}</version>
+            </dependency>
+
+            <!-- 系统接口 -->
+            <dependency>
+                <groupId>cn.xueden</groupId>
+                <artifactId>moyu-api-system</artifactId>
+                <version>${moyu.version}</version>
+            </dependency>
+
+        </dependencies>
+    </dependencyManagement>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                    <encoding>${project.build.sourceEncoding}</encoding>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>

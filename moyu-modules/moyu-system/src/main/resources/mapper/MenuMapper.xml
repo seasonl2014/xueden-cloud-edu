@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.xueden.system.dao.MenuDao" >
+
+    <resultMap id="getSelf" type="cn.xueden.common.core.web.domain.SysMenu">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="parentId" column="parentId"/>
+        <result property="level" column="level"/>
+        <result property="parentIds" column="parentIds"/>
+        <result property="sort" column="sort"/>
+        <result property="href" column="href"/>
+        <result property="target" column="target"/>
+        <result property="icon" column="icon"/>
+        <result property="svgIcon" column="svgIcon"/>
+        <result property="path" column="path"/>
+        <result property="componentName" column="componentName"/>
+        <result property="component" column="component"/>
+        <result property="disShow" column="disShow"/>
+        <result property="isMenu" column="isMenu"/>
+        <result property="bgColor" column="bgColor"/>
+        <result property="permission" column="permission"/>
+        <result property="createId" column="createId"/>
+        <result property="createDate" column="createDate"/>
+        <result property="updateId" column="updateId"/>
+        <result property="updateDate" column="updateDate"/>
+        <result property="remarks" column="remarks"/>
+        <result property="delFlag" column="delFlag"/>
+        <collection property="children" select="getMenus" column="{parentId = id,disShow = mydisShow}">
+
+        </collection>
+
+    </resultMap>
+
+    <select id="getMenus" resultMap="getSelf">
+        select
+        id,
+        name,
+        parent_id as "parentId",
+        parent_ids as "parentIds",
+        level,
+        sort,
+        href,
+        target,
+        icon,
+        svg_icon as "svgIcon",
+        path as "path",
+        component_name as "componentName",
+        component as "component",
+        dis_show as "disShow",
+        is_menu as "isMenu",
+        bg_color as "bgColor",
+        permission,
+        create_by as "createId",
+        create_date as "createDate",
+        update_by as "updateId",
+        update_date as "updateDate",
+        remarks,
+        del_flag as "delFlag",
+        #{disShow} as "mydisShow" from sys_menu where
+        del_flag = false
+        <choose>
+            <when test="parentId != null and parentId!='' ">
+                and parent_id = #{parentId}
+            </when>
+            <otherwise>
+                and parent_id is NULL
+            </otherwise>
+        </choose>
+        <if test="disShow == true">
+            and dis_show = #{disShow}
+        </if>
+        order by sort desc
+    </select>
+
+    <resultMap id="showMenuMap" type="cn.xueden.system.entity.vo.ShowMenu">
+        <result property="id"       column="id" />
+        <result property="pid"      column="pid"/>
+        <result property="title"    column="title"/>
+        <result property="icon"     column="icon"/>
+        <result property="svgIcon"     column="svgIcon"/>
+        <result property="path"     column="path"/>
+        <result property="componentName"     column="componentName"/>
+        <result property="component"     column="component"/>
+        <result property="href"     column="href"/>
+        <collection property="children" select="selectShowMenuByUser"  column="{parentId = id,userId = myuserId}">
+        </collection>
+    </resultMap>
+
+    <select id="selectShowMenuByUser" resultMap="showMenuMap">
+        SELECT
+        distinct  m.id        as "id",
+        m.parent_id as "pid",
+        m.name      as "title",
+        m.icon      as "icon",
+        m.svg_icon as "svgIcon",
+        m.path as "path",
+        m.component_name as "componentName",
+        m.component as "component",
+        m.href      as "href",
+        m.sort,
+        #{userId}   as "myuserId"
+        FROM
+        (select * from sys_menu where del_flag = FALSE ) m
+        LEFT JOIN sys_role_menu srm on srm.menu_id = m.id
+        LEFT JOIN sys_role r on r.id = srm.role_id
+        LEFT JOIN sys_user_role sur on sur.role_id = r.id
+        LEFT JOIN sys_user u on u.id = sur.user_id
+        WHERE
+        u.id = #{userId}
+        <choose>
+            <when test="parentId != null and parentId !='' ">
+                and m.parent_id = #{parentId}
+            </when>
+            <otherwise>
+                and m.parent_id is NULL
+            </otherwise>
+        </choose>
+        and m.dis_show = true
+        order by m.sort desc
+    </select>
+
+</mapper>
