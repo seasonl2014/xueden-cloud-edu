@@ -1,9 +1,9 @@
-# cloud_layui 权限管理系统
+#  xueden-cloud-edu 在线教育平台
 
 
 # 项目介绍
 
-cloud_layui是基于springcloud alibaba+layui整合开发前后端分离权限管理系统,架构思想来源于( [RuoYi-Cloud](https://gitee.com/y_project/RuoYi-Cloud))。
+xueden-cloud-edu（学灯网）是基于springcloud alibaba+vue3.0整合开发的在线教育平台 ,架构思想来源于( [RuoYi-Cloud](https://gitee.com/y_project/RuoYi-Cloud))。
 - 以Spring Framework为核心容器；
 - Spring MVC为模型视图控制器；
 - Mybatis Plus为数据访问层；
@@ -11,7 +11,7 @@ cloud_layui是基于springcloud alibaba+layui整合开发前后端分离权限�
 - Redis为分布式缓存；
 - 注册中心、配置中心选型Nacos；
 - 流量控制框架选型Sentinel；
-- layui+layuimini作为前端框架并进行前后端分离的开源框架。
+- vue3.0+element plus作为前端框架并进行前后端分离的开源框架。
 
 # 前端项目
 
