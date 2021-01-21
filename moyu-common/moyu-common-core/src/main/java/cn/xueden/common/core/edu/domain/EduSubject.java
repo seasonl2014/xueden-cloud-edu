@@ -1,5 +1,6 @@
 package cn.xueden.common.core.edu.domain;
 
+import cn.xueden.common.core.web.domain.DataEntity;
 import com.baomidou.mybatisplus.annotations.TableName;
 import lombok.Data;
 
@@ -13,9 +14,8 @@ import java.util.Date;
  */
 @Data
 @TableName("edu_subject")
-public class EduSubject {
+public class EduSubject extends DataEntity<EduSubject> {
 
-    private Long id;
 
     private String name;
 

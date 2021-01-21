@@ -167,6 +167,7 @@ public class EduSubjectServiceImpl implements IEduSubjectService {
         EduSubject eduSubject = new EduSubject();
         BeanUtils.copyProperties(eduSubjectVO,eduSubject);
         eduSubject.setUpdateDate(new Date());
+        eduSubject.setId(id);
         boolean flag = vidCategoryClient.updateSubjectById(eduSubjectVO);
         if(flag){
             eduSubjectDao.updateById(eduSubject);
