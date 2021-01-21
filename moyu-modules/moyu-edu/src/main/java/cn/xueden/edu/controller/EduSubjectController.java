@@ -115,8 +115,13 @@ public class EduSubjectController {
     @PreAuthorize(hasPermi = "edu:subject:update")
     @PutMapping("/update/{id}")
     public RestResponse update(@PathVariable Long id, @RequestBody @Validated EduSubjectVO eduSubjectVO) {
-        eduSubjectService.update(id, eduSubjectVO);
-        return RestResponse.success();
+        boolean flag= eduSubjectService.update(id, eduSubjectVO);
+        if(flag){
+            return RestResponse.success();
+        }else {
+            return RestResponse.failure("更新课程分类失败");
+        }
+
     }
 
 }

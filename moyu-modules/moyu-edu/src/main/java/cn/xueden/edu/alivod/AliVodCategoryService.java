@@ -4,10 +4,7 @@ import cn.xueden.alivod.utils.ConstantPropertiesUtil;
 import cn.xueden.common.core.edu.dto.CategoryDto;
 import cn.xueden.common.core.edu.vo.EduSubjectVO;
 import com.aliyuncs.DefaultAcsClient;
-import com.aliyuncs.vod.model.v20170321.AddCategoryRequest;
-import com.aliyuncs.vod.model.v20170321.AddCategoryResponse;
-import com.aliyuncs.vod.model.v20170321.DeleteCategoryRequest;
-import com.aliyuncs.vod.model.v20170321.DeleteCategoryResponse;
+import com.aliyuncs.vod.model.v20170321.*;
 import org.springframework.stereotype.Component;
 
 import static cn.xueden.alivod.utils.AliyunVODSDKUtils.initVodClient;
@@ -73,6 +70,36 @@ public class AliVodCategoryService {
             System.out.print("ErrorMessage = " + e.getLocalizedMessage());
             return false;
         }
+    }
+
+    /**
+     * 修改阿里云点播视频分类
+     * @param eduSubjectVO
+     * @return
+     * @throws Exception
+     */
+    public boolean  updateSubjectById(EduSubjectVO eduSubjectVO) {
+        try {
+            DefaultAcsClient client = initVodClient(ConstantPropertiesUtil.ACCESS_KEY_ID, ConstantPropertiesUtil.ACCESS_KEY_SECRET);
+            UpdateCategoryResponse response = new UpdateCategoryResponse();
+            UpdateCategoryRequest request = new UpdateCategoryRequest();
+
+            if(null==eduSubjectVO.getCateId()||null==eduSubjectVO.getName()){
+             return false;
+            }
+
+            // 请设置真实分类ID
+            request.setCateId(eduSubjectVO.getCateId());
+            // 分类名称
+            request.setCateName(eduSubjectVO.getName());
+            response =client.getAcsResponse(request);
+            System.out.println("response"+response.getRequestId());
+            return true;
+        } catch (Exception e) {
+            System.out.print("ErrorMessage = " + e.getLocalizedMessage());
+            return false;
+        }
+
     }
 
 }

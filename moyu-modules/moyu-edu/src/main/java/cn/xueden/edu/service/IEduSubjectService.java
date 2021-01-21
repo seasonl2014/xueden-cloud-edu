@@ -56,7 +56,7 @@ public interface IEduSubjectService {
      * @param id
      * @param eduSubjectVO
      */
-    void update(Long id, EduSubjectVO eduSubjectVO);
+    boolean update(Long id, EduSubjectVO eduSubjectVO);
 
     /**
      * 获取首页课程栏目

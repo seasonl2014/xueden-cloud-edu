@@ -163,14 +163,16 @@ public class EduSubjectServiceImpl implements IEduSubjectService {
      * @param eduSubjectVO
      */
     @Override
-    public void update(Long id, EduSubjectVO eduSubjectVO) {
+    public boolean update(Long id, EduSubjectVO eduSubjectVO) {
         EduSubject eduSubject = new EduSubject();
         BeanUtils.copyProperties(eduSubjectVO,eduSubject);
         eduSubject.setUpdateDate(new Date());
-        /*boolean flag = vidCategoryClient.updateSubjectById(eduSubjectVO);
+        boolean flag = vidCategoryClient.updateSubjectById(eduSubjectVO);
         if(flag){
-            eduSubjectDao.updateAllColumnById(eduSubject);
-        }*/
+            eduSubjectDao.updateById(eduSubject);
+            return true;
+        }
+        return false;
 
     }
 
