@@ -14,7 +14,7 @@
         <module>moyu-modules</module>
     </modules>
     <packaging>pom</packaging>
-    <name>moyu-cloud</name>
+    <name>moyu-cloud-edu</name>
     <description>权限管理系统父工程</description>
 
     <properties>
@@ -214,6 +214,12 @@
             <dependency>
                 <groupId>cn.xueden</groupId>
                 <artifactId>moyu-api-system</artifactId>
+                <version>${moyu.version}</version>
+            </dependency>
+            <!-- 阿里云视频点播模块 -->
+            <dependency>
+                <groupId>cn.xueden</groupId>
+                <artifactId>moyu-common-alivod</artifactId>
                 <version>${moyu.version}</version>
             </dependency>
 

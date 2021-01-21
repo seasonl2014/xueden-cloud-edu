@@ -119,7 +119,7 @@ public class LogController  {
 
     /**
      * 批量删除数据（前端vue3项目使用）
-     * @param ids
+     * @param list
      * @return
      */
     @PreAuthorize(hasPermi = "sys:log:delete")
@@ -140,6 +140,18 @@ public class LogController  {
         // 根据日志列表ID删除日志数据
         logService.deleteBatchIds(ids);
         return RestResponse.success();
+    }
+
+    /**
+     * 其他系统保存日志
+     * @param sysOperLog
+     * @return
+     */
+    @PostMapping("operlog")
+    public AjaxResult saveLog(@RequestBody SysLog sysOperLog){
+        // 返回结果集
+        AjaxResult ajaxResult = toAjax(logService.insert(sysOperLog)?1:0);
+        return ajaxResult;
     }
 
     /**

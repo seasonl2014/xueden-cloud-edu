@@ -1,0 +1,4 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  cn.xueden.alivod.utils.ConstantPropertiesUtil
+
+  

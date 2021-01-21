@@ -21,6 +21,7 @@
         <module>moyu-common-core</module>
         <module>moyu-common-swagger</module>
         <module>moyu-common-mybatis-plus</module>
+        <module>moyu-common-alivod</module>
     </modules>
 
 
