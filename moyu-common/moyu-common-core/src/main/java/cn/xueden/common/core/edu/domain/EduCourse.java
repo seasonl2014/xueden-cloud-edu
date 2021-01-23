@@ -1,5 +1,6 @@
 package cn.xueden.common.core.edu.domain;
 
+import cn.xueden.common.core.web.domain.DataEntity;
 import com.baomidou.mybatisplus.annotations.TableName;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -15,18 +16,19 @@ import java.util.Date;
  */
 @Data
 @TableName("edu_course")
-public class EduCourse {
-    @ApiModelProperty(value = "课程ID")
-    private Long id;
+public class EduCourse extends DataEntity<EduCourse> {
 
     @ApiModelProperty(value = "课程讲师ID")
     private Long teacherId;
 
-    @ApiModelProperty(value = "课程专业ID")
+    @ApiModelProperty(value = "课程栏目ID")
     private Long subjectId;
 
-    @ApiModelProperty(value = "课程标题")
+    @ApiModelProperty(value = "课程长标题")
     private String title;
+
+    @ApiModelProperty(value = "课程短标题")
+    private String shortTitle;
 
     @ApiModelProperty(value = "课程销售价格，设置为0则可免费观看")
     private BigDecimal price;
@@ -36,9 +38,6 @@ public class EduCourse {
 
     @ApiModelProperty(value = "课程封面图片路径")
     private String cover;
-
-    @ApiModelProperty(value = "课程备注")
-    private String remarks;
 
     @ApiModelProperty(value = "销售数量")
     private Long buyCount;
@@ -54,12 +53,6 @@ public class EduCourse {
 
     @ApiModelProperty(value = "视频状态 Draft未发布  Normal已发布")
     private String status;
-
-    @ApiModelProperty(value = "创建时间")
-    private Date gmtCreate;
-
-    @ApiModelProperty(value = "更新时间")
-    private Date gmtModified;
 
     @ApiModelProperty(value = "课程一级分类ID")
     private Long subjectParentId;

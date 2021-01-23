@@ -1,6 +1,6 @@
 package cn.xueden.edu.dao;
 
-import cn.xueden.common.core.edu.domain.EduTeacher;
+import cn.xueden.common.core.edu.domain.EduCourse;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
 
 /**
@@ -9,5 +9,5 @@ import com.baomidou.mybatisplus.mapper.BaseMapper;
  * @Description:cn.xueden.edu.dao
  * @version:1.0
  */
-public interface TeacherDao extends BaseMapper<EduTeacher> {
+public interface EduCourseDao extends BaseMapper<EduCourse> {
 }

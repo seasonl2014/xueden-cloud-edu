@@ -1,7 +1,7 @@
 package cn.xueden.edu.service.impl;
 
 import cn.xueden.common.core.edu.domain.EduTeacher;
-import cn.xueden.edu.dao.TeacherDao;
+import cn.xueden.edu.dao.EduTeacherDao;
 import cn.xueden.edu.service.IEduTeacherService;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
@@ -13,5 +13,5 @@ import org.springframework.stereotype.Service;
  * @version:1.0
  */
 @Service
-public class EduTeacherServiceImpl extends ServiceImpl<TeacherDao, EduTeacher> implements IEduTeacherService {
+public class EduTeacherServiceImpl extends ServiceImpl<EduTeacherDao, EduTeacher> implements IEduTeacherService {
 }
