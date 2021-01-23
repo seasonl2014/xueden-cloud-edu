@@ -41,7 +41,7 @@ public class EduCourseController {
     @XudenOtherSystemLog("获取用户列表数据")
     @PreAuthorize(hasPermi = "edu:course:list")
     public LayerData<EduCourse> list(@RequestParam(value = "page",defaultValue = "1")Integer page,
-                                     @RequestParam(value = "limit",defaultValue = "15")Integer limit,
+                                     @RequestParam(value = "limit",defaultValue = "10")Integer limit,
                                      EduCourse educourseVO){
         LayerData<EduCourse> courseLayerData = new LayerData<>();
         EntityWrapper<EduCourse> userEntityWrapper = new EntityWrapper();
