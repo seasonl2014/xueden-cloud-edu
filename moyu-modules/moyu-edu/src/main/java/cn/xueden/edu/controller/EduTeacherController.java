@@ -3,6 +3,7 @@ package cn.xueden.edu.controller;
 import cn.xueden.common.core.edu.domain.EduTeacher;
 import cn.xueden.common.core.edu.vo.EduTeacherVO;
 import cn.xueden.common.core.utils.LayerData;
+import cn.xueden.common.core.utils.RestResponse;
 import cn.xueden.common.log.annotation.XudenOtherSystemLog;
 import cn.xueden.common.security.annotation.PreAuthorize;
 import cn.xueden.edu.service.IEduTeacherService;
@@ -11,10 +12,8 @@ import com.baomidou.mybatisplus.plugins.Page;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 
 /**讲师 前端控制器
  * @Auther:梁志杰
@@ -59,4 +58,67 @@ public class EduTeacherController {
         teacherLayerData.setData(userPage.getRecords());
         return teacherLayerData;
     }
+
+
+
+    /**
+     * 添加讲师
+     * @param eduTeacherVO
+     * @return
+     */
+    @PreAuthorize(hasPermi = "edu:teacher:add")
+    @XudenOtherSystemLog("添加讲师")
+    @ApiOperation(value = "添加讲师")
+    @PostMapping("/add")
+    public RestResponse add(@RequestBody @Validated EduTeacher eduTeacherVO){
+        eduTeacherService.insert(eduTeacherVO);
+        return RestResponse.success();
+    }
+
+    /**
+     * 功能描述：删除讲师
+     * @param id
+     * @return
+     */
+    @XudenOtherSystemLog("删除讲师")
+    @ApiOperation(value = "删除讲师")
+    @PreAuthorize(hasPermi = "edu:teacher:delete")
+    @DeleteMapping("/delete/{id}")
+    public RestResponse delete(@PathVariable Long id){
+        eduTeacherService.deleteById(id);
+        return RestResponse.success();
+    }
+
+    /**
+     * 编辑 讲师
+     * @param id
+     * @return
+     */
+    @ApiOperation(value = "编辑讲师")
+    @PreAuthorize(hasPermi = "edu:teacher:edit")
+    @GetMapping("/edit/{id}")
+    public RestResponse edit(@PathVariable Long id){
+        EduTeacher eduTeacherVO = eduTeacherService.selectById(id);
+        return RestResponse.success().setData(eduTeacherVO);
+    }
+
+    /**
+     * 更新 讲师
+     * @param id
+     * @param eduTeacherVO
+     * @return
+     */
+    @XudenOtherSystemLog("更新讲师")
+    @ApiOperation(value = "更新讲师")
+    @PreAuthorize(hasPermi = "edu:teacher:update")
+    @PutMapping("/update/{id}")
+    public RestResponse update(@PathVariable Long id,
+                               @RequestBody @Validated EduTeacher eduTeacherVO){
+        eduTeacherVO.setId(id);
+        eduTeacherService.updateById(eduTeacherVO);
+        return RestResponse.success();
+
+    }
+
+
 }
