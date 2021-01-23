@@ -15,6 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 /**讲师 前端控制器
  * @Auther:梁志杰
  * @Date:2021/1/22
@@ -38,7 +40,7 @@ public class EduTeacherController {
      */
     @ApiOperation(value = "讲师列表",notes = "讲师列表，根据讲师名称模糊查询")
     @GetMapping("/list")
-    @XudenOtherSystemLog("获取用户列表数据")
+    @XudenOtherSystemLog("获取讲师列表数据")
     @PreAuthorize(hasPermi = "edu:teacher:list")
     public LayerData<EduTeacher> list(@RequestParam(value = "page",defaultValue = "1")Integer page,
                                                     @RequestParam(value = "limit",defaultValue = "15")Integer limit,
@@ -117,6 +119,24 @@ public class EduTeacherController {
         eduTeacherVO.setId(id);
         eduTeacherService.updateById(eduTeacherVO);
         return RestResponse.success();
+
+    }
+
+    /**
+     * 更新 讲师
+     * @param
+     * @param
+     * @return
+     */
+    @XudenOtherSystemLog("获取所有讲师信息")
+    @ApiOperation(value = "获取所有讲师信息")
+    @PreAuthorize(hasPermi = "edu:teacher:list")
+    @GetMapping("/all")
+    public RestResponse getAll(){
+        EntityWrapper<EduTeacher> teacherEntityWrapper = new EntityWrapper();
+        teacherEntityWrapper.eq("del_flag",false);
+        List<EduTeacher> teacherList = eduTeacherService.selectList(teacherEntityWrapper);
+        return RestResponse.success().setData(teacherList);
 
     }
 
