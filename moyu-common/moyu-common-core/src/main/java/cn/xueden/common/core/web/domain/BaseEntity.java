@@ -29,7 +29,7 @@ public abstract class BaseEntity<T extends Model> extends Model<T> {
         this.id = id;
     }
 
-    @JsonSerialize(using= ToStringSerializer.class)
+    /*@JsonSerialize(using= ToStringSerializer.class)*/
     public Long getId() {
         return id;
     }

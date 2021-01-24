@@ -26,11 +26,13 @@
            <artifactId>aliyun-java-sdk-core</artifactId>
            <version>4.3.3</version>
        </dependency>
+       <!--阿里云oss-->
        <dependency>
            <groupId>com.aliyun.oss</groupId>
            <artifactId>aliyun-sdk-oss</artifactId>
            <version>3.1.0</version>
        </dependency>
+       <!--阿里云视频点播-->
        <dependency>
            <groupId>com.aliyun</groupId>
            <artifactId>aliyun-java-sdk-vod</artifactId>
@@ -40,6 +42,12 @@
            <groupId>com.aliyun</groupId>
            <artifactId>aliyun-sdk-vod-upload</artifactId>
            <version>1.4.11</version>
+       </dependency>
+       <!--阿里云交易账单-->
+       <dependency>
+           <groupId>com.aliyun</groupId>
+           <artifactId>aliyun-java-sdk-bssopenapi</artifactId>
+           <version>1.4.2</version>
        </dependency>
 
    </dependencies>

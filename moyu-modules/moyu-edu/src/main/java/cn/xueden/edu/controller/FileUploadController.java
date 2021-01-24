@@ -14,6 +14,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 /**功能描述：上传文件
@@ -75,7 +77,9 @@ public class FileUploadController {
 
             //http://.......//2020/02/03/career/01.jpg
             String path = hostpath+"/"+filename;
-            return RestResponse.success(path);
+            Map<String,Object> map = new HashMap<String,Object>();
+            map.put("urlPath",path);
+            return RestResponse.success().setData(map);
 
         } catch (IOException e) {
             e.printStackTrace();

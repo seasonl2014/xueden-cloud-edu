@@ -6,7 +6,9 @@ import cn.xueden.common.core.utils.LayerData;
 import cn.xueden.common.core.utils.RestResponse;
 import cn.xueden.common.log.annotation.XudenOtherSystemLog;
 import cn.xueden.common.security.annotation.PreAuthorize;
+import cn.xueden.common.security.service.TokenService;
 import cn.xueden.edu.service.IEduCourseService;
+import cn.xueden.system.api.model.LoginUser;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import io.swagger.annotations.Api;
@@ -29,6 +31,9 @@ public class EduCourseController {
     @Autowired
     private IEduCourseService educourseService;
 
+    @Autowired
+    private TokenService tokenService ;
+
     /**
      * 分页获取课程列表
      * @param page
@@ -45,6 +50,7 @@ public class EduCourseController {
                                      EduCourse educourseVO){
         LayerData<EduCourse> courseLayerData = new LayerData<>();
         EntityWrapper<EduCourse> userEntityWrapper = new EntityWrapper();
+        userEntityWrapper.orderBy("create_date",false);
         if(educourseVO!=null&&educourseVO.getTitle()!=null){
             userEntityWrapper.like("title",educourseVO.getTitle());
         }
@@ -114,6 +120,7 @@ public class EduCourseController {
     @PutMapping("/update/{id}")
     public RestResponse update(@PathVariable Long id,
                                @RequestBody @Validated EduCourse eduCourseVO){
+        LoginUser loginUser= tokenService.getLoginUser();
         eduCourseVO.setId(id);
         educourseService.updateById(eduCourseVO);
         return RestResponse.success();
