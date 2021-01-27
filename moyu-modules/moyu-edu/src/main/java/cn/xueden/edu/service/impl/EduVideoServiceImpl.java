@@ -4,6 +4,7 @@ import cn.xueden.common.core.edu.domain.EduVideo;
 import cn.xueden.edu.dao.EduVideoDao;
 import cn.xueden.edu.service.IEduVideoService;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
+import org.springframework.stereotype.Service;
 
 /**
  * @Auther:梁志杰
@@ -11,5 +12,6 @@ import com.baomidou.mybatisplus.service.impl.ServiceImpl;
  * @Description:cn.xueden.edu.service.impl
  * @version:1.0
  */
+@Service
 public class EduVideoServiceImpl extends ServiceImpl<EduVideoDao, EduVideo> implements IEduVideoService {
 }
