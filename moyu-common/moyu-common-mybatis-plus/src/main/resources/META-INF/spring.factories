@@ -1,3 +1,4 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
   cn.xueden.mybatis.config.MybatisPlusConfig,\
+  cn.xueden.mybatis.config.SysMetaObjectHandler,\
   cn.xueden.mybatis.config.SpringUtil

@@ -21,6 +21,12 @@
            <artifactId>moyu-common-core</artifactId>
        </dependency>
 
+       <!-- Moyu Common redis-->
+       <dependency>
+           <groupId>cn.xueden</groupId>
+           <artifactId>moyu-common-redis</artifactId>
+       </dependency>
+
        <dependency>
            <groupId>com.aliyun</groupId>
            <artifactId>aliyun-java-sdk-core</artifactId>
@@ -43,11 +49,28 @@
            <artifactId>aliyun-sdk-vod-upload</artifactId>
            <version>1.4.11</version>
        </dependency>
+
+
+       <dependency>
+           <groupId>com.alibaba</groupId>
+           <artifactId>fastjson</artifactId>
+           <version>1.2.28</version>
+       </dependency>
+
+
+
        <!--阿里云交易账单-->
        <dependency>
            <groupId>com.aliyun</groupId>
            <artifactId>aliyun-java-sdk-bssopenapi</artifactId>
            <version>1.4.2</version>
+       </dependency>
+
+       <!--日期时间工具-->
+       <dependency>
+           <groupId>joda-time</groupId>
+           <artifactId>joda-time</artifactId>
+           <version>2.10.1</version>
        </dependency>
 
    </dependencies>

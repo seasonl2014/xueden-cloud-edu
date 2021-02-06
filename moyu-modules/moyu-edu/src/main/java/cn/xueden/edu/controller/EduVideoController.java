@@ -34,7 +34,7 @@ public class EduVideoController {
     @PreAuthorize(hasPermi = "edu:video:add")
     @PostMapping("/add")
     public RestResponse add(@RequestBody @Validated EduVideo eduVideoVO) {
-        eduVideoService.insert(eduVideoVO);
+        eduVideoService.save(eduVideoVO);
         return RestResponse.success();
     }
 
@@ -48,7 +48,7 @@ public class EduVideoController {
     @PreAuthorize(hasPermi = "edu:video:edit")
     @GetMapping("/edit/{id}")
     public RestResponse edit(@PathVariable Long id) {
-        EduVideo eduVideoVO = eduVideoService.selectById(id);
+        EduVideo eduVideoVO = eduVideoService.getById(id);
         return RestResponse.success().setData(eduVideoVO);
     }
 
@@ -77,7 +77,7 @@ public class EduVideoController {
     @PreAuthorize(hasPermi = "edu:video:delete")
     @DeleteMapping("/delete/{id}")
     public RestResponse delete(@PathVariable Long id) {
-        eduVideoService.deleteById(id);
+        eduVideoService.removeById(id);
         return RestResponse.success();
     }
 

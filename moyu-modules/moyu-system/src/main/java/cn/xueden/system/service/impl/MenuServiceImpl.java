@@ -6,8 +6,10 @@ import cn.xueden.system.dao.MenuDao;
 
 import cn.xueden.system.entity.vo.ShowMenu;
 import cn.xueden.system.service.MenuService;
-import com.baomidou.mybatisplus.mapper.EntityWrapper;
-import com.baomidou.mybatisplus.service.impl.ServiceImpl;
+/*import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.baomidou.mybatisplus.service.impl.ServiceImpl;*/
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.google.common.collect.Maps;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -40,7 +42,7 @@ public class MenuServiceImpl extends ServiceImpl<MenuDao, SysMenu> implements Me
 
     @Override
     public int getCountByName(String name) {
-        EntityWrapper<SysMenu> wrapper = new EntityWrapper();
+        QueryWrapper<SysMenu> wrapper = new QueryWrapper();
         wrapper.eq("del_flag",false);
         wrapper.eq("name",name);
         return baseMapper.selectCount(wrapper);
@@ -48,7 +50,7 @@ public class MenuServiceImpl extends ServiceImpl<MenuDao, SysMenu> implements Me
 
     @Override
     public int getCountByPermission(String permission) {
-        EntityWrapper<SysMenu> wrapper = new EntityWrapper();
+        QueryWrapper<SysMenu> wrapper = new QueryWrapper();
         wrapper.eq("del_flag",false);
         wrapper.eq("permission",permission);
         return baseMapper.selectCount(wrapper);
@@ -57,6 +59,6 @@ public class MenuServiceImpl extends ServiceImpl<MenuDao, SysMenu> implements Me
     @Transactional(readOnly = false,rollbackFor = Exception.class)
     @Override
     public void saveOrUpdateMenu(SysMenu menu) {
-        insertOrUpdate(menu);
+        saveOrUpdate(menu);
     }
 }

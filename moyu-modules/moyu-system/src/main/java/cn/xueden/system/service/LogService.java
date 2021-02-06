@@ -3,7 +3,8 @@ package cn.xueden.system.service;
 
 
 import cn.xueden.common.core.web.domain.SysLog;
-import com.baomidou.mybatisplus.service.IService;
+import com.baomidou.mybatisplus.extension.service.IService;
+/*import com.baomidou.mybatisplus.service.IService;*/
 
 import java.util.Map;
 

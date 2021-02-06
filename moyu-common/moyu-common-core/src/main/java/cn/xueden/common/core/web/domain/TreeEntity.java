@@ -1,7 +1,9 @@
 package cn.xueden.common.core.web.domain;
 
-import com.baomidou.mybatisplus.activerecord.Model;
-import com.baomidou.mybatisplus.annotations.TableField;
+
+
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.extension.activerecord.Model;
 
 import java.util.List;
 
@@ -11,7 +13,7 @@ import java.util.List;
  * @Description:cn.xueden.common.core.web.domain
  * @version:1.0
  */
-public abstract class TreeEntity <T extends Model> extends DataEntity<T> {
+public abstract class TreeEntity <T extends Model<T>> extends DataEntity<T> {
 
     private static final long serialVersionUID = 1L;
 

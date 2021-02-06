@@ -9,8 +9,10 @@ import cn.xueden.common.core.web.domain.SysUser;
 
 import cn.xueden.common.log.annotation.XudenSysLog;
 import cn.xueden.common.security.annotation.PreAuthorize;
-import com.baomidou.mybatisplus.mapper.EntityWrapper;
-import com.baomidou.mybatisplus.plugins.Page;
+/*import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.baomidou.mybatisplus.plugins.Page;*/
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.google.common.collect.Maps;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -51,7 +53,7 @@ public class RoleController extends BaseController {
 
         Map map = WebUtils.getParametersStartingWith(request,"s_");
         LayerData<SysRole> roleLayerData = new LayerData<>();
-        EntityWrapper<SysRole> roleEntityWrapper = new EntityWrapper<>();
+        QueryWrapper<SysRole> roleEntityWrapper = new QueryWrapper<>();
         // roleEntityWrapper.eq("del_flag",false);
         //查询条件
         if(!map.isEmpty()){
@@ -61,7 +63,7 @@ public class RoleController extends BaseController {
             }
         }
 
-        Page<SysRole> rolePage = roleService.selectPage(new Page<>(page,limit),roleEntityWrapper);
+        Page<SysRole> rolePage = roleService.page(new Page<>(page,limit),roleEntityWrapper);
         roleLayerData.setCount(rolePage.getTotal());
         roleLayerData.setData(setUserToRole(rolePage.getRecords()));
         return  roleLayerData;
@@ -193,7 +195,7 @@ public class RoleController extends BaseController {
             return RestResponse.failure("角色名称不能为空");
         }
 
-        SysRole oldRole = roleService.selectById(role.getId());
+        SysRole oldRole = roleService.getById(role.getId());
         if(!oldRole.getName().equals(role.getName())){
             if(roleService.getRoleNameCount(role.getName())>0){
                 return RestResponse.failure("角色已经存在");
@@ -222,7 +224,7 @@ public class RoleController extends BaseController {
             return RestResponse.failure("角色名称不能为空");
         }
 
-        SysRole oldRole = roleService.selectById(id);
+        SysRole oldRole = roleService.getById(id);
         if(!oldRole.getName().equals(role.getName())){
             if(roleService.getRoleNameCount(role.getName())>0){
                 return RestResponse.failure("角色已经存在");
@@ -248,7 +250,7 @@ public class RoleController extends BaseController {
             return RestResponse.failure("角色ID不能为空");
         }
 
-        SysRole oldRole = roleService.selectById(id);
+        SysRole oldRole = roleService.getById(id);
         if(oldRole==null){
             return RestResponse.failure("角色不存在");
         }
@@ -340,7 +342,7 @@ public class RoleController extends BaseController {
             return RestResponse.failure("角色Id不能为空");
         }
 
-        SysRole role = roleService.selectById(id);
+        SysRole role = roleService.getById(id);
         if(role==null){
             return RestResponse.failure("该角色不存在");
         }

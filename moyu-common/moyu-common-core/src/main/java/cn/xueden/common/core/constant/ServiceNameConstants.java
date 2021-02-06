@@ -17,4 +17,9 @@ public class ServiceNameConstants {
      * 系统模块的serviceid
      */
     public static final String SYSTEM_SERVICE = "moyu-system";
+
+    /**
+     * 教育模块的serviceid
+     */
+    public static final String EDU_SERVICE = "moyu-edu";
 }

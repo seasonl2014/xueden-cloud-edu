@@ -4,7 +4,8 @@ import cn.xueden.common.core.edu.domain.EduChapter;
 import cn.xueden.common.core.edu.vo.EduChapterTreeNodeVO;
 import cn.xueden.common.core.edu.vo.EduChapterVO;
 import cn.xueden.common.core.edu.vo.PageVO;
-import com.baomidou.mybatisplus.service.IService;
+import com.baomidou.mybatisplus.extension.service.IService;
+/*import com.baomidou.mybatisplus.service.IService;*/
 
 import java.util.List;
 

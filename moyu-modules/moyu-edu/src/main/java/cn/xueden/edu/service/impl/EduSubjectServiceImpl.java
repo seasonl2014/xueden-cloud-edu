@@ -1,5 +1,6 @@
 package cn.xueden.edu.service.impl;
 
+import cn.xueden.common.core.edu.domain.EduCourse;
 import cn.xueden.common.core.edu.domain.EduSubject;
 import cn.xueden.common.core.edu.dto.CategoryDto;
 import cn.xueden.common.core.edu.vo.EduSubjectTreeNodeVO;
@@ -9,13 +10,19 @@ import cn.xueden.common.core.utils.EduSubjectTreeBuilder;
 import cn.xueden.common.core.utils.ListPageUtils;
 import cn.xueden.edu.alivod.AliVodCategoryService;
 import cn.xueden.edu.converter.EduSubjectConverter;
+import cn.xueden.edu.dao.EduCourseDao;
 import cn.xueden.edu.dao.EduSubjectDao;
 import cn.xueden.edu.service.IEduSubjectService;
-import com.baomidou.mybatisplus.mapper.EntityWrapper;
+/*import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.baomidou.mybatisplus.plugins.Page;*/
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -26,12 +33,15 @@ import java.util.List;
  * @version:1.0
  */
 @Service
-public class EduSubjectServiceImpl implements IEduSubjectService {
+public class EduSubjectServiceImpl extends ServiceImpl<EduSubjectDao, EduSubject> implements IEduSubjectService {
     @Autowired
     private EduSubjectDao eduSubjectDao;
 
     @Autowired
     private AliVodCategoryService vidCategoryClient;
+
+    @Autowired
+    private EduCourseDao eduCourseDao;
 
 
 
@@ -41,7 +51,7 @@ public class EduSubjectServiceImpl implements IEduSubjectService {
      */
     @Override
     public List<EduSubjectVO> findAll() {
-        EntityWrapper<EduSubject> wrapper = new EntityWrapper<>();
+        QueryWrapper<EduSubject> wrapper = new QueryWrapper<>();
         wrapper.eq("del_flag",false);
         List<EduSubject> productCategories = eduSubjectDao.selectList(wrapper);
         return EduSubjectConverter.converterToVOList(productCategories);
@@ -117,7 +127,7 @@ public class EduSubjectServiceImpl implements IEduSubjectService {
         if(dbEduSubject!=null){
             // 判断要删除的栏目下是否有子栏目,有子栏目不能删，没有可以删除
             if(dbEduSubject.getParentId()!=null&&dbEduSubject.getParentId()!=0){
-                EntityWrapper<EduSubject> subjectEntityWrapper = new EntityWrapper();
+                QueryWrapper<EduSubject> subjectEntityWrapper = new QueryWrapper();
                 subjectEntityWrapper.eq("parent_id",dbEduSubject.getParentId());
                 int count =  eduSubjectDao.selectCount(subjectEntityWrapper);
                 if(count!=0){
@@ -185,31 +195,28 @@ public class EduSubjectServiceImpl implements IEduSubjectService {
      */
     @Override
     public List<EduSubjectVO> getIndexColumnCourses(int pageNum, int pageSize) {
-       /* PageHelper.startPage(pageNum, pageSize);
-        List<EduSubject> eduSubjects;
-        Example o = new Example(EduSubject.class);
-        Example.Criteria criteria = o.createCriteria();
-        criteria.andEqualTo("parentId", 0);
-        eduSubjects = eduSubjectDao.selectByExample(o);
-        List<EduSubjectVO> eduSubjectVOList = EduSubjectConverter.converterToVOList(eduSubjects);
 
+        // 定义课程分类类别
+        List<EduSubject> eduSubjects = new ArrayList<EduSubject>();
+
+        QueryWrapper<EduSubject> subjectEntityWrapper = new QueryWrapper();
+        subjectEntityWrapper.eq("parent_id",0);
+        eduSubjects = eduSubjectDao.selectList(subjectEntityWrapper);
+        List<EduSubjectVO> eduSubjectVOList = EduSubjectConverter.converterToVOList(eduSubjects);
         for(EduSubjectVO eduSubjectVO:eduSubjectVOList){
             // 分别获取两个子栏目
-            Example children = new Example(EduSubject.class);
-            Example.Criteria childrenCriteria = children.createCriteria();
-            childrenCriteria.andEqualTo("parentId", eduSubjectVO.getId());
-            List<EduSubject> childrenEduSubject = eduSubjectDao.selectByExample(children);
-            eduSubjectVO.setChildrens(childrenEduSubject);
-
+            QueryWrapper<EduSubject> childrenEntityWrapper = new QueryWrapper();
+            childrenEntityWrapper.eq("parent_id",eduSubjectVO.getId());
+            Page<EduSubject> EduSubjectPage = eduSubjectDao.selectPage(new Page<>(1,2),childrenEntityWrapper);
+            eduSubjectVO.setChildrens(EduSubjectPage.getRecords());
             // 分别获取8个课程
-            PageHelper.startPage(1, 8);
-            Example courseExample = new Example(EduCourse.class);
-            Example.Criteria courseCriteria = courseExample.createCriteria();
-            courseCriteria.andEqualTo("subjectParentId", eduSubjectVO.getId());
-            List<EduCourse> eduCourseList = courseMapper.selectByExample(courseExample);
-            eduSubjectVO.setEduCourseList(eduCourseList);
-        }*/
-        return null;
+            QueryWrapper<EduCourse> courseEntityWrapper = new QueryWrapper();
+            courseEntityWrapper.eq("subject_parent_id",eduSubjectVO.getId());
+            Page<EduCourse> EduCoursePage= eduCourseDao.selectPage(new Page<>(1,8),courseEntityWrapper);
+            eduSubjectVO.setEduCourseList(EduCoursePage.getRecords());
+        }
+
+        return eduSubjectVOList;
     }
 }
 

@@ -1,7 +1,8 @@
 package cn.xueden.edu.service;
 
 import cn.xueden.common.core.edu.domain.EduTeacher;
-import com.baomidou.mybatisplus.service.IService;
+import com.baomidou.mybatisplus.extension.service.IService;
+/*import com.baomidou.mybatisplus.service.IService;*/
 
 /**功能描述：讲师 服务接口类
  * @Auther:梁志杰

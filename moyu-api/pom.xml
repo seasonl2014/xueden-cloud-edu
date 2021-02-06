@@ -16,6 +16,7 @@
     <description>接口模块</description>
     <modules>
         <module>moyu-api-system</module>
+        <module>moyu-api-edu</module>
     </modules>
 
 </project>

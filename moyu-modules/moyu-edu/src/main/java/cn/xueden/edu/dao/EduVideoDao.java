@@ -1,7 +1,8 @@
 package cn.xueden.edu.dao;
 
 import cn.xueden.common.core.edu.domain.EduVideo;
-import com.baomidou.mybatisplus.mapper.BaseMapper;
+
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.springframework.stereotype.Repository;
 
 /**

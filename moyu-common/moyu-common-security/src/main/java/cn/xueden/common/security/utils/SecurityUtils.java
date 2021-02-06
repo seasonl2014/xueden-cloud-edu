@@ -67,8 +67,8 @@ public class SecurityUtils {
     }
 
     public static void main(String[] args) {
-        System.out.println(encryptPassword("123456"));
-        String encodedPassword = "$2a$10$BUhRXeAz1H1nGyBStDzZFe0ikAj5sFnpvAz/Z3XszI2YIqyHEkU5.";
-        System.out.println(matchesPassword("123456",encodedPassword));
+        System.out.println(encryptPassword("aA123456"));
+        String encodedPassword = "$2a$10$ue/33ZZsVp0666IitLsITueJMcClks4xmoSnfac.tPuAsMDEFfSry";
+        System.out.println(matchesPassword("aA123456",encodedPassword));
     }
 }

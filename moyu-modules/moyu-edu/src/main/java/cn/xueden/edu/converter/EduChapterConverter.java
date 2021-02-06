@@ -5,7 +5,8 @@ import cn.xueden.common.core.edu.domain.EduVideo;
 import cn.xueden.common.core.edu.vo.EduChapterTreeNodeVO;
 import cn.xueden.common.core.edu.vo.EduChapterVO;
 import cn.xueden.edu.dao.EduVideoDao;
-import com.baomidou.mybatisplus.mapper.EntityWrapper;
+
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.util.CollectionUtils;
 
@@ -58,11 +59,9 @@ public class EduChapterConverter {
         List<EduChapterTreeNodeVO> nodes=new ArrayList<>();
         if(!CollectionUtils.isEmpty(eduChapterVOList)){
             for (EduChapterVO eduChapterVO : eduChapterVOList) {
-                // 获取课程章节下的小节
-     /*           EduVideo eduVideo = new EduVideo();
-                eduVideo.setChapterId(eduChapterVO.getId());*/
-                EntityWrapper<EduVideo> videoEntityWrapper = new EntityWrapper();
+                QueryWrapper<EduVideo> videoEntityWrapper = new QueryWrapper();
                 videoEntityWrapper.eq("chapter_id",eduChapterVO.getId());
+                videoEntityWrapper.orderByAsc("sort");
                 List<EduVideo> eduVideoList = eduVideoMapper.selectList(videoEntityWrapper);
 
                 // 统计章节总时长

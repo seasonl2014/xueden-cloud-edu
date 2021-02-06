@@ -19,14 +19,16 @@ import cn.xueden.common.security.utils.SecurityUtils;
 import cn.xueden.system.api.model.LoginUser;
 import cn.xueden.system.entity.vo.ShowMenu;
 import cn.xueden.system.service.UserService;
-import com.baomidou.mybatisplus.mapper.EntityWrapper;
-import com.baomidou.mybatisplus.plugins.Page;
+/*import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.baomidou.mybatisplus.plugins.Page;*/
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import org.apache.commons.lang3.StringUtils;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
+
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.WebUtils;
 
@@ -125,7 +127,7 @@ public class UserConteroller extends BaseController {
 
         Map map = WebUtils.getParametersStartingWith(request,"s_");
         LayerData<SysUser> userLayerData = new LayerData<>();
-        EntityWrapper<SysUser> userEntityWrapper = new EntityWrapper();
+        QueryWrapper<SysUser> userEntityWrapper = new QueryWrapper();
         if(!map.isEmpty()){
             String keys = (String)map.get("key");
             if(StringUtils.isNotBlank(keys)){
@@ -133,7 +135,7 @@ public class UserConteroller extends BaseController {
             }
         }
 
-        Page<SysUser> userPage = userService.selectPage(new Page<>(page,limit),userEntityWrapper);
+        Page<SysUser> userPage = userService.page(new Page<>(page,limit),userEntityWrapper);
         userLayerData.setCount(userPage.getTotal());
         userLayerData.setData(userPage.getRecords());
         return userLayerData;

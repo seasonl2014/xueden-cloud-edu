@@ -4,7 +4,8 @@ package cn.xueden.system.service;
 import cn.xueden.common.core.web.domain.SysMenu;
 
 import cn.xueden.system.entity.vo.ShowMenu;
-import com.baomidou.mybatisplus.service.IService;
+import com.baomidou.mybatisplus.extension.service.IService;
+/*import com.baomidou.mybatisplus.service.IService;*/
 
 import java.util.List;
 import java.util.Map;

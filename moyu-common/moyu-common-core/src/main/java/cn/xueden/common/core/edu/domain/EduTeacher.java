@@ -1,7 +1,7 @@
 package cn.xueden.common.core.edu.domain;
 
 import cn.xueden.common.core.web.domain.DataEntity;
-import com.baomidou.mybatisplus.annotations.TableName;
+import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 

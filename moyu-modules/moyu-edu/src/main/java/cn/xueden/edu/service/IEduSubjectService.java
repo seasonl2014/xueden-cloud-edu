@@ -1,8 +1,10 @@
 package cn.xueden.edu.service;
 
+import cn.xueden.common.core.edu.domain.EduSubject;
 import cn.xueden.common.core.edu.vo.EduSubjectTreeNodeVO;
 import cn.xueden.common.core.edu.vo.EduSubjectVO;
 import cn.xueden.common.core.edu.vo.PageVO;
+import com.baomidou.mybatisplus.extension.service.IService;
 
 
 import java.util.List;
@@ -13,7 +15,7 @@ import java.util.List;
  * @Description:cn.xueden.edu.service
  * @version:1.0
  */
-public interface IEduSubjectService {
+public interface IEduSubjectService extends IService<EduSubject> {
     /**
      * 查询所课程类别
      * @return

@@ -1,8 +1,9 @@
 package cn.xueden.common.core.web.domain;
 
-import com.baomidou.mybatisplus.annotations.TableField;
-import com.baomidou.mybatisplus.annotations.TableName;
-import com.baomidou.mybatisplus.enums.FieldStrategy;
+
+import com.baomidou.mybatisplus.annotation.FieldStrategy;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.google.common.collect.Sets;
 
 import java.util.Set;
@@ -26,7 +27,7 @@ public class SysUser extends DataEntity<SysUser> {
     /**
      * 昵称
      */
-    @TableField(value = "nick_name",strategy= FieldStrategy.IGNORED)
+    @TableField(value = "nick_name",updateStrategy= FieldStrategy.IGNORED)
     private String nickName;
 
     /**
@@ -38,13 +39,13 @@ public class SysUser extends DataEntity<SysUser> {
     /**
      * 手机号码
      */
-    @TableField(strategy= FieldStrategy.IGNORED)
+    @TableField(updateStrategy= FieldStrategy.IGNORED)
     private String tel;
 
     /**
      * 邮箱地址
      */
-    @TableField(strategy= FieldStrategy.IGNORED)
+    @TableField(updateStrategy= FieldStrategy.IGNORED)
     private String email;
 
     /**
@@ -52,7 +53,7 @@ public class SysUser extends DataEntity<SysUser> {
      */
     private Boolean locked;
 
-    @TableField(strategy= FieldStrategy.IGNORED)
+    @TableField(updateStrategy= FieldStrategy.IGNORED)
     private String icon;
 
     @TableField(exist=false)

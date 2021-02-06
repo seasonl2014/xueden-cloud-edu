@@ -11,12 +11,14 @@ import cn.xueden.common.core.utils.ToolUtil;
 import cn.xueden.common.core.web.domain.AjaxResult;
 
 import cn.xueden.common.core.web.domain.SysLog;
-import cn.xueden.common.log.annotation.XudenSysLog;
+
 import cn.xueden.common.security.annotation.PreAuthorize;
-import cn.xueden.system.entity.Log;
+
 import cn.xueden.system.service.LogService;
-import com.baomidou.mybatisplus.mapper.EntityWrapper;
-import com.baomidou.mybatisplus.plugins.Page;
+/*import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.baomidou.mybatisplus.plugins.Page;*/
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.commons.lang3.StringUtils;
 
 import org.slf4j.Logger;
@@ -56,7 +58,7 @@ public class LogController  {
 
         Map map = WebUtils.getParametersStartingWith(request,"s_");
         LayerData<SysLog> layerData = new LayerData<>();
-        EntityWrapper<SysLog> wrapper = new EntityWrapper<>();
+        QueryWrapper<SysLog> wrapper = new QueryWrapper<>();
 
         if(!map.isEmpty()){
             String keys = (String) map.get("type");
@@ -80,7 +82,7 @@ public class LogController  {
             }
         }
 
-        Page<SysLog> logPage = logService.selectPage(new Page<>(page,limit),wrapper);
+        Page<SysLog> logPage = logService.page(new Page<>(page,limit),wrapper);
         layerData.setCount(logPage.getTotal());
         layerData.setData(logPage.getRecords());
         return layerData;
@@ -98,7 +100,7 @@ public class LogController  {
         if(ids==null||ids.size()==0){
             RestResponse.failure("请选择要删除的记录");
         }
-        logService.deleteBatchIds(ids);
+        logService.removeByIds(ids);
         return RestResponse.success();
     }
 
@@ -113,7 +115,7 @@ public class LogController  {
         if(id==null){
             RestResponse.failure("请选择要删除的记录");
         }
-        logService.deleteById(id);
+        logService.removeById(id);
         return RestResponse.success();
     }
 
@@ -138,7 +140,7 @@ public class LogController  {
         }
 
         // 根据日志列表ID删除日志数据
-        logService.deleteBatchIds(ids);
+        logService.removeByIds(ids);
         return RestResponse.success();
     }
 
@@ -150,7 +152,7 @@ public class LogController  {
     @PostMapping("operlog")
     public AjaxResult saveLog(@RequestBody SysLog sysOperLog){
         // 返回结果集
-        AjaxResult ajaxResult = toAjax(logService.insert(sysOperLog)?1:0);
+        AjaxResult ajaxResult = toAjax(logService.save(sysOperLog)?1:0);
         return ajaxResult;
     }
 
@@ -210,7 +212,7 @@ public class LogController  {
         sysLog.setUseTime(System.currentTimeMillis() - startTime.get());
         sysLog.setResponse("{\"code\":0,\"success\":true,\"message\":\""+message+"\"}");
         // 返回结果集
-        AjaxResult ajaxResult = toAjax(logService.insert(sysLog)?1:0);
+        AjaxResult ajaxResult = toAjax(logService.save(sysLog)?1:0);
 
 
         return ajaxResult;

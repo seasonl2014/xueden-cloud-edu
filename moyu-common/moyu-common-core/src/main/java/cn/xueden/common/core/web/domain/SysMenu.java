@@ -1,8 +1,9 @@
 package cn.xueden.common.core.web.domain;
 
-import com.baomidou.mybatisplus.annotations.TableField;
-import com.baomidou.mybatisplus.annotations.TableName;
-import com.baomidou.mybatisplus.enums.FieldStrategy;
+
+import com.baomidou.mybatisplus.annotation.FieldStrategy;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableName;
 import org.hibernate.validator.constraints.Length;
 
 /**功能描述:菜单实体类
@@ -34,13 +35,13 @@ public class SysMenu extends TreeEntity<SysMenu> {
     /**
      * 链接地址
      */
-    @TableField(strategy= FieldStrategy.IGNORED)
+    @TableField(insertStrategy= FieldStrategy.IGNORED)
     private String href;
 
     /**
      * 打开方式
      */
-    @TableField(strategy= FieldStrategy.IGNORED)
+    @TableField(insertStrategy= FieldStrategy.IGNORED)
     private String target;
 
     /**
@@ -52,7 +53,7 @@ public class SysMenu extends TreeEntity<SysMenu> {
     /**
      * 类型（0表示菜单，1表示按钮，-1表示目录）
      */
-    @TableField(value="is_menu",strategy= FieldStrategy.IGNORED)
+    @TableField(value="is_menu",insertStrategy= FieldStrategy.IGNORED)
     private Integer isMenu;
 
     @TableField("bg_color")
@@ -61,7 +62,7 @@ public class SysMenu extends TreeEntity<SysMenu> {
     /**
      * 权限标识
      */
-    @TableField(strategy= FieldStrategy.IGNORED)
+    @TableField(insertStrategy= FieldStrategy.IGNORED)
     private String permission;
 
     @TableField(exist = false)

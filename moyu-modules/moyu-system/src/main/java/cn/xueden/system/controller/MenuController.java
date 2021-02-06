@@ -7,9 +7,10 @@ import cn.xueden.common.core.web.domain.SysMenu;
 
 import cn.xueden.common.log.annotation.XudenSysLog;
 import cn.xueden.common.security.annotation.PreAuthorize;
-import com.baomidou.mybatisplus.mapper.Condition;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+/*import com.baomidou.mybatisplus.mapper.Condition;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
-import com.baomidou.mybatisplus.mapper.Wrapper;
+import com.baomidou.mybatisplus.mapper.Wrapper;*/
 import com.google.common.collect.Maps;
 
 
@@ -17,6 +18,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
+import java.util.function.Function;
 
 /**功能描述:菜单 前端控制器
  * @Auther:http://www.xueden.cn
@@ -34,9 +37,9 @@ public class MenuController extends BaseController {
      */
     @GetMapping("list")
     public RestResponse countMenu(){
-        EntityWrapper<SysMenu> menuEntityWrapper = new EntityWrapper();
+        QueryWrapper<SysMenu> menuEntityWrapper = new QueryWrapper();
         menuEntityWrapper.eq("del_flag",false);
-        int menuCount = menuService.selectCount(menuEntityWrapper);
+        int menuCount = menuService.count(menuEntityWrapper);
         Map<String,Object> map = new HashMap<>();
         map.put("menuCount",menuCount);
         return RestResponse.success().setData(map);
@@ -78,27 +81,38 @@ public class MenuController extends BaseController {
                 return RestResponse.failure("权限标识已经存在");
             }
         }
-
+        QueryWrapper<SysMenu> queryWrapper = new QueryWrapper();
         //处理菜单排序
         if(menu.getParentId()==null){
             menu.setLevel(1);
-            Object o = menuService.selectObj(Condition.create().setSqlSelect("max(sort)").isNull("parent_id"));
+            queryWrapper.isNull("parent_id");
+            queryWrapper.select("max(sort)");
+            Object o = menuService.getObj(queryWrapper,o1 -> {
+
+                return o1;
+            });
             int sort = 0;
             if(null!=o){
                 sort = (Integer) o+10;
             }
             menu.setSort(sort);
         }else{
-            SysMenu parentMenu = menuService.selectById(menu.getParentId());
+            SysMenu parentMenu = menuService.getById(menu.getParentId());
             if(null==parentMenu){
                 return RestResponse.failure("父菜单不存在");
             }
 
             menu.setParentIds(parentMenu.getParentIds());
             menu.setLevel(parentMenu.getLevel()+1);
-            Object o = menuService.selectObj(Condition.create()
+         /*   Object o = menuService.selectObj(Condition.create()
                     .setSqlSelect("max(sort)")
-                    .eq("parent_id",menu.getParentId()));
+                    .eq("parent_id",menu.getParentId()));*/
+            queryWrapper.eq("parent_id",menu.getParentId());
+            queryWrapper.select("max(sort)");
+            Object o = menuService.getObj(queryWrapper,o1 -> {
+
+                return o1;
+            });
             int sort = 0;
             if(null!=o){
                 sort = (Integer) o+10;
@@ -118,7 +132,7 @@ public class MenuController extends BaseController {
     @PreAuthorize(hasPermi = "sys:menu:add")
     @PostMapping("addMenu")
     public RestResponse addMenu(@RequestBody SysMenu menu){
-
+        QueryWrapper<SysMenu> queryWrapper = new QueryWrapper();
         if(XudenStringUtils.isBlank(menu.getName())){
             return RestResponse.failure("菜单名称不能为空");
         }
@@ -134,9 +148,14 @@ public class MenuController extends BaseController {
         }
 
         //处理菜单排序
-        if(menu.getParentId()==null||menu.getParentId()==0){
+        if(menu.getParentId()==null||menu.getParentId()==0){// 添加父级菜单
             menu.setLevel(1);
-            Object o = menuService.selectObj(Condition.create().setSqlSelect("max(sort)").isNull("parent_id"));
+           /* Object o = menuService.selectObj(Condition.create().setSqlSelect("max(sort)").isNull("parent_id"));*/
+            queryWrapper.isNull("parent_id");
+            queryWrapper.select("max(sort)");
+            Object o = menuService.getObj(queryWrapper,o1 -> {
+                return o1;
+            });
             int sort = 0;
             if(null!=o){
                 sort = (Integer) o+10;
@@ -144,16 +163,23 @@ public class MenuController extends BaseController {
             menu.setSort(sort);
             menu.setParentId(null);
         }else{
-            SysMenu parentMenu = menuService.selectById(menu.getParentId());
+            SysMenu parentMenu = menuService.getById(menu.getParentId());
             if(null==parentMenu){
                 return RestResponse.failure("父菜单不存在");
             }
 
             menu.setParentIds(parentMenu.getParentIds());
             menu.setLevel(parentMenu.getLevel()+1);
-            Object o = menuService.selectObj(Condition.create()
+         /*   Object o = menuService.selectObj(Condition.create()
                     .setSqlSelect("max(sort)")
-                    .eq("parent_id",menu.getParentId()));
+                    .eq("parent_id",menu.getParentId()));*/
+
+            queryWrapper.eq("parent_id",menu.getParentId());
+            queryWrapper.select("max(sort)");
+            Object o = menuService.getObj(queryWrapper,o1 -> {
+
+                return o1;
+            });
             int sort = 0;
             if(null!=o){
                 sort = (Integer) o+10;
@@ -175,7 +201,7 @@ public class MenuController extends BaseController {
         if(null==id){
             return RestResponse.failure("菜单ID不能为空");
         }
-        SysMenu menu = menuService.selectById(id);
+        SysMenu menu = menuService.getById(id);
         return RestResponse.success().setData(menu);
     }
 
@@ -196,7 +222,7 @@ public class MenuController extends BaseController {
             return RestResponse.failure("菜单名称不能为空");
         }
 
-        SysMenu oldMenu = menuService.selectById(menu.getId());
+        SysMenu oldMenu = menuService.getById(menu.getId());
 
         if(!oldMenu.getName().equals(menu.getName())){
             if(menuService.getCountByName(menu.getName())>0){
@@ -239,7 +265,7 @@ public class MenuController extends BaseController {
             return RestResponse.failure("菜单名称不能为空");
         }
 
-        SysMenu oldMenu = menuService.selectById(id);
+        SysMenu oldMenu = menuService.getById(id);
 
         if(!oldMenu.getName().equals(menu.getName())){
             if(menuService.getCountByName(menu.getName())>0){
@@ -278,7 +304,7 @@ public class MenuController extends BaseController {
         if(null==id){
             return RestResponse.failure("菜单ID不能为空");
         }
-        SysMenu menu = menuService.selectById(id);
+        SysMenu menu = menuService.getById(id);
         menu.setDelFlag(true);
         menuService.saveOrUpdateMenu(menu);
 
@@ -297,7 +323,7 @@ public class MenuController extends BaseController {
         if(null==id){
             return RestResponse.failure("菜单ID不能为空");
         }
-        SysMenu menu = menuService.selectById(id);
+        SysMenu menu = menuService.getById(id);
         menu.setDelFlag(true);
         menuService.saveOrUpdateMenu(menu);
 

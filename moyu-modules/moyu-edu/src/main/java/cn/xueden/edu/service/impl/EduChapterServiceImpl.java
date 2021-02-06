@@ -11,8 +11,10 @@ import cn.xueden.edu.converter.EduChapterConverter;
 import cn.xueden.edu.dao.EduChapterDao;
 import cn.xueden.edu.dao.EduVideoDao;
 import cn.xueden.edu.service.IEduChapterService;
-import com.baomidou.mybatisplus.mapper.EntityWrapper;
-import com.baomidou.mybatisplus.service.impl.ServiceImpl;
+/*import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.baomidou.mybatisplus.service.impl.ServiceImpl;*/
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -62,7 +64,7 @@ public class EduChapterServiceImpl extends ServiceImpl<EduChapterDao, EduChapter
      */
     @Override
     public List<EduChapterVO> findAllByEduChapter(EduChapterVO eduChapterVO) {
-        EntityWrapper<EduChapter> chapterEntityWrapper = new EntityWrapper();
+        QueryWrapper<EduChapter> chapterEntityWrapper = new QueryWrapper();
         chapterEntityWrapper.eq("course_id",eduChapterVO.getCourseId());
         List<EduChapter> eduChapters = eduChapterDao.selectList(chapterEntityWrapper);
         return EduChapterConverter.converterToVOList(eduChapters);
@@ -75,15 +77,16 @@ public class EduChapterServiceImpl extends ServiceImpl<EduChapterDao, EduChapter
      */
     @Override
     public List<EduChapterVO> findAllByEduChapterAndVideo(EduChapterVO eduChapterVO) {
-        EntityWrapper<EduChapter> chapterEntityWrapper = new EntityWrapper();
+        QueryWrapper<EduChapter> chapterEntityWrapper = new QueryWrapper();
         chapterEntityWrapper.eq("course_id",eduChapterVO.getCourseId());
         List<EduChapter> eduChapters = eduChapterDao.selectList(chapterEntityWrapper);
         List<EduChapterVO> eduChapterVOList = EduChapterConverter.converterToVOList(eduChapters);
 
         // 获取课程视频小节
         for (EduChapterVO chapterVO:eduChapterVOList){
-            EntityWrapper<EduVideo> videoEntityWrapper = new EntityWrapper();
+            QueryWrapper<EduVideo> videoEntityWrapper = new QueryWrapper();
             videoEntityWrapper.eq("chapter_id",chapterVO.getId());
+            videoEntityWrapper.orderByAsc("sort");
             List<EduVideo> eduVideoList = eduVideoDao.selectList(videoEntityWrapper);
             chapterVO.setChildren(eduVideoList);
         }

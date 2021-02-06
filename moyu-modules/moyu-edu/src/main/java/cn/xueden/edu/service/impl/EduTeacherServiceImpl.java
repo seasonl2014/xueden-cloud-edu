@@ -3,7 +3,8 @@ package cn.xueden.edu.service.impl;
 import cn.xueden.common.core.edu.domain.EduTeacher;
 import cn.xueden.edu.dao.EduTeacherDao;
 import cn.xueden.edu.service.IEduTeacherService;
-import com.baomidou.mybatisplus.service.impl.ServiceImpl;
+/*import com.baomidou.mybatisplus.service.impl.ServiceImpl;*/
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
 /**讲师 服务实现类

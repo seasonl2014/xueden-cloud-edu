@@ -7,8 +7,10 @@ import cn.xueden.common.core.utils.RestResponse;
 import cn.xueden.common.log.annotation.XudenOtherSystemLog;
 import cn.xueden.common.security.annotation.PreAuthorize;
 import cn.xueden.edu.service.IEduTeacherService;
-import com.baomidou.mybatisplus.mapper.EntityWrapper;
-import com.baomidou.mybatisplus.plugins.Page;
+/*import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.baomidou.mybatisplus.plugins.Page;*/
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,7 +48,7 @@ public class EduTeacherController {
                                                     @RequestParam(value = "limit",defaultValue = "15")Integer limit,
                                                     EduTeacherVO eduTeacherVO){
         LayerData<EduTeacher> teacherLayerData = new LayerData<>();
-        EntityWrapper<EduTeacher> userEntityWrapper = new EntityWrapper();
+        QueryWrapper<EduTeacher> userEntityWrapper = new QueryWrapper();
         if(eduTeacherVO!=null&&eduTeacherVO.getName()!=null){
             userEntityWrapper.like("name",eduTeacherVO.getName());
         }
@@ -55,7 +57,7 @@ public class EduTeacherController {
             userEntityWrapper.eq("level",eduTeacherVO.getLevel());
         }
 
-        Page<EduTeacher> userPage = eduTeacherService.selectPage(new Page<>(page,limit),userEntityWrapper);
+        Page<EduTeacher> userPage = eduTeacherService.page(new Page<>(page,limit),userEntityWrapper);
         teacherLayerData.setCount(userPage.getTotal());
         teacherLayerData.setData(userPage.getRecords());
         return teacherLayerData;
@@ -73,7 +75,7 @@ public class EduTeacherController {
     @ApiOperation(value = "添加讲师")
     @PostMapping("/add")
     public RestResponse add(@RequestBody @Validated EduTeacher eduTeacherVO){
-        eduTeacherService.insert(eduTeacherVO);
+        eduTeacherService.save(eduTeacherVO);
         return RestResponse.success();
     }
 
@@ -87,7 +89,7 @@ public class EduTeacherController {
     @PreAuthorize(hasPermi = "edu:teacher:delete")
     @DeleteMapping("/delete/{id}")
     public RestResponse delete(@PathVariable Long id){
-        eduTeacherService.deleteById(id);
+        eduTeacherService.removeById(id);
         return RestResponse.success();
     }
 
@@ -100,7 +102,7 @@ public class EduTeacherController {
     @PreAuthorize(hasPermi = "edu:teacher:edit")
     @GetMapping("/edit/{id}")
     public RestResponse edit(@PathVariable Long id){
-        EduTeacher eduTeacherVO = eduTeacherService.selectById(id);
+        EduTeacher eduTeacherVO = eduTeacherService.getById(id);
         return RestResponse.success().setData(eduTeacherVO);
     }
 
@@ -133,9 +135,9 @@ public class EduTeacherController {
     @PreAuthorize(hasPermi = "edu:teacher:list")
     @GetMapping("/all")
     public RestResponse getAll(){
-        EntityWrapper<EduTeacher> teacherEntityWrapper = new EntityWrapper();
+        QueryWrapper<EduTeacher> teacherEntityWrapper = new QueryWrapper();
         teacherEntityWrapper.eq("del_flag",false);
-        List<EduTeacher> teacherList = eduTeacherService.selectList(teacherEntityWrapper);
+        List<EduTeacher> teacherList = eduTeacherService.list(teacherEntityWrapper);
         return RestResponse.success().setData(teacherList);
 
     }

@@ -1,10 +1,10 @@
 package cn.xueden.common.core.web.domain;
 
 
-import com.baomidou.mybatisplus.activerecord.Model;
-import com.baomidou.mybatisplus.annotations.TableField;
-import com.baomidou.mybatisplus.enums.FieldFill;
-import com.baomidou.mybatisplus.enums.FieldStrategy;
+
+import com.baomidou.mybatisplus.annotation.FieldFill;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.extension.activerecord.Model;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.util.Date;
@@ -15,7 +15,7 @@ import java.util.Date;
  * @Description:cn.xueden.common.core.web.domain
  * @version:1.0
  */
-public class DataEntity <T extends Model> extends BaseEntity<T>{
+public class DataEntity <T extends Model<T>> extends BaseEntity<T>{
     private static final long serialVersionUID = 1L;
 
     /**
@@ -51,7 +51,6 @@ public class DataEntity <T extends Model> extends BaseEntity<T>{
     /**
      * 备注
      */
-    @TableField(strategy= FieldStrategy.IGNORED)
     protected String remarks;
 
     /**

@@ -58,7 +58,7 @@ public class EduChapterController {
     @PreAuthorize(hasPermi = "edu:chapter:add")
     @PostMapping("/add")
     public RestResponse add(@RequestBody @Validated EduChapter eduChapterVO) {
-        chapterService.insert(eduChapterVO);
+        chapterService.save(eduChapterVO);
         return RestResponse.success();
     }
 
@@ -71,7 +71,7 @@ public class EduChapterController {
     @PreAuthorize(hasPermi = "edu:chapter:edit")
     @GetMapping("/edit/{id}")
     public RestResponse edit(@PathVariable Long id) {
-        EduChapter eduChapterVO = chapterService.selectById(id);
+        EduChapter eduChapterVO = chapterService.getById(id);
         return RestResponse.success().setData(eduChapterVO);
     }
 
@@ -100,7 +100,7 @@ public class EduChapterController {
     @XudenOtherSystemLog("课程大章删除")
     @DeleteMapping("/delete/{id}")
     public RestResponse delete(@PathVariable Long id) {
-        chapterService.deleteById(id);
+        chapterService.removeById(id);
         return RestResponse.success();
     }
 

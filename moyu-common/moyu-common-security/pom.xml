@@ -22,6 +22,12 @@
             <artifactId>moyu-api-system</artifactId>
         </dependency>
 
+        <!-- MoYu Api Edu -->
+        <dependency>
+            <groupId>cn.xueden</groupId>
+            <artifactId>moyu-api-edu</artifactId>
+        </dependency>
+
         <!-- moyu Common Redis-->
         <dependency>
             <groupId>cn.xueden</groupId>

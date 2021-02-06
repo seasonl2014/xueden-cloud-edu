@@ -2,6 +2,10 @@ package cn.xueden.common.core.utils;
 
 import cn.xueden.common.core.text.UUID;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Random;
+
 /**功能描述：ID生成器工具类
  * @Auther:梁志杰
  * @Date:2020/9/24
@@ -9,6 +13,31 @@ import cn.xueden.common.core.text.UUID;
  * @version:1.0
  */
 public class IdUtils {
+
+    /**
+     * 生成订单号
+     * @return
+     */
+    public static String createOrderNumber(){
+        String date = new SimpleDateFormat("yyyyMMdd").format(new Date());
+        String seconds = new SimpleDateFormat("HHmmss").format(new Date());
+        String result = date+"00001000"+getTwo()+"00"+seconds+getTwo();
+        return result;
+    }
+
+    /**
+     * * 产生随机的2位数
+     * * @return
+     * */
+    public static String getTwo(){
+        Random rad=new Random();
+        String result  = rad.nextInt(100) +"";
+        if(result.length()==1){
+            result = "0" + result;
+        }
+        return result;
+    }
+
     /**
      * 获取随机UUID
      *
