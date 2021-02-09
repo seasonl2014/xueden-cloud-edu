@@ -41,7 +41,7 @@ public class LogServiceImpl extends ServiceImpl<LogDao, SysLog> implements LogSe
             boolean flag=false;
             for(Map map : list){
                 if(map.get("days").toString().equals(localDate.toString())){
-                    System.out.println("日期"+map.get("days").toString());
+                    // System.out.println("日期"+map.get("days").toString());
                     pv.add(Integer.valueOf(map.get("total").toString()));
                     flag = true;
                 }

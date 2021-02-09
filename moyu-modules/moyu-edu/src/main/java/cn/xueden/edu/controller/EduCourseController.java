@@ -2,6 +2,7 @@ package cn.xueden.edu.controller;
 
 
 import cn.xueden.common.core.edu.domain.EduCourse;
+import cn.xueden.common.core.edu.domain.EduVideo;
 import cn.xueden.common.core.edu.vo.EduCourseVO;
 import cn.xueden.common.core.utils.LayerData;
 import cn.xueden.common.core.utils.RestResponse;
@@ -9,6 +10,7 @@ import cn.xueden.common.log.annotation.XudenOtherSystemLog;
 import cn.xueden.common.security.annotation.PreAuthorize;
 import cn.xueden.common.security.service.TokenService;
 import cn.xueden.edu.service.IEduCourseService;
+import cn.xueden.edu.service.IEduVideoService;
 import cn.xueden.system.api.model.LoginUser;
 /*import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.plugins.Page;*/
@@ -19,6 +21,10 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 /**课程 前端控制器
  * @Auther:梁志杰
@@ -37,6 +43,9 @@ public class EduCourseController {
     @Autowired
     private TokenService tokenService ;
 
+    @Autowired
+    private IEduVideoService eduVideoService;
+
     /**
      * 分页获取课程列表
      * @param page
@@ -50,8 +59,8 @@ public class EduCourseController {
     @PreAuthorize(hasPermi = "edu:course:list")
     public LayerData<EduCourse> list(@RequestParam(value = "page",defaultValue = "1")Integer page,
                                      @RequestParam(value = "limit",defaultValue = "10")Integer limit,
-                                     EduCourse educourseVO,Long[] subjectIds){
-        System.out.println("获取到的课程列表"+subjectIds);
+                                     EduCourse educourseVO,Long subjectId){
+        System.out.println("获取到的课程列表"+subjectId);
         LayerData<EduCourse> courseLayerData = new LayerData<>();
         QueryWrapper<EduCourse> courseQueryWrapper = new QueryWrapper();
         courseQueryWrapper.orderBy(false, false, "id", "create_date");
@@ -65,6 +74,10 @@ public class EduCourseController {
 
         if(educourseVO!=null&&educourseVO.getDifficulty()!=null){
             courseQueryWrapper.eq("difficulty",educourseVO.getDifficulty());
+        }
+
+        if(subjectId!=null){
+            courseQueryWrapper.eq("subject_id",subjectId).or().eq("subject_parent_id",subjectId);
         }
 
         Page<EduCourse> userPage = educourseService.page(new Page<>(page,limit),courseQueryWrapper);
@@ -112,14 +125,14 @@ public class EduCourseController {
     @PreAuthorize(hasPermi = "edu:course:edit")
     @GetMapping("/edit/{id}")
     public RestResponse edit(@PathVariable Long id){
-        EduCourseVO eduCourseVO = educourseService.getById(id);
+        EduCourseVO eduCourseVO = educourseService.getVoById(id);
         return RestResponse.success().setData(eduCourseVO);
     }
 
     /**
      * 更新 课程
      * @param id
-     * @param eduCourseVO
+     * @param eduCourse
      * @return
      */
     @XudenOtherSystemLog("更新课程")
@@ -127,18 +140,83 @@ public class EduCourseController {
     @PreAuthorize(hasPermi = "edu:course:update")
     @PutMapping("/update/{id}")
     public RestResponse update(@PathVariable Long id,
-                               @RequestBody @Validated EduCourse eduCourseVO){
+                               @RequestBody @Validated EduCourse eduCourse ){
         LoginUser loginUser= tokenService.getLoginUser();
         if(loginUser==null){
             return RestResponse.failure("更新失败");
-        }else if(loginUser.getUserid()!=eduCourseVO.getCreateId()){
-            return RestResponse.failure("更新失败,不能更新他人的课程");
+        }else{
+            EduCourse dbEduCourse = educourseService.getById(id);
+            if(loginUser.getUserid()!=dbEduCourse.getCreateId()){
+                return RestResponse.failure("更新失败,不能更新他人的课程");
+            }
+
         }
-        eduCourseVO.setId(id);
-        educourseService.updateById(eduCourseVO);
+        eduCourse.setId(id);
+        educourseService.updateById(eduCourse);
         return RestResponse.success();
 
     }
+
+    /**
+     * 更新 课程状态
+     * @param eduCourse
+     * @return
+     */
+    @XudenOtherSystemLog("更新课程状态")
+    @ApiOperation(value = "更新课程状态")
+    @PreAuthorize(hasPermi = "edu:course:update")
+    @PutMapping("/updateStatus/{id}")
+    public RestResponse updateStatus(@PathVariable Long id,
+                                     @RequestBody @Validated EduCourse eduCourse){
+        LoginUser loginUser= tokenService.getLoginUser();
+        if(loginUser==null){
+            return RestResponse.failure("更新失败");
+        }else{
+            EduCourse dbEduCourse = educourseService.getById(id);
+            if(loginUser.getUserid()!=dbEduCourse.getCreateId()){
+                return RestResponse.failure("更新失败,不能更新他人的课程");
+            }
+
+        }
+        eduCourse.setId(id);
+
+        if(eduCourse.getStatus().equalsIgnoreCase("Normal")){//发布课程
+           // 统计课时
+            QueryWrapper<EduVideo> videoQueryWrapper = new QueryWrapper();
+            videoQueryWrapper.eq("course_id",id);
+            int countVideo = eduVideoService.count(videoQueryWrapper);
+            eduCourse.setLessonNum(countVideo);
+        }
+
+        educourseService.updateById(eduCourse);
+
+
+
+        return RestResponse.success();
+
+    }
+
+    /**
+     * 功能描述：删除课程
+     * @param id
+     * @return
+     */
+    @XudenOtherSystemLog("后台下载课程资料")
+    @ApiOperation(value = "后台下载课程资料")
+    @PreAuthorize(hasPermi = "edu:course:download")
+    @GetMapping("/download/{id}")
+    public RestResponse download(@PathVariable Long id){
+        EduCourse eduCourse = null;
+        if(id==null){
+            return RestResponse.failure("下载失败");
+        }else{
+             eduCourse = educourseService.getById(id);
+        }
+        return RestResponse.success("下载成功").setData(eduCourse);
+    }
+
+
+
 
 
 }

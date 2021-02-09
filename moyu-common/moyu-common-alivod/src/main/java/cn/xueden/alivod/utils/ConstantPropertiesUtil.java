@@ -23,9 +23,16 @@ public class ConstantPropertiesUtil implements InitializingBean {
     @Value("${aliyun.oss.file.bucketname}")
     private String bucketname;
 
-    //读取文件夹名称
+    @Value("${aliyun.oss.file.bucketcoursename}")
+    private String bucketCourseName;
+
+    //读取图片文件夹名称
     @Value("${aliyun.oss.file.host}")
     private String host;
+
+    //读取存放课程资料文件夹名称
+    @Value("${aliyun.oss.file.hostcourse}")
+    private String hostCourse;
 
     //文件访问域名
     @Value("${aliyun.oss.file.hostpath}")
@@ -44,6 +51,8 @@ public class ConstantPropertiesUtil implements InitializingBean {
     public static String END_POINT;
     public static String BUCKET_NAME;
     public static String HOST;
+    public static String BUCKET_COURSE_NAME;
+    public static String HOST_COURSE;
     public static String HOST_PATH;
     public static String ACCESS_KEY_ID;
     public static String ACCESS_KEY_SECRET;
@@ -54,6 +63,8 @@ public class ConstantPropertiesUtil implements InitializingBean {
     public void afterPropertiesSet() throws Exception {
         BUCKET_NAME = bucketname;
         HOST = host;
+        BUCKET_COURSE_NAME = bucketCourseName;
+        HOST_COURSE = hostCourse;
         HOST_PATH = hostpath;
         END_POINT = endpoint;
         ACCESS_KEY_ID = keyid;

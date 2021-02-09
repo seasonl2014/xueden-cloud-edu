@@ -75,4 +75,11 @@ public class EduCourseVO {
 
     // 章节列表
     private List<EduChapterVO> eduChapterVOList;
+
+    private String courseDesc;
+
+    private String downloadLink;
+
+    // 文件标志，用来作急速秒传
+    private String fileKey;
 }

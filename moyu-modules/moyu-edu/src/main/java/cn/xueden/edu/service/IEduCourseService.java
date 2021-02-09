@@ -21,7 +21,7 @@ public interface IEduCourseService extends IService<EduCourse> {
      * @param id
      * @return
      */
-    EduCourseVO getById(Long id);
+    EduCourseVO getVoById(Long id);
 
     /**
      * 首页获取课程列表

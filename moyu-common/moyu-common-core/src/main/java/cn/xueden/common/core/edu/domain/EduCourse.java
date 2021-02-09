@@ -52,7 +52,7 @@ public class EduCourse extends DataEntity<EduCourse> {
     @ApiModelProperty(value = "乐观锁")
     private Long version;
 
-    @ApiModelProperty(value = "视频状态 Draft未发布  Normal已发布")
+    @ApiModelProperty(value = "课程状态 Draft未发布  Normal已发布")
     private String status;
 
     @ApiModelProperty(value = "课程一级分类ID")
@@ -63,5 +63,14 @@ public class EduCourse extends DataEntity<EduCourse> {
 
     @ApiModelProperty(value = "课程类型 ，0表示新手入门，1表示免费好课，2表示技能提高3，表示实战")
     private Integer courseType;
+
+    @ApiModelProperty(value = "课程描述")
+    private String courseDesc;
+
+    @ApiModelProperty(value = "资源下载地址")
+    private String downloadLink;
+
+    @ApiModelProperty(value = "课程资料标志，用来作急速秒传")
+    private String fileKey;
 }
 

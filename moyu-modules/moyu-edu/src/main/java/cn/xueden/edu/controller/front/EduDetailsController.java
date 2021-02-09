@@ -64,7 +64,7 @@ public class EduDetailsController {
     public RestResponse get(@PathVariable Long id) {
 
         // 获取课程信息
-        EduCourseVO eduCourseVO = courseService.getById(id);
+        EduCourseVO eduCourseVO = courseService.getVoById(id);
 
 
         if(eduCourseVO!=null){

@@ -52,6 +52,11 @@ public class PutObjectProgressListener implements VoDProgressListener {
     private Long id;
 
     /**
+     * 文件标志
+     */
+    private String fileKey;
+
+    /**
      * 无参构造方法
      */
     public PutObjectProgressListener() {
@@ -65,6 +70,16 @@ public class PutObjectProgressListener implements VoDProgressListener {
         this.redisService = redisService;
         this.fileSize = fileSize;
         this.id = id;
+    }
+
+    /**
+     * 构造方法中加入redis
+     * @param redisService
+     */
+    public PutObjectProgressListener(RedisService redisService, int fileSize, String fileKey) {
+        this.redisService = redisService;
+        this.fileSize = fileSize;
+        this.fileKey = fileKey;
     }
 
     public void progressChanged(ProgressEvent progressEvent) {
@@ -94,6 +109,7 @@ public class PutObjectProgressListener implements VoDProgressListener {
                     int percent = (int) (this.bytesWritten * 100.0 / this.totalBytes);
                     // 将进度percent放入redis中
                     redisService.setCacheObject("upload_percent:"+id,percent);
+                    redisService.setCacheObject("upload_percent:"+fileKey,percent);
                    /* System.out.println(bytes + " bytes have been written at this time, upload progress3: " +
                             percent + "%(" + this.bytesWritten + "/" + this.totalBytes + ")");*/
                     //System.out.println("从redis获取=============："+redisService.getCacheObject("upload_percent:"+id));

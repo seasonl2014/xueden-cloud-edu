@@ -37,7 +37,7 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseDao, EduCourse> i
      * @return
      */
     @Override
-    public EduCourseVO getById(Long id) {
+    public EduCourseVO getVoById(Long id) {
         EduCourse eduCourse = eduCourseDao.selectById(id);
         return EduCourseConverter.converterToCourseVO(eduCourse);
     }
