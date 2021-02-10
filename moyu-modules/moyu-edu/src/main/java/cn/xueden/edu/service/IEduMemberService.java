@@ -12,6 +12,15 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface IEduMemberService extends IService<EduMember> {
 
-    // 统计注册会员
+    /**
+     * 统计注册会员
+     * @return
+     */
     int getMemberTotal();
+
+    /**
+     * 更新用户VIP会员类型
+     * @param tempEduMember
+     */
+    void updateVip(EduMember tempEduMember);
 }

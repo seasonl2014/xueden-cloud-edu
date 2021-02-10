@@ -240,6 +240,13 @@
                 <version>${moyu.version}</version>
             </dependency>
 
+            <!-- 微信支付模块 -->
+            <dependency>
+                <groupId>cn.xueden</groupId>
+                <artifactId>moyu-common-wechatpay</artifactId>
+                <version>${moyu.version}</version>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
 

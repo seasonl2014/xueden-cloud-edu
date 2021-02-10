@@ -1,5 +1,6 @@
 package cn.xueden.edu.controller.front;
 
+import cn.xueden.common.core.edu.domain.EduMemberBuyCourse;
 import cn.xueden.common.core.edu.domain.EduMemberBuyVip;
 import cn.xueden.common.core.edu.domain.EduTeacher;
 import cn.xueden.common.core.edu.vo.*;
@@ -7,10 +8,9 @@ import cn.xueden.common.core.utils.IPUtil;
 import cn.xueden.common.core.utils.RestResponse;
 import cn.xueden.common.log.annotation.XudenOtherSystemLog;
 
-import cn.xueden.edu.service.IEduChapterService;
-import cn.xueden.edu.service.IEduCourseService;
-import cn.xueden.edu.service.IEduTeacherService;
-import cn.xueden.edu.service.IEduVipTypeService;
+import cn.xueden.edu.service.*;
+import cn.xueden.wechat.utils.ConstantPropertiesUtil;
+import cn.xueden.wechat.utils.WxPayUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,13 +45,11 @@ public class EduDetailsController {
     @Autowired
     private IEduVipTypeService vipTypeService;
 
-   /* @Autowired
+    @Autowired
     private IEduMemberService memberService;
 
-
-
     @Autowired
-    private IEduMemberBuyCourseService memberBuyCourseService;*/
+    private IEduMemberBuyCourseService memberBuyCourseService;
 
     /**
      * 编辑课程
@@ -89,6 +87,68 @@ public class EduDetailsController {
             return RestResponse.failure("查看课程失败");
         }
 
+
+    }
+
+    /**
+     * 购买课程
+     * @param id
+     * @return
+     */
+    @ApiOperation(value = "前台购买课程", notes = "前台购买课程")
+    @PostMapping("/buy/{id}")
+    @XudenOtherSystemLog("会员购买课程")
+    public RestResponse buy(@PathVariable Long id,
+                            HttpServletRequest request) {
+        String token = request.getHeader("Authorization");
+        if(token==null||token.equals("null")){
+            return RestResponse.failure("购买失败，请先登录！");
+        }
+        // 获取用户IP地址
+        String ipAddress = IPUtil.getIpAddr(request);
+        EduMemberBuyCourse result = courseService.buy(id,token,ipAddress);
+        if(result!=null&&result.getIsPayment()==1){
+            return RestResponse.failure("您已购买过该课程，无需再购买！");
+        }else {
+            return  RestResponse.success("订单生成成功").setData(result).setCode(50001);
+        }
+
+    }
+
+    /**
+     * 购买课程立即付款
+     * @param orderNo
+     *        订单号
+     * @return
+     */
+    @ApiOperation(value = "前台购买课程付款", notes = "前台购买课程付款")
+    @PostMapping("/pay/{orderNo}")
+    @XudenOtherSystemLog("购买课程付款")
+    public RestResponse pay(@PathVariable String orderNo,
+                            HttpServletRequest request) {
+        String token = request.getHeader("Authorization");
+        if(token==null||token.equals("null")){
+            return RestResponse.failure("付款失败，请先登录！");
+        }
+        // 获取订单信息
+        EduMemberBuyCourse pay=memberBuyCourseService.getByOrderNumber(orderNo);
+        if(pay==null){
+            return RestResponse.failure("付款失败，订单不存在！");
+        }
+
+        // 获取课程信息
+        EduCourseVO eduCourseVO = courseService.edit(pay.getCourseId());
+        if(eduCourseVO==null){
+            return RestResponse.failure("付款失败，课程不存在！");
+        }
+
+
+        // 生成付款链接
+        //String code = WxPayUtil.nativePay(orderNo,"0.01","购买【"+eduCourseVO.getTitle()+"】课程", ConstantPropertiesUtil.YUNGOUORETURNURLCOURSE);
+
+        String code = "222222";
+        System.out.println("返回支付信息："+code);
+        return RestResponse.success(code).setCode(200);
 
     }
 
@@ -154,6 +214,8 @@ public class EduDetailsController {
         return  RestResponse.success("订单生成成功").setCode(50001).setData(result);
 
     }
+
+
 
 
 }

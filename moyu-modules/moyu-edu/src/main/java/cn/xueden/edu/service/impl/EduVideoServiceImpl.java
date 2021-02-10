@@ -101,6 +101,8 @@ public class EduVideoServiceImpl extends ServiceImpl<EduVideoDao, EduVideo> impl
         }else{
             if(eduVideo.getIsFree()==0){
                 eduVideo.setPreviewDuration(0);
+            }else{
+                return null;
             }
         }
 

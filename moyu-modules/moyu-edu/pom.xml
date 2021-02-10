@@ -41,6 +41,11 @@
             <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-websocket</artifactId>
+        </dependency>
+
         <!-- Swagger -->
         <dependency>
             <groupId>io.springfox</groupId>
@@ -88,6 +93,12 @@
         <dependency>
             <groupId>cn.xueden</groupId>
             <artifactId>moyu-common-alivod</artifactId>
+        </dependency>
+
+        <!-- 微信支付模块 -->
+        <dependency>
+            <groupId>cn.xueden</groupId>
+            <artifactId>moyu-common-wechatpay</artifactId>
         </dependency>
 
 

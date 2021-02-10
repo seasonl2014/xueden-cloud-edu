@@ -30,4 +30,13 @@ public class EduMemberServiceImpl extends ServiceImpl<EduMemberDao, EduMember> i
         QueryWrapper<EduMember> EduMemberEntityWrapper = new QueryWrapper();
         return eduMemberDao.selectCount(EduMemberEntityWrapper);
     }
+
+    /**
+     * 更新用户VIP会员类型
+     * @param tempEduMember
+     */
+    @Override
+    public void updateVip(EduMember tempEduMember) {
+        eduMemberDao.updateById(tempEduMember);
+    }
 }

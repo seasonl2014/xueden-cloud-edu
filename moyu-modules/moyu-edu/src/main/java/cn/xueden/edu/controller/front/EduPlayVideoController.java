@@ -45,6 +45,9 @@ public class EduPlayVideoController {
         String ipAddress = IPUtil.getIpAddr(request);
         System.out.println("观看视频，获取用户真实ip地址：-------"+ipAddress);
         EduVideoVO videoVO = videoService.getVideoInfo(id,token,ipAddress);
+        if(videoVO==null){
+            return RestResponse.failure("请先购买或加入VIP再来观看吧！");
+        }
 
 
         return RestResponse.success().setData(videoVO);

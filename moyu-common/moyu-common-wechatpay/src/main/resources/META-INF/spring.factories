@@ -1,0 +1,4 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  cn.xueden.wechat.utils.ConstantPropertiesUtil
+
+  

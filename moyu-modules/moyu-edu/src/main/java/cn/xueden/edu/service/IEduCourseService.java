@@ -2,6 +2,7 @@ package cn.xueden.edu.service;
 
 
 import cn.xueden.common.core.edu.domain.EduCourse;
+import cn.xueden.common.core.edu.domain.EduMemberBuyCourse;
 import cn.xueden.common.core.edu.vo.EduCourseVO;
 import com.baomidou.mybatisplus.extension.service.IService;
 /*import com.baomidou.mybatisplus.service.IService;*/
@@ -39,4 +40,26 @@ public interface IEduCourseService extends IService<EduCourse> {
      */
     void updateViewCount(EduCourseVO eduCourseVO);
 
+
+    /**
+     * 购买课程
+     * @param id
+     * @param token
+     * @param ipAddress
+     * @return
+     */
+    EduMemberBuyCourse buy(Long id, String token, String ipAddress);
+
+    /**
+     * 编辑课程
+     * @param courseId
+     * @return
+     */
+    EduCourseVO edit(Long courseId);
+
+    /**
+     * 更新课程购买数量
+     * @param courseId
+     */
+    void updateBuyCount(Long courseId);
 }
