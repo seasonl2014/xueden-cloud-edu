@@ -1,12 +1,14 @@
 package cn.xueden.edu.service.impl;
 
 import cn.xueden.common.core.edu.domain.*;
+import cn.xueden.common.core.edu.vo.EduMemberVO;
 import cn.xueden.common.core.edu.vo.EduVipTypeSubjectVO;
 import cn.xueden.common.core.edu.vo.EduVipTypeVO;
 import cn.xueden.common.core.exception.CustomException;
 import cn.xueden.common.core.utils.AddressUtil;
 import cn.xueden.common.core.utils.IdUtils;
 import cn.xueden.common.core.utils.JWTUtils;
+import cn.xueden.common.security.service.TokenService;
 import cn.xueden.edu.converter.EduVipTypeConverter;
 import cn.xueden.edu.dao.*;
 import cn.xueden.edu.service.IEduVipTypeService;
@@ -55,6 +57,9 @@ public class EduVipTypeServiceImpl extends ServiceImpl<EduVipTypeDao, EduVipType
     @Autowired
     private EduMemberBuyVipDao eduMemberBuyVipDao;
 
+    @Autowired
+    private TokenService tokenService;
+
     /**
      * 分页获取会员分类列表
      * @param page
@@ -94,7 +99,7 @@ public class EduVipTypeServiceImpl extends ServiceImpl<EduVipTypeDao, EduVipType
      * @return
      */
     @Override
-    @Cacheable(value = "allEduVipTypeCache",key = "#type",unless = "#result == null or #result.size() == 0")
+    @Cacheable(value = "allEduVipTypeCache",unless = "#result == null or #result.size() == 0")
     public List<EduVipTypeVO> getAllVip() {
         QueryWrapper<EduVipType> eduVipTypeEntityWrapper = new QueryWrapper();
         eduVipTypeEntityWrapper.eq("del_flag",false);
@@ -139,7 +144,11 @@ public class EduVipTypeServiceImpl extends ServiceImpl<EduVipTypeDao, EduVipType
         String cityAddress = AddressUtil.getCityInfo(ipAddress);
 
         //根据token,获取登录会员信息
-        String mobile = JWTUtils.getMobile(token);
+        EduMemberVO eduMemberVO = tokenService.getLoginMember();
+        if(eduMemberVO==null){
+            return null;
+        }
+        String mobile = eduMemberVO.getMobile();
         if(mobile==null){
             return null;
         }
@@ -181,6 +190,8 @@ public class EduVipTypeServiceImpl extends ServiceImpl<EduVipTypeDao, EduVipType
         tempEduMemberBuyVip.setCreateDate(new Date());
         tempEduMemberBuyVip.setOrderNo(orderNo);
         tempEduMemberBuyVip.setVipId(id);
+        tempEduMemberBuyVip.setCreateId(dbMember.getId());
+        tempEduMemberBuyVip.setUpdateId(dbMember.getId());
         if(price>0){
             tempEduMemberBuyVip.setPrice(BigDecimal.valueOf(price));
         }else{

@@ -1,5 +1,6 @@
 package cn.xueden.edu.controller.front;
 
+import cn.xueden.common.core.edu.domain.EduEnvironmenParam;
 import cn.xueden.common.core.edu.domain.EduMemberBuyCourse;
 import cn.xueden.common.core.edu.domain.EduMemberBuyVip;
 import cn.xueden.common.core.edu.domain.EduTeacher;
@@ -11,6 +12,7 @@ import cn.xueden.common.log.annotation.XudenOtherSystemLog;
 import cn.xueden.edu.service.*;
 import cn.xueden.wechat.utils.ConstantPropertiesUtil;
 import cn.xueden.wechat.utils.WxPayUtil;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,6 +53,12 @@ public class EduDetailsController {
     @Autowired
     private IEduMemberBuyCourseService memberBuyCourseService;
 
+    @Autowired
+    private IEduMemberBuyVipService memberBuyVipService;
+
+    @Autowired
+    private IEduEnvironmenParamService eduEnvironmenParamService;
+
     /**
      * 编辑课程
      * @param id
@@ -79,9 +87,14 @@ public class EduDetailsController {
             EduChapterVO eduChapterVO = new EduChapterVO();
             eduChapterVO.setCourseId(eduCourseVO.getId());
             List<EduChapterVO> eduChapterVOList = eduChapterService.findAllByEduChapterAndVideo(eduChapterVO);
-
-
             eduCourseVO.setEduChapterVOList(eduChapterVOList);
+
+            // 获取环境参数
+            QueryWrapper<EduEnvironmenParam> queryWrapper = new QueryWrapper<>();
+            queryWrapper.eq("course_id",id);
+            List<EduEnvironmenParam> environmenParamList = eduEnvironmenParamService.list(queryWrapper);
+            eduCourseVO.setEnvironmenParams(environmenParamList);
+
             return RestResponse.success().setData(eduCourseVO);
         }else{
             return RestResponse.failure("查看课程失败");
@@ -144,9 +157,9 @@ public class EduDetailsController {
 
 
         // 生成付款链接
-        //String code = WxPayUtil.nativePay(orderNo,"0.01","购买【"+eduCourseVO.getTitle()+"】课程", ConstantPropertiesUtil.YUNGOUORETURNURLCOURSE);
+        String code = WxPayUtil.nativePay(orderNo,pay.getPrice().toString(),"购买【"+eduCourseVO.getTitle()+"】课程", ConstantPropertiesUtil.YUNGOUORETURNURLCOURSE);
 
-        String code = "222222";
+        //String code = "222222";
         System.out.println("返回支付信息："+code);
         return RestResponse.success(code).setCode(200);
 
@@ -212,6 +225,35 @@ public class EduDetailsController {
             return RestResponse.failure("加入失败");
         }
         return  RestResponse.success("订单生成成功").setCode(50001).setData(result);
+
+    }
+
+    /**
+     * 购买课程立即付款
+     * @param orderNo
+     *        订单号
+     * @return
+     */
+    @ApiOperation(value = "前台购买VIP付款", notes = "前台购买VIP付款")
+    @PostMapping("/vipPay/{orderNo}")
+    @XudenOtherSystemLog("购买VIP付款")
+    public RestResponse vipPay(@PathVariable String orderNo,
+                               HttpServletRequest request) {
+        String token = request.getHeader("Authorization");
+        if(token==null||token.equals("null")){
+            return RestResponse.failure("付款失败，请先登录！");
+        }
+
+        // 获取订单信息
+        EduMemberBuyVip eduMemberBuyVip = memberBuyVipService.getByOrderNumber(orderNo);
+        if(eduMemberBuyVip==null){
+            return RestResponse.failure("付款失败，请稍候再试！");
+        }
+
+        // 生成付款链接
+        String code = WxPayUtil.nativePay(orderNo,"0.01",eduMemberBuyVip.getRemarks(),ConstantPropertiesUtil.YUNGOUORETURNURLVIP);
+        System.out.println("返回支付信息："+code);
+        return RestResponse.success(code).setCode(200);
 
     }
 

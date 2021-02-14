@@ -94,6 +94,7 @@ public class EduVideoServiceImpl extends ServiceImpl<EduVideoDao, EduVideo> impl
         QueryWrapper memberBuyCourseQueryWrapper = new QueryWrapper();
         memberBuyCourseQueryWrapper.eq("member_id",dbMember.getId());
         memberBuyCourseQueryWrapper.eq("course_id",eduVideo.getCourseId());
+        memberBuyCourseQueryWrapper.eq("is_payment",1);
         EduMemberBuyCourse dbEduMemberBuyCourse = eduMemberBuyCourseDao.selectOne(memberBuyCourseQueryWrapper);
         if(dbEduMemberBuyCourse!=null){
             eduVideo.setPreviewDuration(0);
@@ -131,7 +132,6 @@ public class EduVideoServiceImpl extends ServiceImpl<EduVideoDao, EduVideo> impl
         eduVideoMember.setUpdateId(eduVideoMember.getMemberId());
         eduVideoMemberDao.insert(eduVideoMember);
         EduVideoVO eduVideoVO = EduVideoConverter.converterToEduChapterVO(eduVideo);
-        eduVideoVO.setDisplayAds(0);
         eduVideoVO.setDisplayAds(displayAds);
         return eduVideoVO;
     }

@@ -1,5 +1,6 @@
 package cn.xueden.common.core.edu.vo;
 
+import cn.xueden.common.core.edu.domain.EduEnvironmenParam;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
@@ -16,6 +17,7 @@ import java.util.List;
  */
 @Data
 public class EduCourseVO {
+
     private Long id;
 
     private Long teacherId;
@@ -24,19 +26,16 @@ public class EduCourseVO {
 
     private Long subjectId;
 
-    @NotBlank(message = "课程标题不能为空")
     private String title;
 
-    @NotBlank(message = "课程短标题不能为空")
     private String shortTitle;
 
-    @NotNull(message = "课程价格不能为空")
+
     private BigDecimal price;
 
-    @NotNull(message = "课程课时不能为空")
     private Integer lessonNum;
 
-    @NotBlank(message = "课程封面不能为空")
+
     private String cover;
 
     private String remarks;
@@ -64,7 +63,7 @@ public class EduCourseVO {
 
     private Long subjectParentId;
 
-    @NotNull(message = "分类不能为空")
+    /*@NotNull(message = "分类不能为空")*/
     private Long[] categoryKeys;
 
     //难度
@@ -82,4 +81,7 @@ public class EduCourseVO {
 
     // 文件标志，用来作急速秒传
     private String fileKey;
+
+    // 开发环境
+    private List<EduEnvironmenParam> environmenParams;
 }

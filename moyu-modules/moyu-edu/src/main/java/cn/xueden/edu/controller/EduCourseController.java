@@ -2,6 +2,7 @@ package cn.xueden.edu.controller;
 
 
 import cn.xueden.common.core.edu.domain.EduCourse;
+import cn.xueden.common.core.edu.domain.EduEnvironmenParam;
 import cn.xueden.common.core.edu.domain.EduVideo;
 import cn.xueden.common.core.edu.vo.EduCourseVO;
 import cn.xueden.common.core.utils.LayerData;
@@ -9,7 +10,9 @@ import cn.xueden.common.core.utils.RestResponse;
 import cn.xueden.common.log.annotation.XudenOtherSystemLog;
 import cn.xueden.common.security.annotation.PreAuthorize;
 import cn.xueden.common.security.service.TokenService;
+import cn.xueden.edu.converter.EduCourseConverter;
 import cn.xueden.edu.service.IEduCourseService;
+import cn.xueden.edu.service.IEduEnvironmenParamService;
 import cn.xueden.edu.service.IEduVideoService;
 import cn.xueden.system.api.model.LoginUser;
 /*import com.baomidou.mybatisplus.mapper.EntityWrapper;
@@ -25,6 +28,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.List;
 
 /**课程 前端控制器
  * @Auther:梁志杰
@@ -45,6 +49,9 @@ public class EduCourseController {
 
     @Autowired
     private IEduVideoService eduVideoService;
+
+    @Autowired
+    private IEduEnvironmenParamService eduEnvironmenParamService;
 
     /**
      * 分页获取课程列表
@@ -126,13 +133,17 @@ public class EduCourseController {
     @GetMapping("/edit/{id}")
     public RestResponse edit(@PathVariable Long id){
         EduCourseVO eduCourseVO = educourseService.getVoById(id);
+        QueryWrapper<EduEnvironmenParam> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("course_id",id);
+        List<EduEnvironmenParam> eduEnvironmenParamList = eduEnvironmenParamService.list(queryWrapper);
+        eduCourseVO.setEnvironmenParams(eduEnvironmenParamList);
         return RestResponse.success().setData(eduCourseVO);
     }
 
     /**
      * 更新 课程
      * @param id
-     * @param eduCourse
+     * @param eduCourseVO
      * @return
      */
     @XudenOtherSystemLog("更新课程")
@@ -140,7 +151,7 @@ public class EduCourseController {
     @PreAuthorize(hasPermi = "edu:course:update")
     @PutMapping("/update/{id}")
     public RestResponse update(@PathVariable Long id,
-                               @RequestBody @Validated EduCourse eduCourse ){
+                               @RequestBody @Validated EduCourseVO eduCourseVO ){
         LoginUser loginUser= tokenService.getLoginUser();
         if(loginUser==null){
             return RestResponse.failure("更新失败");
@@ -151,8 +162,13 @@ public class EduCourseController {
             }
 
         }
-        eduCourse.setId(id);
-        educourseService.updateById(eduCourse);
+        eduCourseVO.setId(id);
+
+        if(eduCourseVO.getEnvironmenParams()!=null&&eduCourseVO.getEnvironmenParams().size()>0){
+            eduEnvironmenParamService.saveOrUpdateBatch(eduCourseVO.getEnvironmenParams());
+        }
+
+        educourseService.updateById(EduCourseConverter.converterToCourse(eduCourseVO));
         return RestResponse.success();
 
     }

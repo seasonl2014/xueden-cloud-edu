@@ -2,6 +2,7 @@ package cn.xueden.edu.controller;
 
 import cn.xueden.common.core.domain.R;
 import cn.xueden.common.core.edu.domain.EduMember;
+import cn.xueden.common.core.edu.domain.EduVipType;
 import cn.xueden.common.core.edu.vo.EduMemberVO;
 import cn.xueden.common.core.utils.LayerData;
 import cn.xueden.common.core.utils.RestResponse;
@@ -93,7 +94,12 @@ public class EduMemberController {
         QueryWrapper<EduMember> eduMemberEntityWrapper = new QueryWrapper();
         eduMemberEntityWrapper.eq("mobile",mobile);
         EduMember eduMember = eduMemberService.getOne(eduMemberEntityWrapper);
-        return R.ok(EduMemberConverter.converterToEduMemberVO(eduMember));
+        EduVipType dbEduVipType = eduVipTypeDao.selectById(eduMember.getVipId());
+        eduMemberVO = EduMemberConverter.converterToEduMemberVO(eduMember);
+        if(dbEduVipType!=null){
+            eduMemberVO.setVipType(dbEduVipType.getName());
+        }
+        return R.ok(eduMemberVO);
     }
 
     /**

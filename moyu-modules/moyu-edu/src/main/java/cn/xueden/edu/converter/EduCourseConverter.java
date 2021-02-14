@@ -41,4 +41,15 @@ public class EduCourseConverter {
         BeanUtils.copyProperties(eduCourse,eduCourseVO);
         return eduCourseVO;
     }
+
+    /**
+     * 转Entry
+     * @param eduCourseVO
+     * @return
+     */
+    public static EduCourse converterToCourse(EduCourseVO eduCourseVO) {
+        EduCourse eduCourse = new EduCourse();
+        BeanUtils.copyProperties(eduCourseVO,eduCourse);
+        return eduCourse;
+    }
 }
