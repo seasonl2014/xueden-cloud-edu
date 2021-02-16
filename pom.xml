@@ -247,6 +247,14 @@
                 <version>${moyu.version}</version>
             </dependency>
 
+            <!-- 搜索模块 -->
+            <dependency>
+                <groupId>cn.xueden</groupId>
+                <artifactId>moyu-common-elasticsearch</artifactId>
+                <version>${moyu.version}</version>
+            </dependency>
+
+
         </dependencies>
     </dependencyManagement>
 

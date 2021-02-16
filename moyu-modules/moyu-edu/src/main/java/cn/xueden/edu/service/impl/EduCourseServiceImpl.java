@@ -8,17 +8,19 @@ import cn.xueden.common.core.utils.AddressUtil;
 import cn.xueden.common.core.utils.IdUtils;
 import cn.xueden.common.security.service.TokenService;
 import cn.xueden.edu.converter.EduCourseConverter;
-import cn.xueden.edu.dao.EduCourseDao;
-import cn.xueden.edu.dao.EduMemberBuyCourseDao;
-import cn.xueden.edu.dao.EduMemberDao;
-import cn.xueden.edu.dao.EduVipTypeSubjectDao;
+import cn.xueden.edu.dao.*;
 import cn.xueden.edu.service.IEduCourseService;
 /*import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;*/
+import cn.xueden.search.domain.CourseESItem;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.elasticsearch.index.query.QueryBuilders;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -49,6 +51,9 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseDao, EduCourse> i
 
     @Autowired
     private EduVipTypeSubjectDao eduVipTypeSubjectDao;
+
+    @Autowired
+    private EduCourseElasticsearchDao eduCourseElasticsearchDao;
 
     /**
      * 获取课程信息
@@ -223,5 +228,28 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseDao, EduCourse> i
             dbEduCourse.setBuyCount(dbEduCourse.getBuyCount()+1);
             eduCourseDao.updateById(dbEduCourse);
         }
+    }
+
+    /**
+     * 快速查询课程
+     * @param key
+     * @return
+     */
+    @Override
+    public List<CourseESItem> getQuickSearch(String key) {
+
+        // 构建查询条件
+        NativeSearchQueryBuilder searchQueryBuilder = new NativeSearchQueryBuilder();
+        // 添加基本查询条件
+        searchQueryBuilder.withQuery(QueryBuilders.matchQuery("title", key));
+        // 初始化分页参数
+        int page = 0;
+        int size = 5;
+        // 设置分页参数
+        searchQueryBuilder.withPageable(PageRequest.of(page, size));
+        Page<CourseESItem> searchs = eduCourseElasticsearchDao.search(searchQueryBuilder.build());
+        List<CourseESItem> esItems = searchs.getContent();
+
+        return esItems;
     }
 }

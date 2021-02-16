@@ -55,7 +55,7 @@ public class EduListController {
         if(page==null){
             page =1;
         }
-        int pageSize=4;
+        int pageSize=24;
 
         // 课程
         QueryWrapper<EduCourse> eduCourseQueryWrapper = new QueryWrapper<>();

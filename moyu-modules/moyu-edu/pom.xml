@@ -101,6 +101,12 @@
             <artifactId>moyu-common-wechatpay</artifactId>
         </dependency>
 
+        <!-- 搜索模块 -->
+        <dependency>
+            <groupId>cn.xueden</groupId>
+            <artifactId>moyu-common-elasticsearch</artifactId>
+        </dependency>
+
 
         <dependency>
             <groupId>commons-fileupload</groupId>

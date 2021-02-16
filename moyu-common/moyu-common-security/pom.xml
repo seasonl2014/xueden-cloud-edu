@@ -12,7 +12,7 @@
     <artifactId>moyu-common-security</artifactId>
 
     <name>moyu-common-security</name>
-   <description>安全认证模块</description>
+    <description>安全认证模块</description>
 
     <dependencies>
 

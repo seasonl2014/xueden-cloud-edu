@@ -13,6 +13,7 @@ import cn.xueden.common.security.service.TokenService;
 import cn.xueden.edu.converter.EduCourseConverter;
 import cn.xueden.edu.service.IEduCourseService;
 import cn.xueden.edu.service.IEduEnvironmenParamService;
+import cn.xueden.edu.service.IEduSearchService;
 import cn.xueden.edu.service.IEduVideoService;
 import cn.xueden.system.api.model.LoginUser;
 /*import com.baomidou.mybatisplus.mapper.EntityWrapper;
@@ -52,6 +53,9 @@ public class EduCourseController {
 
     @Autowired
     private IEduEnvironmenParamService eduEnvironmenParamService;
+
+    @Autowired
+    private IEduSearchService eduSearchService;
 
     /**
      * 分页获取课程列表
@@ -169,6 +173,9 @@ public class EduCourseController {
         }
 
         educourseService.updateById(EduCourseConverter.converterToCourse(eduCourseVO));
+
+        // 更新索引
+        eduSearchService.refreshCourse(0,id);
         return RestResponse.success();
 
     }
@@ -230,6 +237,21 @@ public class EduCourseController {
         }
         return RestResponse.success("下载成功").setData(eduCourse);
     }
+
+    /**
+     * 功能描述：删除课程
+     * @return
+     */
+    @XudenOtherSystemLog("同步所有课程索引")
+    @ApiOperation(value = "同步所有课程索引")
+    @PreAuthorize(hasPermi = "edu:course:sync")
+    @GetMapping("/syncall")
+    public RestResponse syncAllCourseIndex(){
+        eduSearchService.importAllCourses();
+        return RestResponse.success("同步成功");
+    }
+
+
 
 
 

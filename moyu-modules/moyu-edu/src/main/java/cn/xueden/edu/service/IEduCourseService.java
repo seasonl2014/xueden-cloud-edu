@@ -4,6 +4,7 @@ package cn.xueden.edu.service;
 import cn.xueden.common.core.edu.domain.EduCourse;
 import cn.xueden.common.core.edu.domain.EduMemberBuyCourse;
 import cn.xueden.common.core.edu.vo.EduCourseVO;
+import cn.xueden.search.domain.CourseESItem;
 import com.baomidou.mybatisplus.extension.service.IService;
 /*import com.baomidou.mybatisplus.service.IService;*/
 
@@ -62,4 +63,11 @@ public interface IEduCourseService extends IService<EduCourse> {
      * @param courseId
      */
     void updateBuyCount(Long courseId);
+
+    /**
+     * 快速查询课程
+     * @param key
+     * @return
+     */
+    List<CourseESItem> getQuickSearch(String key);
 }
