@@ -4,8 +4,11 @@ package cn.xueden.edu.service;
 import cn.xueden.common.core.edu.domain.EduCourse;
 import cn.xueden.common.core.edu.domain.EduMemberBuyCourse;
 import cn.xueden.common.core.edu.vo.EduCourseVO;
+import cn.xueden.common.core.edu.vo.PageVO;
 import cn.xueden.search.domain.CourseESItem;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.IService;
+import org.springframework.data.domain.Page;
 /*import com.baomidou.mybatisplus.service.IService;*/
 
 import java.util.List;
@@ -69,5 +72,13 @@ public interface IEduCourseService extends IService<EduCourse> {
      * @param key
      * @return
      */
-    List<CourseESItem> getQuickSearch(String key);
+    Page<CourseESItem> getQuickSearch(String key, int page, int size);
+
+    /**
+     * 获取站长推荐课程
+     * @param page
+     * @param pageSize
+     * @return
+     */
+    PageVO<EduCourse> getRecommended(int page, int pageSize);
 }

@@ -4,20 +4,21 @@ import cn.xueden.common.core.edu.domain.*;
 
 import cn.xueden.common.core.edu.vo.EduCourseVO;
 import cn.xueden.common.core.edu.vo.EduMemberVO;
+import cn.xueden.common.core.edu.vo.PageVO;
 import cn.xueden.common.core.utils.AddressUtil;
 import cn.xueden.common.core.utils.IdUtils;
 import cn.xueden.common.security.service.TokenService;
 import cn.xueden.edu.converter.EduCourseConverter;
 import cn.xueden.edu.dao.*;
 import cn.xueden.edu.service.IEduCourseService;
-/*import com.baomidou.mybatisplus.mapper.EntityWrapper;
-import com.baomidou.mybatisplus.service.impl.ServiceImpl;*/
 import cn.xueden.search.domain.CourseESItem;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
@@ -236,20 +237,36 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseDao, EduCourse> i
      * @return
      */
     @Override
-    public List<CourseESItem> getQuickSearch(String key) {
+    public Page<CourseESItem> getQuickSearch(String key,int page,int size) {
 
         // 构建查询条件
         NativeSearchQueryBuilder searchQueryBuilder = new NativeSearchQueryBuilder();
         // 添加基本查询条件
         searchQueryBuilder.withQuery(QueryBuilders.matchQuery("title", key));
         // 初始化分页参数
-        int page = 0;
-        int size = 5;
+         page = page-1;
         // 设置分页参数
         searchQueryBuilder.withPageable(PageRequest.of(page, size));
         Page<CourseESItem> searchs = eduCourseElasticsearchDao.search(searchQueryBuilder.build());
-        List<CourseESItem> esItems = searchs.getContent();
 
-        return esItems;
+        return searchs;
+    }
+
+    /**
+     * 获取站长推荐课程
+     * @param page
+     * @param pageSize
+     * @return
+     */
+    @Override
+    @Cacheable(value = "getRecommendedCache",unless = "#result == null or #result.getTotal() == 0")
+    public PageVO<EduCourse> getRecommended(int page, int pageSize) {
+        QueryWrapper<EduCourse> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("del_flag",false);
+        queryWrapper.orderByDesc("view_count");
+        IPage<EduCourse> iPage = new com.baomidou.mybatisplus.extension.plugins.pagination.Page<>(page,pageSize);
+        eduCourseDao.selectPage(iPage,queryWrapper).getRecords();
+        PageVO<EduCourse> pageVO = new PageVO<>(1,eduCourseDao.selectPage(iPage,queryWrapper).getRecords());
+        return pageVO;
     }
 }

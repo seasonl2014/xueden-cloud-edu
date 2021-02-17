@@ -20,6 +20,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -194,6 +195,7 @@ public class EduSubjectServiceImpl extends ServiceImpl<EduSubjectDao, EduSubject
      * @return
      */
     @Override
+    @Cacheable(value = "getIndexColumnCourses",unless = "#result == null or #result.size() == 0")
     public List<EduSubjectVO> getIndexColumnCourses(int pageNum, int pageSize) {
 
         // 定义课程分类类别

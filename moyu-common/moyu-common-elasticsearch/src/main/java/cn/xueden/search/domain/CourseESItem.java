@@ -43,6 +43,24 @@ public class CourseESItem {
     @Field(type = FieldType.Keyword)
     private String cover;
 
+    /**
+     * 总课时
+     */
+    @Field(type = FieldType.Integer)
+    private Integer lessonNum;
+
+    /**
+     * 浏览次数
+     */
+    @Field(type = FieldType.Long)
+    private Long viewCount;
+
+    /**
+     * 课程类型
+     */
+    @Field(type = FieldType.Integer)
+    private Integer courseType;
+
 
     public Long getId() {
         return id;
@@ -82,5 +100,29 @@ public class CourseESItem {
 
     public void setCover(String cover) {
         this.cover = cover;
+    }
+
+    public Integer getLessonNum() {
+        return lessonNum;
+    }
+
+    public void setLessonNum(Integer lessonNum) {
+        this.lessonNum = lessonNum;
+    }
+
+    public Long getViewCount() {
+        return viewCount;
+    }
+
+    public void setViewCount(Long viewCount) {
+        this.viewCount = viewCount;
+    }
+
+    public Integer getCourseType() {
+        return courseType;
+    }
+
+    public void setCourseType(Integer courseType) {
+        this.courseType = courseType;
     }
 }

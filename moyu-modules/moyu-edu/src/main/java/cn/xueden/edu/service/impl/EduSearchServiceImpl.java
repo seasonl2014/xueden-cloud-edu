@@ -46,6 +46,9 @@ public class EduSearchServiceImpl implements IEduSearchService {
                 esCourse.setCover(dbEduCourse.getCover());
                 esCourse.setShortTitle(dbEduCourse.getShortTitle());
                 esCourse.setPrice(dbEduCourse.getPrice());
+                esCourse.setCourseType(dbEduCourse.getCourseType());
+                esCourse.setLessonNum(dbEduCourse.getLessonNum());
+                esCourse.setViewCount(dbEduCourse.getViewCount());
                 // 更新索引
                 elasticsearchDao.save(esCourse);
             }
@@ -80,7 +83,9 @@ public class EduSearchServiceImpl implements IEduSearchService {
             esCourse.setCover(dbEduCourse.getCover());
             esCourse.setShortTitle(dbEduCourse.getShortTitle());
             esCourse.setPrice(dbEduCourse.getPrice());
-
+            esCourse.setCourseType(dbEduCourse.getCourseType());
+            esCourse.setLessonNum(dbEduCourse.getLessonNum());
+            esCourse.setViewCount(dbEduCourse.getViewCount());
             esItems.add(esCourse);
 
         });

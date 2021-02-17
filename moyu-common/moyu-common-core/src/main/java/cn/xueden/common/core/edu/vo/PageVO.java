@@ -1,7 +1,9 @@
 package cn.xueden.common.core.edu.vo;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import lombok.Data;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,8 +14,13 @@ import java.util.List;
  * @version:1.0
  */
 @Data
-public class PageVO<T> {
+public class PageVO<T> implements Serializable {
+
+    private static final long serialVersionUID = 9115570069735566900L;
     private long total;
+
+    public PageVO() {
+    }
 
     private List<T> rows = new ArrayList<>();
 
@@ -21,4 +28,6 @@ public class PageVO<T> {
         this.total = total;
         this.rows = rows;
     }
+
+
 }

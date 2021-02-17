@@ -8,6 +8,7 @@ import com.baomidou.mybatisplus.service.impl.ServiceImpl;*/
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 /**功能描述：会员业务接口实现类
@@ -26,6 +27,7 @@ public class EduMemberServiceImpl extends ServiceImpl<EduMemberDao, EduMember> i
      * @return
      */
     @Override
+    @Cacheable(value = "getMemberTotal",unless = "#result == null or #result == 0")
     public int getMemberTotal() {
         QueryWrapper<EduMember> EduMemberEntityWrapper = new QueryWrapper();
         return eduMemberDao.selectCount(EduMemberEntityWrapper);
