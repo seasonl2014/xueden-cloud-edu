@@ -27,6 +27,8 @@ public class EduMemberVO {
 
     private String nickname;
 
+    private String email;
+
     private Integer sex;
 
     private String avatar;

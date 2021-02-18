@@ -30,6 +30,9 @@ public class EduMember extends DataEntity<EduMember> {
     @ApiModelProperty(value = "会员昵称")
     private String nickname;
 
+    @ApiModelProperty(value = "电子邮箱")
+    private String email;
+
     @ApiModelProperty(value = "性别")
     private Integer sex;
 

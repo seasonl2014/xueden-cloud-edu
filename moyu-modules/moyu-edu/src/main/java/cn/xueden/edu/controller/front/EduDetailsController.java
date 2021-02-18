@@ -219,7 +219,7 @@ public class EduDetailsController {
         // 获取用户IP地址
         String ipAddress = IPUtil.getIpAddr(request);
         //测试用：
-        ipAddress = "180.142.65.253";
+        //ipAddress = "180.142.65.253";
         EduMemberBuyVip result = vipTypeService.addVip(eduVipTypeVO.getId(),token,ipAddress);
         if(result==null){
             return RestResponse.failure("加入失败");
@@ -252,6 +252,7 @@ public class EduDetailsController {
 
         // 生成付款链接
         String code = WxPayUtil.nativePay(orderNo,"0.01",eduMemberBuyVip.getRemarks(),ConstantPropertiesUtil.YUNGOUORETURNURLVIP);
+        //String code = "222222";
         System.out.println("返回支付信息："+code);
         return RestResponse.success(code).setCode(200);
 

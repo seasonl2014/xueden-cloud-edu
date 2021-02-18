@@ -12,11 +12,7 @@ import org.slf4j.LoggerFactory;
 import javax.servlet.http.HttpServletRequest;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-
-import java.util.Map;
+import java.util.*;
 
 /**
  * @Auther:梁志杰
@@ -177,6 +173,21 @@ public class ToolUtil {
         return result;
     }
 
+    /**
+     * 随机生成6位数字手机验证码
+     * @return
+     */
+    public static String getRandom(){
+        // 生成随机6位码
+        String value = "";
+        while (value.length() < 6)
+            value += (int) (Math.random() * 10);
+        return value;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(getRandom());
+    }
 
 }
 
