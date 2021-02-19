@@ -5,10 +5,13 @@ import cn.xueden.common.core.edu.enums.PayStatus;
 import cn.xueden.common.core.edu.vo.EduMemberBuyCourseVO;
 import cn.xueden.common.core.edu.vo.EduMemberVO;
 import cn.xueden.common.core.edu.vo.MyCourseVO;
+import cn.xueden.common.core.edu.vo.PassWordVO;
 import cn.xueden.common.core.utils.LayerData;
 import cn.xueden.common.core.utils.RestResponse;
 import cn.xueden.common.log.annotation.XudenOtherSystemLog;
+import cn.xueden.common.redis.service.RedisService;
 import cn.xueden.common.security.service.TokenService;
+import cn.xueden.common.security.utils.SecurityUtils;
 import cn.xueden.edu.converter.EduMemberBuyCourseConverter;
 import cn.xueden.edu.converter.EduMemberConverter;
 import cn.xueden.edu.converter.EduVideoMemberConverter;
@@ -17,6 +20,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.apache.catalina.security.SecurityUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -58,6 +62,9 @@ public class EduMemberCenterController {
 
     @Autowired
     private IEduVideoService videoService;
+
+    @Autowired
+    private RedisService redisService;
 
     @ApiOperation(value = "前台会员个人信息", notes = "前台会员个人信息")
     @PostMapping("/info")
@@ -246,6 +253,112 @@ public class EduMemberCenterController {
         result.put("total",videoMemberPage.getTotal());
         result.put("list", EduVideoMemberConverter.converterToVOList(videoMemberPage.getRecords(),videoService));
         return RestResponse.success("获取观看记录成功").setData(result);
+    }
+
+    @ApiOperation(value = "前台绑定邮箱", notes = "前台绑定邮箱")
+    @PostMapping("/bindEamil")
+    @XudenOtherSystemLog("前台绑定邮箱")
+    public RestResponse bindEamil(@RequestBody EduMemberVO eduMemberVO, HttpServletRequest request) {
+        String token = request.getHeader("Authorization");
+        if(token==null||token.equals("null")){
+            return RestResponse.failure("请先登录！");
+        }
+
+        //根据token,获取登录会员信息
+        EduMemberVO eduMemberToken = tokenService.getLoginMember();
+        if(eduMemberToken==null){
+            return RestResponse.failure("请先登录！");
+        }
+        // 获取会员信息
+        EduMember dbEduMember = memberService.getById(eduMemberToken.getId());
+        if(dbEduMember==null){
+            return RestResponse.failure("绑定邮箱失败！");
+        }else{
+            dbEduMember.setEmail(eduMemberVO.getEmail());
+            dbEduMember.setUpdateId(dbEduMember.getId());
+            memberService.updateById(dbEduMember);
+        }
+
+
+        return RestResponse.success("绑定邮箱成功");
+    }
+
+    @ApiOperation(value = "会员更改手机号", notes = "会员更改手机号")
+    @PostMapping("/updatePhone")
+    @XudenOtherSystemLog("会员更改手机号")
+    public RestResponse updatePhone(@RequestBody EduMemberVO eduMemberVO, HttpServletRequest request) {
+        String token = request.getHeader("Authorization");
+        if(token==null||token.equals("null")){
+            return RestResponse.failure("请先登录！");
+        }
+
+        //根据token,获取登录会员信息
+        EduMemberVO eduMemberToken = tokenService.getLoginMember();
+        if(eduMemberToken==null){
+            return RestResponse.failure("请先登录！");
+        }
+
+        String code = redisService.getCacheObject(eduMemberVO.getMobile());
+        if(code==null){
+            return RestResponse.failure("更改失败,验证码已经过期！");
+        }
+        if(!code.equalsIgnoreCase(eduMemberVO.getCode())){
+            return RestResponse.failure("更改失败,验证码不正确！");
+        }
+
+        // 获取会员信息
+        EduMember dbEduMember = memberService.getById(eduMemberToken.getId());
+        if(dbEduMember==null){
+            return RestResponse.failure("更改失败,手机号已经存在！");
+        }else{
+            dbEduMember.setMobile(eduMemberVO.getMobile());
+            dbEduMember.setUpdateId(dbEduMember.getId());
+            memberService.updateById(dbEduMember);
+        }
+
+
+        return RestResponse.success("更改手机号成功");
+    }
+
+    @ApiOperation(value = "会员更新个人密码", notes = "会员更新个人密码")
+    @PostMapping("/savePassWord")
+    @XudenOtherSystemLog("会员更新个人密码")
+    public RestResponse savePassWord(@RequestBody PassWordVO passWordVO, HttpServletRequest request) {
+        String token = request.getHeader("Authorization");
+        if(token==null||token.equals("null")){
+            return RestResponse.failure("请先登录！");
+        }
+
+        //根据token,获取登录会员信息
+        EduMemberVO eduMemberToken = tokenService.getLoginMember();
+        if(eduMemberToken==null){
+            return RestResponse.failure("请先登录！");
+        }
+
+        // 获取会员信息
+        EduMember dbEduMember = memberService.getById(eduMemberToken.getId());
+        if(dbEduMember==null){
+            return RestResponse.failure("更改失败,会员不存在！");
+        }else{
+            if(passWordVO==null){
+                return RestResponse.failure("更改失败,请填写完整信息！");
+            }
+
+            if(!SecurityUtils.matchesPassword(passWordVO.getPassWord(),dbEduMember.getPassword())){
+                return RestResponse.failure("更改失败,原密码不正确！");
+            }
+
+            if(!passWordVO.getNewPassWord().equalsIgnoreCase(passWordVO.getResNewPassWord())){
+                return RestResponse.failure("更改失败,两次输入密码不一致！");
+            }
+
+            dbEduMember.setPassword(SecurityUtils.encryptPassword(passWordVO.getNewPassWord()));
+            dbEduMember.setUpdateId(dbEduMember.getId());
+            memberService.updateById(dbEduMember);
+        }
+
+
+        return RestResponse.success("更改密码成功，请退出系统重新登录");
     }
 
 }

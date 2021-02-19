@@ -54,4 +54,9 @@ public class EduMemberVO {
      * 过期时间
      */
     private Long expireTime;
+
+    /**
+     * 验证码
+     */
+    private String code;
 }
