@@ -2,6 +2,8 @@ package cn.xueden.edu.controller.front;
 
 import cn.xueden.common.core.edu.domain.EduKeyword;
 import cn.xueden.common.core.edu.domain.EduMember;
+import cn.xueden.common.core.edu.vo.EduMemberVO;
+import cn.xueden.common.core.edu.vo.PassWordVO;
 import cn.xueden.common.core.edu.vo.RegisterMemberVO;
 import cn.xueden.common.core.utils.RestResponse;
 import cn.xueden.common.core.utils.ToolUtil;
@@ -18,6 +20,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -118,7 +121,7 @@ public class RegisterMemberController {
                 }
                 String semsResultCode = smsResult.getString("Code");
                 if(semsResultCode!=null&&semsResultCode.equalsIgnoreCase("ok")){
-                    redisService.setCacheObject(phone,code,120l, TimeUnit.MINUTES);
+                    redisService.setCacheObject(phone,code,30l, TimeUnit.MINUTES);
                 }else if (semsResultCode!=null&&semsResultCode.equalsIgnoreCase("isv.MOBILE_NUMBER_ILLEGAL")){
                     return RestResponse.failure("发送失败,手机号码不正确");
                 }else {
@@ -131,4 +134,90 @@ public class RegisterMemberController {
 
         return RestResponse.success("验证码已经发到您手机了，请注意查看").setCode(200);
     }
+
+    @ApiOperation(value = "前台发送找回密码验证码", notes = "前台发送找回密码验证码")
+    @PostMapping("/find/code/{phone}")
+    @XudenOtherSystemLog("前台发送找回密码验证码")
+    public RestResponse findPwdCode(@PathVariable String phone) {
+
+        if(phone==null){
+            return RestResponse.failure("手机号不能为空");
+        }else {
+            String code = redisService.getCacheObject(phone);
+            if(code!=null){
+                return RestResponse.success("验证码已经发到您手机了，请注意查看").setCode(200);
+            }else{
+
+                // 根据手机号查询是否存在
+                QueryWrapper<EduMember> memberQueryWrapper = new QueryWrapper<>();
+                memberQueryWrapper.eq("mobile",phone);
+                EduMember eduMember = memberService.getOne(memberQueryWrapper);
+                if(eduMember==null){
+                    return RestResponse.failure("验证码发送失败，该手机号未注册");
+                }
+
+                SendSms sendSms = new SendSms();
+                code = ToolUtil.getRandom();
+                JSONObject smsResult = JSONObject.parseObject(sendSms.SendCodeByPhone(code,phone));
+                if(null==smsResult){
+                    return RestResponse.failure("发送失败");
+                }
+                String semsResultCode = smsResult.getString("Code");
+                if(semsResultCode!=null&&semsResultCode.equalsIgnoreCase("ok")){
+                    redisService.setCacheObject(phone,code,30l, TimeUnit.MINUTES);
+                }else if (semsResultCode!=null&&semsResultCode.equalsIgnoreCase("isv.MOBILE_NUMBER_ILLEGAL")){
+                    return RestResponse.failure("发送失败,手机号码不正确");
+                }else {
+                    return RestResponse.failure("发送失败");
+                }
+
+            }
+
+        }
+
+        return RestResponse.success("验证码已经发到您手机了，请注意查看").setCode(200);
+    }
+
+    @ApiOperation(value = "会员找回个人密码", notes = "会员找回个人密码")
+    @PostMapping("/saveFindPassWord")
+    @XudenOtherSystemLog("会员找回个人密码")
+    public RestResponse saveFindPassWord(@RequestBody PassWordVO passWordVO, HttpServletRequest request) {
+
+        if(passWordVO==null||passWordVO.getMobile()==null||passWordVO.getCode()==null||passWordVO.getNewPassWord()==null){
+            return RestResponse.failure("请填写完整信息！");
+        }
+
+        // 根据手机号获取用户信息
+        QueryWrapper<EduMember> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("mobile",passWordVO.getMobile());
+        EduMember dbEduMember = memberService.getOne(queryWrapper);
+        if(dbEduMember==null){
+            return RestResponse.failure("找回失败,该手机号未注册！");
+        }else{
+            if(passWordVO==null){
+                return RestResponse.failure("更改失败,请填写完整信息！");
+            }
+
+           String code = redisService.getCacheObject(passWordVO.getMobile());
+            if(code==null){
+                return RestResponse.failure("更改失败,验证码已经过期！");
+            }
+
+            if(!code.equalsIgnoreCase(passWordVO.getCode())){
+                return RestResponse.failure("更改失败,验证码不正确！");
+            }
+
+            if(!passWordVO.getNewPassWord().equalsIgnoreCase(passWordVO.getResNewPassWord())){
+                return RestResponse.failure("更改失败,两次输入密码不一致！");
+            }
+
+            dbEduMember.setPassword(SecurityUtils.encryptPassword(passWordVO.getNewPassWord()));
+            dbEduMember.setUpdateId(dbEduMember.getId());
+            memberService.updateById(dbEduMember);
+        }
+
+
+        return RestResponse.success("找回密码成功");
+    }
+
 }

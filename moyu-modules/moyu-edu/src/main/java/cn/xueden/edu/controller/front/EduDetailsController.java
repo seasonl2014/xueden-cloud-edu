@@ -229,7 +229,7 @@ public class EduDetailsController {
     }
 
     /**
-     * 购买课程立即付款
+     * 购买VIP立即付款
      * @param orderNo
      *        订单号
      * @return
@@ -251,7 +251,7 @@ public class EduDetailsController {
         }
 
         // 生成付款链接
-        String code = WxPayUtil.nativePay(orderNo,"0.01",eduMemberBuyVip.getRemarks(),ConstantPropertiesUtil.YUNGOUORETURNURLVIP);
+        String code = WxPayUtil.nativePay(orderNo,""+eduMemberBuyVip.getPrice()+"",eduMemberBuyVip.getRemarks(),ConstantPropertiesUtil.YUNGOUORETURNURLVIP);
         //String code = "222222";
         System.out.println("返回支付信息："+code);
         return RestResponse.success(code).setCode(200);

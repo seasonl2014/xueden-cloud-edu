@@ -1,17 +1,25 @@
 package cn.xueden.edu.controller.front;
 
+import cn.xueden.common.core.edu.domain.EduBanner;
 import cn.xueden.common.core.edu.vo.EduCourseVO;
 import cn.xueden.common.core.edu.vo.EduSubjectVO;
+import cn.xueden.common.core.edu.vo.MyCourseVO;
+import cn.xueden.common.core.edu.vo.PageVO;
 import cn.xueden.common.core.utils.RestResponse;
+import cn.xueden.edu.service.IEduBannerService;
 import cn.xueden.edu.service.IEduCourseService;
 import cn.xueden.edu.service.IEduMemberService;
 import cn.xueden.edu.service.IEduSubjectService;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**功能描述：前端首页控制层
  * @Auther:梁志杰
@@ -33,6 +41,9 @@ public class EduIndexController {
 
     @Autowired
     private IEduSubjectService subjectService;
+
+    @Autowired
+    private IEduBannerService bannerService;
 
 
     /**
@@ -70,6 +81,23 @@ public class EduIndexController {
     public RestResponse getMemberTotal() {
         int memberTotal = memberService.getMemberTotal();
         return RestResponse.success().setData(memberTotal);
+    }
+
+    /**
+     * 统计注册会员
+     * @return
+     */
+    @ApiOperation(value = "首页获取幻灯片", notes = "首页获取幻灯片")
+    @PostMapping("/getBanner")
+    public RestResponse getBanner(@RequestBody MyCourseVO pageVO) {
+        QueryWrapper<EduBanner> eduBannerQueryWrapper = new QueryWrapper<>();
+        eduBannerQueryWrapper.eq("del_flag",false);
+        eduBannerQueryWrapper.orderByDesc("level");
+
+        Page<EduBanner> eduBannerPage = bannerService.page(new Page<>(pageVO.getPageNo(),pageVO.getPageSize()),eduBannerQueryWrapper);
+        Map<String,Object> result = new HashMap<>();
+        result.put("list",eduBannerPage.getRecords());
+        return RestResponse.success().setData(result);
     }
 
 }

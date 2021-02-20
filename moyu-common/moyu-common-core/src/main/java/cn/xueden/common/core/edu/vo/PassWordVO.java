@@ -11,6 +11,12 @@ import lombok.Data;
 @Data
 public class PassWordVO {
 
+    // 手机号
+    private String mobile;
+
+    // 验证码
+    private String code;
+
     // 原密码
     private String passWord;
 

@@ -136,11 +136,11 @@ public class EduSubjectServiceImpl extends ServiceImpl<EduSubjectDao, EduSubject
                 }
             }
 
-            // 判断该栏目下是否有课程，有的话不能删除，没有则可以删除
+            // 判断该栏目下是否有课程，有的话不能删除，没有则可以删除（代码暂时不写）
 
 
-            // 同时删除阿里云视频点播上的课程栏目
-            if(dbEduSubject.getCateId()!=null){
+            // 同时删除阿里云视频点播上的课程栏目(放开注释就会删除)
+           /* if(dbEduSubject.getCateId()!=null){
                 boolean flag = vidCategoryClient.deleteSubjectById(dbEduSubject.getCateId());
                 if(flag){
                     eduSubjectDao.deleteById(id);
@@ -150,7 +150,8 @@ public class EduSubjectServiceImpl extends ServiceImpl<EduSubjectDao, EduSubject
             }else {
                 eduSubjectDao.deleteById(id);
                 return true;
-            }
+            }*/
+            eduSubjectDao.deleteById(id);
         }else {
             return false;
         }
@@ -158,7 +159,7 @@ public class EduSubjectServiceImpl extends ServiceImpl<EduSubjectDao, EduSubject
     }
 
     /**
-     * 编辑商品类别
+     * 编辑课程类别
      * @param id
      * @return
      */
@@ -169,7 +170,7 @@ public class EduSubjectServiceImpl extends ServiceImpl<EduSubjectDao, EduSubject
     }
 
     /**
-     * 更新商品类别
+     * 更新课程类别
      * @param id
      * @param eduSubjectVO
      */
