@@ -34,7 +34,7 @@ xueden-cloud-edu（学灯网）是基于springcloud alibaba+vue3.0整合开发�
 - 日志记录采用aop方式，可对用户所有操作进行记录
 - 引入swagger文档支持，方便编写API接口文档
 - 项目采用前后端分离架构，提升效率
-- 前端组件丰富，集成layuimini，基本涵盖了所有前端开发需求
+- 前端组件丰富，集成element-plus，基本涵盖了所有前端开发需求
 - 支持多种浏览器: Google, 火狐, IE,360等
 
 # 系统模块
