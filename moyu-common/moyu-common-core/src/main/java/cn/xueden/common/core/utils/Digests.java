@@ -23,6 +23,7 @@ public class Digests {
 
     private static SecureRandom random = new SecureRandom();
 
+
     /**
      * 对输入字符串进行md5散列.
      */

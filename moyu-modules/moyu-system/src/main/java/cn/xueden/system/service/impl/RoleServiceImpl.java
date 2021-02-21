@@ -5,8 +5,10 @@ import cn.xueden.common.core.web.domain.SysRole;
 import cn.xueden.system.dao.RoleDao;
 
 import cn.xueden.system.service.RoleService;
-import com.baomidou.mybatisplus.mapper.EntityWrapper;
-import com.baomidou.mybatisplus.service.impl.ServiceImpl;
+/*import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.baomidou.mybatisplus.service.impl.ServiceImpl;*/
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,7 +31,7 @@ public class RoleServiceImpl extends ServiceImpl<RoleDao, SysRole> implements Ro
      */
     @Override
     public int getRoleNameCount(String name) {
-        EntityWrapper<SysRole> wrapper = new EntityWrapper();
+        QueryWrapper<SysRole> wrapper = new QueryWrapper();
         wrapper.eq("name",name);
         return baseMapper.selectCount(wrapper);
     }
@@ -107,7 +109,7 @@ public class RoleServiceImpl extends ServiceImpl<RoleDao, SysRole> implements Ro
      */
     @Override
     public List<SysRole> selectAll() {
-        EntityWrapper<SysRole> wrapper = new EntityWrapper<>();
+        QueryWrapper<SysRole> wrapper = new QueryWrapper<>();
         wrapper.eq("del_flag",false);
         List<SysRole> roleList = baseMapper.selectList(wrapper);
         return roleList;

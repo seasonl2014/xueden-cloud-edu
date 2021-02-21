@@ -2,8 +2,10 @@ package cn.xueden.system.entity;
 
 
 import cn.xueden.common.core.web.domain.DataEntity;
-import com.baomidou.mybatisplus.annotations.TableField;
-import com.baomidou.mybatisplus.annotations.TableName;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableName;
+/*import com.baomidou.mybatisplus.annotations.TableField;
+import com.baomidou.mybatisplus.annotations.TableName;*/
 
 /**功能描述:系统日志实体类
  * @Auther:http://www.xueden.cn

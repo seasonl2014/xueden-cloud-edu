@@ -4,7 +4,8 @@ package cn.xueden.system.dao;
 import cn.xueden.common.core.web.domain.SysMenu;
 
 import cn.xueden.system.entity.vo.ShowMenu;
-import com.baomidou.mybatisplus.mapper.BaseMapper;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+/*import com.baomidou.mybatisplus.mapper.BaseMapper;*/
 
 import java.util.List;
 import java.util.Map;

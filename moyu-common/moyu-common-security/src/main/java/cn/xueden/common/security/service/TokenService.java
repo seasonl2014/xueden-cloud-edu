@@ -2,6 +2,7 @@ package cn.xueden.common.security.service;
 
 import cn.xueden.common.core.constant.CacheConstants;
 import cn.xueden.common.core.constant.Constants;
+import cn.xueden.common.core.edu.vo.EduMemberVO;
 import cn.xueden.common.core.utils.IdUtils;
 import cn.xueden.common.core.utils.ServletUtils;
 import cn.xueden.common.redis.service.RedisService;
@@ -32,6 +33,82 @@ public class TokenService {
     private final static String ACCESS_TOKEN = CacheConstants.LOGIN_TOKEN_KEY;
 
     protected static final long MILLIS_SECOND = 1000;
+
+    /**
+     * 创建会员令牌（前台使用）
+     */
+    public Map<String, Object> createMemberToken(EduMemberVO memberVO){
+        // 生成token
+        String token = IdUtils.fastUUID();
+        memberVO.setToken(token);
+        refreshMemberToken(memberVO);
+
+        // 保存或更新用户token
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("access_token", token);
+        // 会员ID
+        map.put("userid", memberVO.getId());
+        // 会员昵称
+        map.put("username", memberVO.getNickname()==null?memberVO.getNickname():memberVO.getMobile());
+        // 会员手机号
+        map.put("mobile", memberVO.getMobile());
+        // 会员头像
+        map.put("avatar", memberVO.getAvatar());
+        // 会员VIP的ID
+        map.put("vipId", memberVO.getVipId());
+        // 会员VIP类型
+        map.put("vipType", memberVO.getVipType());
+        map.put("expires_in", EXPIRE_TIME);
+        memberVO.setUserid(memberVO.getId());
+        memberVO.setUsername(memberVO.getNickname()==null?memberVO.getMobile():memberVO.getNickname());
+        redisService.setCacheObject(ACCESS_TOKEN + token, memberVO, EXPIRE_TIME, TimeUnit.SECONDS);
+        return map;
+    }
+
+
+    /**
+     * 刷新会员令牌有效期（前台使用）
+     *
+     * @param memberVO 登录信息
+     */
+    public Long refreshMemberToken(EduMemberVO memberVO){
+        memberVO.setLoginTime(System.currentTimeMillis());
+        memberVO.setExpireTime(memberVO.getLoginTime() + EXPIRE_TIME * MILLIS_SECOND);
+        // 根据uuid将EduMemberVO缓存
+        String memberKey = getTokenKey(memberVO.getToken());
+        redisService.setCacheObject(memberKey, memberVO, EXPIRE_TIME, TimeUnit.SECONDS);
+        return EXPIRE_TIME;
+    }
+
+    /**
+     * 获取会员身份信息
+     *
+     * @return 会员信息
+     */
+    public EduMemberVO getLoginMember()
+    {
+        return getLoginMember(ServletUtils.getRequest());
+    }
+
+
+    /**
+     * 获取会员身份信息
+     *
+     * @return 会员信息
+     */
+    public EduMemberVO getLoginMember(HttpServletRequest request)
+    {
+        // 获取请求携带的令牌
+        String token = getToken(request);
+        if (StringUtils.isNotEmpty(token))
+        {
+            String memberKey = getTokenKey(token);
+            EduMemberVO memberVO = redisService.getCacheObject(memberKey);
+            return memberVO;
+        }
+        return null;
+    }
+
 
     /**
      * 创建令牌

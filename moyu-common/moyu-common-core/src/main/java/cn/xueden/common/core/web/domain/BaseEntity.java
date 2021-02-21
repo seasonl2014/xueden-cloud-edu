@@ -1,8 +1,10 @@
 package cn.xueden.common.core.web.domain;
 
-import com.baomidou.mybatisplus.activerecord.Model;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
+
+
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.extension.activerecord.Model;
 
 import java.io.Serializable;
 
@@ -12,12 +14,13 @@ import java.io.Serializable;
  * @Description:cn.xueden.common.core.web.domain
  * @version:1.0
  */
-public abstract class BaseEntity<T extends Model> extends Model<T> {
+public abstract class BaseEntity<T extends Model<T>> extends Model<T> {
 
     /**
      * 实体编号（唯一标志）
      *
      */
+    @TableId(type = IdType.AUTO)
     protected  Long id;
 
     public BaseEntity() {
@@ -29,7 +32,7 @@ public abstract class BaseEntity<T extends Model> extends Model<T> {
         this.id = id;
     }
 
-    @JsonSerialize(using= ToStringSerializer.class)
+    /*@JsonSerialize(using= ToStringSerializer.class)*/
     public Long getId() {
         return id;
     }

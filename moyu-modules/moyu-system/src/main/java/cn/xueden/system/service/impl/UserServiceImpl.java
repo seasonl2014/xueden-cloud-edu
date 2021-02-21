@@ -8,8 +8,10 @@ import cn.xueden.common.security.utils.SecurityUtils;
 import cn.xueden.system.dao.UserDao;
 
 import cn.xueden.system.service.UserService;
-import com.baomidou.mybatisplus.mapper.EntityWrapper;
-import com.baomidou.mybatisplus.service.impl.ServiceImpl;
+/*import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.baomidou.mybatisplus.service.impl.ServiceImpl;*/
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.google.common.collect.Maps;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -48,7 +50,7 @@ public class UserServiceImpl extends ServiceImpl<UserDao, SysUser> implements Us
      */
     @Override
     public int userCount(String param) {
-        EntityWrapper<SysUser> wrapper = new EntityWrapper<>();
+        QueryWrapper<SysUser> wrapper = new QueryWrapper<>();
         wrapper.eq("login_name",param).or().eq("email",param).or().eq("tel",param);
         int count = baseMapper.selectCount(wrapper);
         return count;

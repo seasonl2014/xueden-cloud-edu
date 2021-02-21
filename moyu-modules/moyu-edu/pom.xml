@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>moyu-modules</artifactId>
+        <groupId>cn.xueden</groupId>
+        <version>1.0.0</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>moyu-edu</artifactId>
+
+    <name>moyu-edu</name>
+    <url>http://www.example.com</url>
+    <description>教育平台业务模块</description>
+
+    <dependencies>
+
+        <!-- SpringCloud Ailibaba Nacos -->
+        <dependency>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
+        </dependency>
+
+        <!-- SpringCloud Ailibaba Nacos Config -->
+        <dependency>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
+        </dependency>
+
+        <!-- SpringCloud Ailibaba Sentinel -->
+        <dependency>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-sentinel</artifactId>
+        </dependency>
+
+        <!-- SpringBoot Actuator -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-websocket</artifactId>
+        </dependency>
+
+        <!-- Swagger -->
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger-ui</artifactId>
+            <version>${swagger.fox.version}</version>
+        </dependency>
+
+        <!-- Mysql Connector -->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+        </dependency>
+
+        <!-- moyu Common Security -->
+        <dependency>
+            <groupId>cn.xueden</groupId>
+            <artifactId>moyu-common-security</artifactId>
+        </dependency>
+
+        <!-- moyu Common Log -->
+        <dependency>
+            <groupId>cn.xueden</groupId>
+            <artifactId>moyu-common-log</artifactId>
+        </dependency>
+
+        <!-- moyu Common Swagger -->
+        <dependency>
+            <groupId>cn.xueden</groupId>
+            <artifactId>moyu-common-swagger</artifactId>
+        </dependency>
+
+        <!-- moyu Common Redis-->
+        <dependency>
+            <groupId>cn.xueden</groupId>
+            <artifactId>moyu-common-redis</artifactId>
+        </dependency>
+
+        <!-- moyu-common-mybatis-plus-->
+        <dependency>
+            <groupId>cn.xueden</groupId>
+            <artifactId>moyu-common-mybatis-plus</artifactId>
+        </dependency>
+
+        <!-- moyu Common Alivod-->
+        <dependency>
+            <groupId>cn.xueden</groupId>
+            <artifactId>moyu-common-alivod</artifactId>
+        </dependency>
+
+        <!-- 微信支付模块 -->
+        <dependency>
+            <groupId>cn.xueden</groupId>
+            <artifactId>moyu-common-wechatpay</artifactId>
+        </dependency>
+
+        <!-- 搜索模块 -->
+        <dependency>
+            <groupId>cn.xueden</groupId>
+            <artifactId>moyu-common-elasticsearch</artifactId>
+        </dependency>
+
+
+        <dependency>
+            <groupId>commons-fileupload</groupId>
+            <artifactId>commons-fileupload</artifactId>
+        </dependency>
+
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+
+
+</project>

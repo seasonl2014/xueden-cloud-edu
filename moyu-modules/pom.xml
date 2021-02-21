@@ -16,6 +16,7 @@
     <description>业务模块</description>
     <modules>
         <module>moyu-system</module>
+        <module>moyu-edu</module>
     </modules>
 
 </project>

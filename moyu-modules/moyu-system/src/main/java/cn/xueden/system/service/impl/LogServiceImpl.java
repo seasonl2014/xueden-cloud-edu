@@ -6,7 +6,8 @@ import cn.xueden.common.core.web.domain.SysLog;
 import cn.xueden.system.dao.LogDao;
 
 import cn.xueden.system.service.LogService;
-import com.baomidou.mybatisplus.service.impl.ServiceImpl;
+
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.springframework.stereotype.Service;
@@ -40,7 +41,7 @@ public class LogServiceImpl extends ServiceImpl<LogDao, SysLog> implements LogSe
             boolean flag=false;
             for(Map map : list){
                 if(map.get("days").toString().equals(localDate.toString())){
-                    System.out.println("日期"+map.get("days").toString());
+                    // System.out.println("日期"+map.get("days").toString());
                     pv.add(Integer.valueOf(map.get("total").toString()));
                     flag = true;
                 }

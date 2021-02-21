@@ -14,7 +14,7 @@
         <module>moyu-modules</module>
     </modules>
     <packaging>pom</packaging>
-    <name>moyu-cloud</name>
+    <name>moyu-cloud-edu</name>
     <description>权限管理系统父工程</description>
 
     <properties>
@@ -32,6 +32,9 @@
         <kaptcha.version>2.3.2</kaptcha.version>
         <pagehelper.boot.version>1.2.12</pagehelper.boot.version>
         <mybatisplus-spring-boot-starter.version>1.0.5</mybatisplus-spring-boot-starter.version>
+        <mybatis-plus-boot-starter.version>3.4.2</mybatis-plus-boot-starter.version>
+
+
         <mybatisplus.version>2.1.4</mybatisplus.version>
         <commons.io.version>2.5</commons.io.version>
         <commons.fileupload.version>1.3.3</commons.fileupload.version>
@@ -110,15 +113,21 @@
 
             <dependency>
                 <groupId>com.baomidou</groupId>
-                <artifactId>mybatisplus-spring-boot-starter</artifactId>
-                <version>${mybatisplus-spring-boot-starter.version}</version>
+                <artifactId>mybatis-plus-boot-starter</artifactId>
+                <version>${mybatis-plus-boot-starter.version}</version>
             </dependency>
 
-            <dependency>
+           <!-- <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatisplus-spring-boot-starter</artifactId>
+                <version>${mybatisplus-spring-boot-starter.version}</version>
+            </dependency>-->
+
+           <!-- <dependency>
                 <groupId>com.baomidou</groupId>
                 <artifactId>mybatis-plus</artifactId>
                 <version>${mybatisplus.version}</version>
-            </dependency>
+            </dependency>-->
 
             <!-- io常用工具类 -->
             <dependency>
@@ -216,6 +225,35 @@
                 <artifactId>moyu-api-system</artifactId>
                 <version>${moyu.version}</version>
             </dependency>
+
+            <!-- 教育接口 -->
+            <dependency>
+                <groupId>cn.xueden</groupId>
+                <artifactId>moyu-api-edu</artifactId>
+                <version>${moyu.version}</version>
+            </dependency>
+
+            <!-- 阿里云视频点播模块 -->
+            <dependency>
+                <groupId>cn.xueden</groupId>
+                <artifactId>moyu-common-alivod</artifactId>
+                <version>${moyu.version}</version>
+            </dependency>
+
+            <!-- 微信支付模块 -->
+            <dependency>
+                <groupId>cn.xueden</groupId>
+                <artifactId>moyu-common-wechatpay</artifactId>
+                <version>${moyu.version}</version>
+            </dependency>
+
+            <!-- 搜索模块 -->
+            <dependency>
+                <groupId>cn.xueden</groupId>
+                <artifactId>moyu-common-elasticsearch</artifactId>
+                <version>${moyu.version}</version>
+            </dependency>
+
 
         </dependencies>
     </dependencyManagement>

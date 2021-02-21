@@ -15,14 +15,13 @@ xueden-cloud-edu（学灯网）是基于springcloud alibaba+vue3.0整合开发�
 
 # 前端项目
 
-前端项目地址( [xueden_cloud_layuimini](https://github.com/seasonl2014/xueden_cloud_layuimini))
+前端项目地址( [xueden-cloud-edu-vue3-admin](https://github.com/seasonl2014/xueden-cloud-edu-vue3-admin))
 
 # 技术文档
 - 讨论加群：qq群①：601212472   
-- 演示地址：[http://money.goodym.cn/layuidemo/page/login.html](http://money.goodym.cn/layuidemo/page/login.html "http://money.goodym.cn/layuidemo/page/login.html")
+- 演示地址：[http://www.xueden.cn/](http://www.xueden.cn/ "http://www.xueden.cn/")
 
-# 配套详细视频教程
-- 视频教程地址：[http://java.goodym.cn/html/1571623967758.html](http://java.goodym.cn/html/1571623967758.html "http://java.goodym.cn/html/1571623967758.html")
+
 
 
 # 项目特点
@@ -47,13 +46,17 @@ cn.moyu
 ├── moyu-api             // 接口模块
 │       └── moyu-api-system                          // 系统接口
 ├── moyu-common          // 通用模块
+│		└── moyu-common-alivod                       // 阿里云视频点播 
 │       └── moyu-common-core                         // 核心模块
+│       └── moyu-common-elasticsearch                // 搜索模块
 │       └── moyu-common-log                          // 日志记录
 │       └── moyu-common-redis                        // 缓存服务
 │       └── moyu-common-security                     // 安全模块
 │       └── moyu-common-swagger                      // 系统接口
 │       └── moyu-common-mybatis-plus                 // 持久层模块
+│       └── moyu-common-wechatpay                    // 微信支付模块
 ├── moyu-modules         // 业务模块
+│       └── moyu-edu                                 // 教育模块 [6000]
 │       └── moyu-system                              // 系统模块 [9000]
 ├──pom.xml                // 公共依赖
 ~~~
@@ -81,12 +84,12 @@ cn.moyu
 ### 前端
 |技术|名称|官网|
 | ------------ | ------------ | ------------ |
-|jQuery|js库|[http://jquery.com/](http://jquery.com/ "http://jquery.com/")|
-|layui.table|数据表格|[https://www.layui.com/doc/modules/table.html](https://www.layui.com/doc/modules/table.html "https://www.layui.com/doc/modules/table.html")|
-|layuimini|后台管理模板|[http://layuimini.99php.cn/](http://layuimini.99php.cn/ "http://layuimini.99php.cn/")|
-|layui|前端框架|[https://www.layui.com/](https://www.layui.com/ "https://www.layui.com/")|
-|layui.layer|弹出组件|[https://www.layui.com/doc/modules/layer.html](https://www.layui.com/doc/modules/layer.html "https://www.layui.com/doc/modules/layer.html")|
-|layui.treeTable|树形表格|[https://fly.layui.com/jie/30625/](https://fly.layui.com/jie/30625/ "https://fly.layui.com/jie/30625/")|
+|vue3.x|vue|[https://github.com/vuejs/vue-next](https://github.com/vuejs/vue-next"https://github.com/vuejs/vue-next")|
+|element-plus|组件库|[https://github.com/element-plus/element-plus](https://github.com/element-plus/element-plus "https://github.com/element-plus/element-plus")|
+|admin-element-vue|后台管理模板|[http://admin-element-vue.liqingsong.cc/tsv2/](http://admin-element-vue.liqingsong.cc/tsv2/"http://admin-element-vue.liqingsong.cc/tsv2/")|
+|vuex4.x|状态管理模式|[https://github.com/vuejs/vuex](https://github.com/vuejs/vuex "https://github.com/vuejs/vuex")|
+|vue-router4.x|路由组件|[https://github.com/vuejs/vue-router-next](https://github.com/vuejs/vue-router-next "https://github.com/vuejs/vue-router-next")|
+|TypeScript4.x|js超集|[https://github.com/Microsoft/TypeScript](https://github.com/Microsoft/TypeScript "https://github.com/Microsoft/TypeScript")|
 
 # 功能列表
 ```html
@@ -95,35 +98,44 @@ cn.moyu
     ○ 菜单管理：维护系统菜单，操作权限，按钮权限
     ○ 角色管理：维护系统角色信息，以角色为单位分配系统权限
     ○ 日志管理：系统正常操作日志记录和查询；系统异常信息日志记录和查询
-- 前端实例组件
-    ○ 格栅
-    ○ 按钮
-    ○ 表单
-    ○ 导航
-    ○ 选项卡
-    ○ 进度条
-    ○ 面板
-    ○ 通用弹出层
-    ○ 时间日期
-    ○ 数据表格
-    ○ 分页
+- 教育管理
+    ○ 会员管理：用于管理后台系统的注册会员，可进行删、查等操作
+    ○ 会员分类：维护会员类别，可进行增删改查以及分配权益
+    ○ 课程管理：维护系统课程信息，可进行增删改查以及编写章节上传视频和课程资料
+    ○ 课程分类管理：维护系统课程类别信息，可进行增删改查等操作
+    ○ 讲师管理：用于管理讲师信息，可进行增删改查等操作
+- 教育平台门户
+    ○ 注册和登录：用户通过手机号进行注册和登录
+    ○ 课程展示：首页分类展示课程信息
+    ○ 列表展示：通过列表的形式展示课程
+    ○ 加入VIP：用户可以通过微信支付购买VIP
+    ○ 购买课程：用户可以通过微信支付购买所有课程
+    ○ 个人中心：展示我的课程，个人信息，购买记录等
+    ○ 在线播放课程视频：用户通过点播的方式学习购买过的课程
+    ○ 广告展示：免费的课程将会自动出现广告，购买后广告自动关闭
 
 ```
 
 # 更新日志
-## 2020-9-28 cloud_layui版本发布
+## 2020-2-21 xueden-cloud-edu版本发布
 # 版权声明
-cloud_layui使用 Apache-2.0 License 协议.
+xueden-cloud-edu使用 Apache-2.0 License 协议.
+
+商业使用请联系作者授权QQ：11184629 ，授权费用：1999元，授权后可以二次开发、销售，无需再交钱，也可以闭源。
 
 # 演示截图
 
-![菜单管理](https://img-blog.csdnimg.cn/20200928083219672.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2h1aXRpYW93dWRleXU=,size_16,color_FFFFFF,t_70#pic_center)
+后台演示地址：http://cms.xueden.cn/  测试账号： test02  测试密码：123456
 
-![日志管理](https://img-blog.csdnimg.cn/20200928083219676.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2h1aXRpYW93dWRleXU=,size_16,color_FFFFFF,t_70#pic_center)
 
-![用户管理](https://img-blog.csdnimg.cn/20200928083219633.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2h1aXRpYW93dWRleXU=,size_16,color_FFFFFF,t_70#pic_center)
 
-![登录页面](https://img-blog.csdnimg.cn/20200928083219276.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2h1aXRpYW93dWRleXU=,size_16,color_FFFFFF,t_70#pic_center)
+前台演示地址：http://www.xueden.cn/  测试请自行注册账号即可
+
+
+
+
+
+
 
 
 
