@@ -84,7 +84,9 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseDao, EduCourse> i
         }
         // 获取已发布的课程
         eduCourseEntityWrapper.eq("status","Normal");
-        eduCourses = eduCourseDao.selectList(eduCourseEntityWrapper);
+        eduCourseEntityWrapper.orderByDesc("id");
+        com.baomidou.mybatisplus.extension.plugins.pagination.Page eduCoursePage = eduCourseDao.selectPage(new com.baomidou.mybatisplus.extension.plugins.pagination.Page<>(pageNum,pageSize),eduCourseEntityWrapper);
+        eduCourses = eduCoursePage.getRecords();
         List<EduCourseVO> eduCourseVOList= EduCourseConverter.converterToVOList(eduCourses);
         return eduCourseVOList;
     }

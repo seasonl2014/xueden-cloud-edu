@@ -50,7 +50,7 @@ public class EduIndexController {
      * 获取首页各类别课程
      * @return
      */
-    @ApiOperation(value = "课程列表", notes = "课程列表,根据课程名模糊查询")
+    @ApiOperation(value = "课程列表", notes = "课程列表")
     @PostMapping("/findIndexCourseList")
     @CrossOrigin
     public RestResponse findIndexCourseList(@RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
