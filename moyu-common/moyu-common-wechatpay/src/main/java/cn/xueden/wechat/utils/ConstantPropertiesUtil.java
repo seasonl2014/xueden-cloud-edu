@@ -6,7 +6,7 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-/**功能描述：微信支付配置信息
+/**功能描述：微信支付配置信息（第三方服务商的微信支付）
  * @Auther:梁志杰
  * @Date:2021/2/9
  * @Description:cn.xueden.wechat.utils

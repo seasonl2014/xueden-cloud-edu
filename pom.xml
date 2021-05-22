@@ -247,6 +247,13 @@
                 <version>${moyu.version}</version>
             </dependency>
 
+            <!-- 支付宝支付模块 -->
+            <dependency>
+                <groupId>cn.xueden</groupId>
+                <artifactId>moyu-common-alipay</artifactId>
+                <version>${moyu.version}</version>
+            </dependency>
+
             <!-- 搜索模块 -->
             <dependency>
                 <groupId>cn.xueden</groupId>
