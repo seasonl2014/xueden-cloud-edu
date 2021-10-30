@@ -2,7 +2,7 @@
 
 <p align=center>
   <a href="http://www.xueden.cn">
-    <img src="http://www.xueden.cn/static/img/logo.7e4f5e27.png" alt="学灯网" style="width:200px;height:200px">
+    <img src="https://gitee.com/77jubao2015/moyu-cloud/blob/dev1.0/images/logo.7e4f5e27.png" alt="学灯网" style="width:200px;height:200px">
   </a>
 </p>
 <p align=center>
