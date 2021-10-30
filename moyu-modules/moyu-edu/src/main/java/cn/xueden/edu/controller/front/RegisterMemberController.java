@@ -5,11 +5,14 @@ import cn.xueden.common.core.edu.domain.EduMember;
 import cn.xueden.common.core.edu.vo.EduMemberVO;
 import cn.xueden.common.core.edu.vo.PassWordVO;
 import cn.xueden.common.core.edu.vo.RegisterMemberVO;
+import cn.xueden.common.core.utils.GeetestLib;
 import cn.xueden.common.core.utils.RestResponse;
 import cn.xueden.common.core.utils.ToolUtil;
 import cn.xueden.common.log.annotation.XudenOtherSystemLog;
 import cn.xueden.common.redis.service.RedisService;
 import cn.xueden.common.security.utils.SecurityUtils;
+import cn.xueden.edu.config.GeetestConfig;
+import cn.xueden.edu.dto.GeetestDto;
 import cn.xueden.edu.service.IEduMemberService;
 import cn.xueden.sms.SendSms;
 import com.alibaba.fastjson.JSONObject;
@@ -41,6 +44,9 @@ public class RegisterMemberController {
 
     @Autowired
     private RedisService redisService;
+
+    @Autowired
+    private GeetestConfig geetestConfig;
 
     @ApiOperation(value = "前台会员注册", notes = "前台会员注册")
     @PostMapping("/registerMember")
@@ -95,7 +101,7 @@ public class RegisterMemberController {
     @ApiOperation(value = "前台发送会员注册验证码", notes = "前台发送会员注册验证码")
     @PostMapping("/code/{phone}")
     @XudenOtherSystemLog("前台发送会员注册验证码")
-    public RestResponse registerCode(@PathVariable String phone) {
+    public RestResponse registerCode(@PathVariable String phone,@RequestBody GeetestDto geetestDto) {
 
         if(phone==null){
             return RestResponse.failure("手机号不能为空");
@@ -104,6 +110,43 @@ public class RegisterMemberController {
             if(code!=null){
                 return RestResponse.success("验证码已经发到您手机了，请注意查看").setCode(200);
             }else{
+
+                //验证码验证
+                GeetestLib gtSdk = new GeetestLib(geetestConfig.getGeetest_id(), geetestConfig.getGeetest_key(),
+                        geetestConfig.isNewfailback());
+
+                String challenge = geetestDto.getGeetest_challenge();
+                String validate = geetestDto.getGeetest_validate();
+                String seccode = geetestDto.getGeetest_seccode();
+
+                //从redis中获取gt-server状态
+                int gt_server_status_code = (Integer) redisService.getCacheObject(gtSdk.gtServerStatusSessionKey);
+
+                //从redis中获取userid
+                String userid = (String)redisService.getCacheObject("userid");
+
+                //自定义参数,可选择添加
+                HashMap<String, String> param = new HashMap<String, String>();
+                param.put("user_id", userid); //网站用户id
+                param.put("client_type", "web"); //web:电脑上的浏览器；h5:手机上的浏览器，包括移动应用内完全内置的web_view；native：通过原生SDK植入APP应用的方式
+                param.put("ip_address", "127.0.0.1"); //传输用户请求验证时所携带的IP
+
+                int gtResult = 0;
+
+                if (gt_server_status_code == 1) {
+                    //gt-server正常，向gt-server进行二次验证
+                    gtResult = gtSdk.enhencedValidateRequest(challenge, validate, seccode, param);
+                    System.out.println(gtResult);
+                } else {
+                    // gt-server非正常情况下，进行failback模式验证
+                    System.out.println("failback:use your own server captcha validate");
+                    gtResult = gtSdk.failbackValidateRequest(challenge, validate, seccode);
+                    System.out.println(gtResult);
+                }
+
+                if(gtResult != 1){
+                    return RestResponse.failure("请先通过验证");
+                }
 
                 // 根据手机号查询是否存在
                 QueryWrapper<EduMember> memberQueryWrapper = new QueryWrapper<>();

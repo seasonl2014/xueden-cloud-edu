@@ -5,6 +5,8 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import java.math.BigDecimal;
+
 /**功能描述：讲师实体类
  * @Auther:梁志杰
  * @Date:2021/1/22
@@ -29,5 +31,20 @@ public class EduTeacher extends DataEntity<EduTeacher> {
 
     @ApiModelProperty(value = "排序")
     private Integer sort;
+
+    @ApiModelProperty(value = "可提现金额")
+    private BigDecimal cashOutMoney;
+
+    @ApiModelProperty(value = "累计收入")
+    private BigDecimal incomeAmount;
+
+    @ApiModelProperty(value = "收款人姓名")
+    private String payeeName;
+
+    @ApiModelProperty(value = "收款卡号")
+    private String cardNumber;
+
+    @ApiModelProperty(value = "收款银行")
+    private String bank;
 
 }

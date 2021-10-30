@@ -27,6 +27,9 @@ public class EduMemberBuyCourse  extends DataEntity<EduMemberBuyCourse> {
     @ApiModelProperty(value = "会员ID")
     private Long memberId;
 
+    @ApiModelProperty(value = "讲师ID")
+    private Long teacherId;
+
     @ApiModelProperty(value = "购买金额")
     private BigDecimal price;
 

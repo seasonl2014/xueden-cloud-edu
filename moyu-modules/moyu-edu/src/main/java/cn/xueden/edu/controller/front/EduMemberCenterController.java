@@ -64,6 +64,9 @@ public class EduMemberCenterController {
     private IEduVideoService videoService;
 
     @Autowired
+    private IEduTeacherService teacherService;
+
+    @Autowired
     private RedisService redisService;
 
     @ApiOperation(value = "前台会员个人信息", notes = "前台会员个人信息")
@@ -360,5 +363,52 @@ public class EduMemberCenterController {
 
         return RestResponse.success("更改密码成功，请退出系统重新登录");
     }
+
+    @ApiOperation(value = "前台讲师入驻", notes = "前台讲师入驻")
+    @PostMapping("/apply")
+    @XudenOtherSystemLog("前台更新会员个人信息")
+    public RestResponse apply(@RequestBody EduTeacher eduTeacher, HttpServletRequest request) {
+        if(eduTeacher==null||eduTeacher.getIntro().trim().length()==0||eduTeacher.getName().trim().length()==0||eduTeacher.getRemarks().trim().length()==0){
+            return RestResponse.failure("请先填写完整信息！");
+        }
+        String token = request.getHeader("Authorization");
+        if(token==null||token.equals("null")){
+            return RestResponse.failure("请先登录！");
+        }
+
+        //根据token,获取登录会员信息
+        EduMemberVO eduMemberToken = tokenService.getLoginMember();
+        if(eduMemberToken==null){
+            return RestResponse.failure("请先登录！");
+        }
+        // 获取会员信息
+        EduMember dbEduMember = memberService.getById(eduMemberToken.getId());
+        if(dbEduMember==null){
+            return RestResponse.failure("入驻失败,请先注册账号！");
+        }else{
+            // 获取讲师记录
+            EduTeacher dbEduTeacher = teacherService.getById(dbEduMember.getTeacherId());
+            if(dbEduTeacher!=null){
+                return RestResponse.failure("你已经申请，请勿重复申请！");
+            }else{
+                dbEduTeacher = new EduTeacher();
+                dbEduTeacher.setUpdateId(dbEduMember.getId());
+                dbEduTeacher.setCreateId(dbEduMember.getId());
+                dbEduTeacher.setIntro(eduTeacher.getIntro());
+                dbEduTeacher.setAvatar("http://www.xueden.cn/128.png");
+                dbEduTeacher.setLevel(1);
+                dbEduTeacher.setName(eduTeacher.getName());
+                dbEduTeacher.setRemarks(eduTeacher.getRemarks());
+                teacherService.save(dbEduTeacher);
+            }
+            dbEduMember.setTeacherId(dbEduTeacher.getId());
+            dbEduMember.setUpdateId(dbEduMember.getId());
+            memberService.updateById(dbEduMember);
+        }
+
+
+        return RestResponse.success("讲师入驻提交信息成功");
+    }
+
 
 }

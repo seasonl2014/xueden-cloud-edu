@@ -34,9 +34,15 @@ public class AliPayService {
      */
     public String alipayFaceToFacePrecreate(String subject, String outTradeNo, String totalAmount,String asyncNotify){
         try {
+            AlipayTradePrecreateResponse response;
             // 2. 发起API调用（以创建当面付收款二维码为例）
-            AlipayTradePrecreateResponse response = Factory.Payment.FaceToFace().asyncNotify(asyncNotify)
-                    .preCreate(subject, outTradeNo, totalAmount);
+            if(asyncNotify==null){
+                response = Factory.Payment.FaceToFace()
+                        .preCreate(subject, outTradeNo, totalAmount);
+            }else {
+                response = Factory.Payment.FaceToFace().asyncNotify(asyncNotify)
+                        .preCreate(subject, outTradeNo, totalAmount);
+            }
             // 3. 处理响应或异常
             if (ResponseChecker.success(response)) {
                 log.info("调用成功",response);

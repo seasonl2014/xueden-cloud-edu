@@ -27,7 +27,11 @@ public interface IVodService {
      * @param file
      * @return
      */
-    String batchUploadAliyunVideoById(MultipartFile file, Long id, RedisService redisService, String fileKey);
+    String batchUploadAliyunVideoById(MultipartFile file, Long id, RedisService redisService, String fileKey,Long teacherId);
+
+
+
+
 
 
 }

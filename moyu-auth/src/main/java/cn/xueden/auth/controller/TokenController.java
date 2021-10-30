@@ -48,6 +48,20 @@ public class TokenController {
         return R.ok(tokenService.createMemberToken(memberInfo),"登录成功");
     }
 
+    @PostMapping("/teacher/login")
+    public R<?> techerLogin(@RequestBody LoginMemberBody form){
+        // 用户登录
+        EduMemberVO memberInfo = eduMemberLoginService.login(form.getMobile(),form.getPassword());
+        if(memberInfo!=null&&memberInfo.getIsTeacher()==1){
+            // 获取登录token
+            return R.ok(tokenService.createMemberToken(memberInfo),"登录成功");
+        }else{
+            // 获取登录token
+            return R.fail(403,"对不起，您不是讲师，请先去申请成为讲师再来登录吧！");
+        }
+
+    }
+
     @DeleteMapping("/logout")
     public R<?> logout(HttpServletRequest request){
         LoginUser loginUser = tokenService.getLoginUser(request);

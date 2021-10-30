@@ -167,6 +167,7 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseDao, EduCourse> i
         tempEduMemberBuyCourse.setOrderNo(orderNo);
         tempEduMemberBuyCourse.setPrice(dbEduCourse.getPrice());
         tempEduMemberBuyCourse.setRemarks("会员购买【"+dbEduCourse.getTitle()+"】课程");
+        tempEduMemberBuyCourse.setTeacherId(dbEduCourse.getTeacherId());// 讲师ID
         tempEduMemberBuyCourse.setCreateId(dbMember.getId());
         tempEduMemberBuyCourse.setUpdateId(dbMember.getId());
 

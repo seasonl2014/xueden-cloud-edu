@@ -1,5 +1,6 @@
 package cn.xueden.gateway.config;
 
+import cn.xueden.gateway.handler.GeetestHandler;
 import cn.xueden.gateway.handler.ValidateCodeHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -21,11 +22,16 @@ public class RouterFunctionConfiguration {
     @Autowired
     private ValidateCodeHandler validateCodeHandler;
 
+    @Autowired
+    private GeetestHandler geetestHandler;
+
     @Bean
     public RouterFunction routerFunction()
     {
         return RouterFunctions.route(
                 RequestPredicates.GET("/code").and(RequestPredicates.accept(MediaType.TEXT_PLAIN)),
-                validateCodeHandler);
+                validateCodeHandler)
+                .andRoute(RequestPredicates.POST("/captcha").and(RequestPredicates.accept(MediaType.TEXT_PLAIN)),geetestHandler);
+
     }
 }

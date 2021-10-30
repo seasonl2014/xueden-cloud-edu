@@ -64,6 +64,9 @@ public class EduPayController {
     @Autowired
     private IEduMemberService memberService;
 
+    @Autowired
+    private IEduIncomeDetailsService incomeDetailsService;
+
     /**
      * 购买课程微信支付返回通知
      * 通知频率为15s/15s/30s/3m/10m/20m/30m/30m/30m/60m/3h/3h/3h/6h/6h - 总计 24h4m
@@ -120,6 +123,7 @@ public class EduPayController {
                             eduDealMoney.setRemarks(pay.getRemarks());
                             eduDealMoney.setPayChannel(pay.getPayChannel());
                             dealMoneyService.save(eduDealMoney);
+
                         }
 
                         //更新状态
@@ -128,7 +132,8 @@ public class EduPayController {
 
                         //更新课程购买数量
                         courseService.updateBuyCount(pay.getCourseId());
-
+                        // 计算讲师收益
+                        incomeDetailsService.teacherIncome(Out_trade_no);
                         try {
                             Map<String, Object> map = new HashMap<String, Object>();
                             ObjectMapper mapper = new ObjectMapper();
@@ -317,7 +322,8 @@ public class EduPayController {
 
                     //更新课程购买数量
                     courseService.updateBuyCount(pay.getCourseId());
-
+                    // 计算讲师收益
+                    incomeDetailsService.teacherIncome(outTradeNo);
                     try {
                         Map<String, Object> map = new HashMap<String, Object>();
                         ObjectMapper mapper = new ObjectMapper();
