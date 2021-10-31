@@ -37,7 +37,8 @@ xueden-cloud-edu（学灯网）是基于springcloud alibaba+vue3.0整合开发�
 
 # 前端项目
 
-前端项目地址github:( [xueden-cloud-edu-vue3-admin](https://github.com/seasonl2014/xueden-cloud-edu-vue3-admin))
+* 前端后台管理项目地址github:( [xueden-cloud-edu-vue3-admin](https://github.com/seasonl2014/xueden-cloud-edu-vue3-admin))
+* 前端讲师平台项目地址gitee:([xueden-cloud-edu-vue-teacher](https://gitee.com/77jubao2015/xueden-cloud-edu-vue-teacher))
 
 # 技术文档
 - 讨论加群：qq群①：601212472   
