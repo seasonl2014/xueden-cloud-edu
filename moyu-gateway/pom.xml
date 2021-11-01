@@ -69,6 +69,7 @@
             <artifactId>moyu-common-redis</artifactId>
         </dependency>
 
+
         <!-- Swagger -->
         <dependency>
             <groupId>io.springfox</groupId>

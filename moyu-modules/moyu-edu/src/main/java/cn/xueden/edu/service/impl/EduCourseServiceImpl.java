@@ -145,7 +145,15 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseDao, EduCourse> i
         memberBuyCourseQueryWrapper.eq("member_id",dbMember.getId());
         EduMemberBuyCourse dbEduMemberBuyCourse = eduMemberBuyCourseDao.selectOne(memberBuyCourseQueryWrapper);
         if(dbEduMemberBuyCourse!=null){//已经购买过该课程，直接返回信息
-            return dbEduMemberBuyCourse;
+            if(dbEduMemberBuyCourse.getIsPayment()==0){//待付款
+                String orderNo= IdUtils.createOrderNumber();
+                dbEduMemberBuyCourse.setOrderNo(orderNo);
+                eduMemberBuyCourseDao.updateById(dbEduMemberBuyCourse);
+                return dbEduMemberBuyCourse;
+            }else{
+                return dbEduMemberBuyCourse;
+            }
+
         }
 
         // 生成订单编号
@@ -158,8 +166,8 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseDao, EduCourse> i
         tempEduMemberBuyCourse.setMemberId(dbMember.getId()); // 会员ID
         tempEduMemberBuyCourse.setOrderNo(orderNo);
         tempEduMemberBuyCourse.setPrice(dbEduCourse.getPrice());
-        tempEduMemberBuyCourse.setPayChannel("wxpay"); //微信支付
         tempEduMemberBuyCourse.setRemarks("会员购买【"+dbEduCourse.getTitle()+"】课程");
+        tempEduMemberBuyCourse.setTeacherId(dbEduCourse.getTeacherId());// 讲师ID
         tempEduMemberBuyCourse.setCreateId(dbMember.getId());
         tempEduMemberBuyCourse.setUpdateId(dbMember.getId());
 

@@ -1,17 +1,21 @@
 package cn.xueden.edu.controller.front;
 
-import cn.xueden.common.core.edu.domain.EduEnvironmenParam;
-import cn.xueden.common.core.edu.domain.EduMemberBuyCourse;
-import cn.xueden.common.core.edu.domain.EduMemberBuyVip;
-import cn.xueden.common.core.edu.domain.EduTeacher;
+import cn.xueden.alipay.config.AliPayConfig;
+import cn.xueden.alipay.service.AliPayService;
+import cn.xueden.common.core.edu.domain.*;
 import cn.xueden.common.core.edu.vo.*;
 import cn.xueden.common.core.utils.IPUtil;
 import cn.xueden.common.core.utils.RestResponse;
 import cn.xueden.common.log.annotation.XudenOtherSystemLog;
 
+import cn.xueden.edu.dto.PayTypeDto;
 import cn.xueden.edu.service.*;
-import cn.xueden.wechat.utils.ConstantPropertiesUtil;
-import cn.xueden.wechat.utils.WxPayUtil;
+import cn.xueden.wechat.config.WechatConfig;
+import cn.xueden.wechat.dto.AmountDto;
+import cn.xueden.wechat.dto.WxOrderDto;
+import cn.xueden.wechat.service.WxPayService;
+
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -19,6 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.math.BigDecimal;
 import java.util.List;
 
 /**功能描述：前台课程详情控制层
@@ -58,6 +63,18 @@ public class EduDetailsController {
 
     @Autowired
     private IEduEnvironmenParamService eduEnvironmenParamService;
+
+    @Autowired
+    private WxPayService wxPayService;
+
+    @Autowired
+    private WechatConfig wechatConfig;
+
+    @Autowired
+    private AliPayService aliPayService;
+
+    @Autowired
+    private AliPayConfig aliPayConfig;
 
     /**
      * 编辑课程
@@ -138,7 +155,8 @@ public class EduDetailsController {
     @PostMapping("/pay/{orderNo}")
     @XudenOtherSystemLog("购买课程付款")
     public RestResponse pay(@PathVariable String orderNo,
-                            HttpServletRequest request) {
+                            @RequestBody PayTypeDto payType,
+                            HttpServletRequest request) throws Exception {
         String token = request.getHeader("Authorization");
         if(token==null||token.equals("null")){
             return RestResponse.failure("付款失败，请先登录！");
@@ -147,6 +165,9 @@ public class EduDetailsController {
         EduMemberBuyCourse pay=memberBuyCourseService.getByOrderNumber(orderNo);
         if(pay==null){
             return RestResponse.failure("付款失败，订单不存在！");
+        }else{
+            pay.setPayChannel(payType.getPayType());
+            memberBuyCourseService.updatePayment(pay);
         }
 
         // 获取课程信息
@@ -157,11 +178,37 @@ public class EduDetailsController {
 
 
         // 生成付款链接
-        String code = WxPayUtil.nativePay(orderNo,pay.getPrice().toString(),"购买【"+eduCourseVO.getTitle()+"】课程", ConstantPropertiesUtil.YUNGOUORETURNURLCOURSE);
+        AmountDto amount = new AmountDto();
+        BigDecimal num1 = new BigDecimal(100);
+        BigDecimal result3 = num1.multiply(pay.getPrice());
 
-        //String code = "222222";
+        amount.setTotal(result3.intValue());// 单位是分
+        WxOrderDto wxOrderDto = new WxOrderDto();
+        wxOrderDto.setAmount(amount);
+        wxOrderDto.setOut_trade_no(""+orderNo+"");
+
+        wxOrderDto.setDescription("购买【"+eduCourseVO.getTitle()+"】课程");
+        wxOrderDto.setNotify_url(wechatConfig.getNotifyCourseUrl());
+        wxOrderDto.setMchid(wechatConfig.getMchId());
+        wxOrderDto.setAppid(wechatConfig.getAppId());
+        String code="";
+        if(payType.getPayType().equalsIgnoreCase("wxpay")){ // 使用微信支付
+            code = wxPayService.CreateNativeOrder(wxOrderDto);
+        }else{ // 使用支付宝支付
+           String responseAliPay = aliPayService.alipayFaceToFacePrecreate(wxOrderDto.getDescription(),orderNo,pay.getPrice().toString());
+            if(responseAliPay!=null){
+                JSONObject jsonObject = JSONObject.parseObject(responseAliPay);
+                String alipay_trade_precreate_response = jsonObject.getString("alipay_trade_precreate_response");
+                JSONObject jsonObject1 = JSONObject.parseObject(alipay_trade_precreate_response);
+                code = jsonObject1.toJSONString();
+            }
+        }
+
+
+
         System.out.println("返回支付信息："+code);
-        return RestResponse.success(code).setCode(200);
+        JSONObject jsonObject = JSONObject.parseObject(code);
+        return RestResponse.success().setData(jsonObject).setCode(200);
 
     }
 
@@ -238,7 +285,8 @@ public class EduDetailsController {
     @PostMapping("/vipPay/{orderNo}")
     @XudenOtherSystemLog("购买VIP付款")
     public RestResponse vipPay(@PathVariable String orderNo,
-                               HttpServletRequest request) {
+                               @RequestBody PayTypeDto payType,
+                               HttpServletRequest request) throws Exception {
         String token = request.getHeader("Authorization");
         if(token==null||token.equals("null")){
             return RestResponse.failure("付款失败，请先登录！");
@@ -248,13 +296,45 @@ public class EduDetailsController {
         EduMemberBuyVip eduMemberBuyVip = memberBuyVipService.getByOrderNumber(orderNo);
         if(eduMemberBuyVip==null){
             return RestResponse.failure("付款失败，请稍候再试！");
+        }else {
+            eduMemberBuyVip.setPayChannel(payType.getPayType());
+            memberBuyVipService.updatePayment(eduMemberBuyVip);
+        }
+
+        EduVipType dbEduVipType = eduVipTypeService.getById(eduMemberBuyVip.getVipId());
+        if(dbEduVipType==null){
+            return RestResponse.failure("付款失败，请稍候再试！");
         }
 
         // 生成付款链接
-        String code = WxPayUtil.nativePay(orderNo,""+eduMemberBuyVip.getPrice()+"",eduMemberBuyVip.getRemarks(),ConstantPropertiesUtil.YUNGOUORETURNURLVIP);
-        //String code = "222222";
+        AmountDto amount = new AmountDto();
+        BigDecimal num1 = new BigDecimal(100);
+        BigDecimal result3 = num1.multiply(eduMemberBuyVip.getPrice());
+
+        amount.setTotal(result3.intValue());// 单位是分
+        WxOrderDto wxOrderDto = new WxOrderDto();
+        wxOrderDto.setAmount(amount);
+        wxOrderDto.setOut_trade_no(""+orderNo+"");
+
+        wxOrderDto.setDescription("用户购买【"+dbEduVipType.getName()+"】");
+        wxOrderDto.setNotify_url(wechatConfig.getNotifyVipUrl());
+        wxOrderDto.setMchid(wechatConfig.getMchId());
+        wxOrderDto.setAppid(wechatConfig.getAppId());
+        String code="";
+        if(payType.getPayType().equalsIgnoreCase("wxpay")){ // 使用微信支付
+            code = wxPayService.CreateNativeOrder(wxOrderDto);
+        }else{ // 使用支付宝支付
+            String responseAliPay = aliPayService.alipayFaceToFacePrecreate(wxOrderDto.getDescription(),orderNo,eduMemberBuyVip.getPrice().toString(),aliPayConfig.getNotifyVipUrl());
+            if(responseAliPay!=null){
+                JSONObject jsonObject = JSONObject.parseObject(responseAliPay);
+                String alipay_trade_precreate_response = jsonObject.getString("alipay_trade_precreate_response");
+                JSONObject jsonObject1 = JSONObject.parseObject(alipay_trade_precreate_response);
+                code = jsonObject1.toJSONString();
+            }
+        }
         System.out.println("返回支付信息："+code);
-        return RestResponse.success(code).setCode(200);
+        JSONObject jsonObject = JSONObject.parseObject(code);
+        return RestResponse.success().setData(jsonObject).setCode(200);
 
     }
 

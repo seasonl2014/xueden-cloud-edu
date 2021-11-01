@@ -175,7 +175,7 @@ public class VodServiceImpl implements IVodService {
      * @return
      */
     @Override
-    public String batchUploadAliyunVideoById(MultipartFile file, Long id, RedisService redisService, String fileKey) {
+    public String batchUploadAliyunVideoById(MultipartFile file, Long id, RedisService redisService, String fileKey,Long teacherId) {
 
         try {
             EduVideo eduVideo = new EduVideo();
@@ -241,6 +241,12 @@ public class VodServiceImpl implements IVodService {
             eduVideo.setChapterId(eduChapter.getId());
             eduVideo.setTitle(title);
             eduVideo.setCourseId(eduCourse.getId());
+
+            if(teacherId!=null){
+                eduVideo.setCreateId(teacherId);
+                eduVideo.setUpdateId(teacherId);
+            }
+
             eduVideoDao.insert(eduVideo);
             return response.getVideoId();
 

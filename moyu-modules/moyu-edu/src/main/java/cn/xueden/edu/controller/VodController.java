@@ -3,11 +3,13 @@ package cn.xueden.edu.controller;
 import cn.xueden.alivod.utils.AliyunVODSDKUtils;
 import cn.xueden.alivod.utils.ConstantPropertiesUtil;
 import cn.xueden.common.core.edu.domain.EduVideo;
+import cn.xueden.common.core.edu.vo.EduMemberVO;
 import cn.xueden.common.core.utils.RestResponse;
 import cn.xueden.common.log.annotation.XudenOtherSystemLog;
 import cn.xueden.common.redis.service.RedisService;
 import cn.xueden.common.security.annotation.PreAuthorize;
 
+import cn.xueden.common.security.service.TokenService;
 import cn.xueden.edu.service.IEduVideoService;
 import cn.xueden.edu.service.IVodService;
 import com.aliyuncs.DefaultAcsClient;
@@ -42,6 +44,9 @@ public class VodController {
 
     @Autowired
     private IVodService vodService;
+
+    @Autowired
+    private TokenService tokenService;
 
     /**
      * 重置上传进度
@@ -126,6 +131,18 @@ public class VodController {
 
         //调用方法实现视频上传，返回上传之后的视频id
         try {
+            EduMemberVO eduMemberVO = null;
+            Long teacherId = null;
+            String token = request.getHeader("Authorization");
+            if(token!=null&&!token.equals("null")){
+                //根据token,获取登录会员信息
+                eduMemberVO = tokenService.getLoginMember();
+                if(eduMemberVO!=null){
+                    teacherId = eduMemberVO.getTeacherId();
+                }
+            }
+            //根据token,获取登录会员信息
+
 
             Map<String,Object> map = new HashMap<>();
 
@@ -135,12 +152,12 @@ public class VodController {
                 if(eduVideo!=null){
                     return RestResponse.success("极速秒传完成");
                 }else{
-                    String videoId = vodService.batchUploadAliyunVideoById(file,id,redisService,fileKey);
+                    String videoId = vodService.batchUploadAliyunVideoById(file,id,redisService,fileKey,teacherId);
                     map.put("videoId",videoId);
                     return RestResponse.success("上传成功").setData(map);
                 }
             }else {
-                String videoId = vodService.batchUploadAliyunVideoById(file,id,redisService,fileKey);
+                String videoId = vodService.batchUploadAliyunVideoById(file,id,redisService,fileKey,teacherId);
                 map.put("videoId",videoId);
                 return RestResponse.success("上传成功").setData(map);
             }

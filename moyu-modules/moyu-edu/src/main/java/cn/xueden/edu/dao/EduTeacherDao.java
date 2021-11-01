@@ -2,6 +2,7 @@ package cn.xueden.edu.dao;
 
 import cn.xueden.common.core.edu.domain.EduTeacher;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.springframework.stereotype.Repository;
 /*import com.baomidou.mybatisplus.mapper.BaseMapper;*/
 
 /**
@@ -10,5 +11,6 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * @Description:cn.xueden.edu.dao
  * @version:1.0
  */
+@Repository
 public interface EduTeacherDao extends BaseMapper<EduTeacher> {
 }

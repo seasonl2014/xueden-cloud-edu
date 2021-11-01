@@ -9,5 +9,6 @@ import org.springframework.data.elasticsearch.repository.ElasticsearchRepository
  * @Description:cn.xueden.edu.dao
  * @version:1.0
  */
+
 public interface EduCourseElasticsearchDao extends ElasticsearchRepository<CourseESItem, Long> {
 }

@@ -24,6 +24,7 @@
         <module>moyu-common-alivod</module>
         <module>moyu-common-wechatpay</module>
         <module>moyu-common-elasticsearch</module>
+        <module>moyu-common-alipay</module>
     </modules>
 
 

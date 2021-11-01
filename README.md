@@ -1,4 +1,26 @@
-#  xueden-cloud-edu 在线教育平台
+#  xueden-cloud-edu 学灯网在线教育平台
+
+<p align=center>
+  <a href="http://www.xueden.cn">
+    <img src="https://gitee.com/77jubao2015/moyu-cloud/blob/dev1.0/images/logo.7e4f5e27.png" alt="学灯网" style="width:200px;height:200px">
+  </a>
+</p>
+<p align=center>
+   学灯网，一个基于微服务架构的前后端分离一站式在线教育平台
+</p>
+<p align="center">
+<a target="_blank" href="https://gitee.com/77jubao2015/moyu-cloud">
+    	<img src="https://img.shields.io/hexpm/l/plug.svg" ></img>
+		<img src="https://img.shields.io/badge/JDK-1.8+-green.svg" ></img>
+        <img src="https://img.shields.io/badge/springboot-2.3.4.RELEASE-green" ></img>
+<img src="https://img.shields.io/badge/SpringCloud-Hoxton.RELEASE-brightgreen" ></img>
+<img src="https://img.shields.io/badge/SpringCloud-alibaba.2.2.3.RELEASE-brightgreen" ></img>
+<img src="https://img.shields.io/badge/vue-2.5.17-green" ></img>
+<img src="https://img.shields.io/badge/vue-3.0.0-green" ></img>
+<img src="https://img.shields.io/badge/swagger-3.0.0-brightgreen" ></img>
+<img src="https://img.shields.io/badge/mybatis--plus-3.1.2-green" ></img>
+</a></p>
+
 
 
 # 项目介绍
@@ -15,7 +37,8 @@ xueden-cloud-edu（学灯网）是基于springcloud alibaba+vue3.0整合开发�
 
 # 前端项目
 
-前端项目地址( [xueden-cloud-edu-vue3-admin](https://github.com/seasonl2014/xueden-cloud-edu-vue3-admin))
+* 前端后台管理项目地址github:( [xueden-cloud-edu-vue3-admin](https://github.com/seasonl2014/xueden-cloud-edu-vue3-admin))
+* 前端讲师平台项目地址gitee:([xueden-cloud-edu-vue-teacher](https://gitee.com/77jubao2015/xueden-cloud-edu-vue-teacher))
 
 # 技术文档
 - 讨论加群：qq群①：601212472   
@@ -45,7 +68,9 @@ cn.moyu
 ├── moyu-auth            // 认证中心 [8000]
 ├── moyu-api             // 接口模块
 │       └── moyu-api-system                          // 系统接口
+        └── moyu-api-system                          // 教育微服务接口
 ├── moyu-common          // 通用模块
+│		└── moyu-common-alipay                       // 支付宝支付模块 
 │		└── moyu-common-alivod                       // 阿里云视频点播 
 │       └── moyu-common-core                         // 核心模块
 │       └── moyu-common-elasticsearch                // 搜索模块
@@ -117,8 +142,36 @@ cn.moyu
 ```
 
 # 更新日志
-## 2020-2-21 xueden-cloud-edu版本发布
+## 2021-10-30
+
+* 整合geetest滑动验证码，防止注册短信验证码恶意盗刷
+
+  
+
+## 2021-5-21
+
+* 修改若干Bug
+
+  
+
+## 2021-4-21
+
+* 整合微信支付和支付宝支付
+
+
+
+## 2021-3-21 
+
+* 新增讲师平台功能
+
+  
+
+## 2021-2-21 
+
+xueden-cloud-edu版本发布
+
 # 版权声明
+
 xueden-cloud-edu使用 Apache-2.0 License 协议.
 
 商业使用请联系作者授权QQ：11184629 ，授权费用：1999元，授权后可以二次开发、销售，无需再交钱，也可以闭源。
@@ -130,6 +183,38 @@ xueden-cloud-edu使用 Apache-2.0 License 协议.
 
 
 前台演示地址：http://www.xueden.cn/  测试请自行注册账号即可
+
+
+
+讲师平台演示地址： http://teacher.xueden.cn/  测试请自行注册账号即可
+
+
+
+## 赞赏
+
+**服务器**和**域名**等服务的购买和续费都会**产生一定的费用**，为了**维持项目的正常运作**，如果觉得本项目**对您有帮助**的话，欢迎朋友能够**给予一些支持**，将用于**提升服务器配置**，感谢小伙伴们的支持（ **ps**: 小伙伴赞赏的时候可以备注一下下~）
+
+|                      微信                      |                支付宝                |
+| :--------------------------------------------: | :----------------------------------: |
+| ![微信打赏](images/wx.jpg) | ![支付宝打赏](images/zfb.jpg) |
+
+
+
+# 项目截图
+
+
+
+![v1](images/v1.jpg)
+
+
+
+![v2](images/v2-1635593960636.jpg)
+
+
+
+![v3](images/v3-1635593969463.jpg)
+
+
 
 
 

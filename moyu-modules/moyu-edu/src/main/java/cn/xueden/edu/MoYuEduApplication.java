@@ -5,6 +5,7 @@ import cn.xueden.common.security.annotation.EnableMoYuFeignClients;
 import cn.xueden.common.swagger.annotation.EnableCustomSwagger2;
 import org.springframework.boot.SpringApplication;
 import org.springframework.cloud.client.SpringCloudApplication;
+import org.springframework.scheduling.annotation.EnableAsync;
 
 /**
  * 在线教育模块
@@ -14,6 +15,7 @@ import org.springframework.cloud.client.SpringCloudApplication;
 @EnableMoYuFeignClients
 @EnableCustomSwagger2
 @SpringCloudApplication
+@EnableAsync
 public class MoYuEduApplication
 {
     public static void main( String[] args )

@@ -1,0 +1,6 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+    cn.xueden.alipay.config.AliPayConfig,\
+    cn.xueden.alipay.service.AliPayService,\
+    cn.xueden.alipay.config.InitConfig
+
+  

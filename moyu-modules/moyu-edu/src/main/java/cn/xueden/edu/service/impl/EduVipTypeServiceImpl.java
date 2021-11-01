@@ -175,6 +175,13 @@ public class EduVipTypeServiceImpl extends ServiceImpl<EduVipTypeDao, EduVipType
 
         EduMemberBuyVip dbEduMemberBuyVip = eduMemberBuyVipDao.selectOne(eduMemberBuyVipEntityWrapper);
         if(dbEduMemberBuyVip!=null){//已经购买过该VIP，直接返回信息
+
+            if(dbEduMemberBuyVip.getIsPayment()==0){// 待付款
+                String orderNo= IdUtils.createOrderNumber();
+                dbEduMemberBuyVip.setOrderNo(orderNo);
+                eduMemberBuyVipDao.updateById(dbEduMemberBuyVip);
+            }
+
             return dbEduMemberBuyVip;
         }
 
