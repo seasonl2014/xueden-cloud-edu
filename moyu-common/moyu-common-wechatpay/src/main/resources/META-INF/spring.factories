@@ -1,6 +1,5 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
     cn.xueden.wechat.config.WechatConfig,\
-    cn.xueden.wechat.service.WxPayService,\
-    cn.xueden.wechat.utils.ConstantPropertiesUtil
+    cn.xueden.wechat.service.WxPayService
 
   

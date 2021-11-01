@@ -14,8 +14,7 @@ import cn.xueden.wechat.config.WechatConfig;
 import cn.xueden.wechat.dto.AmountDto;
 import cn.xueden.wechat.dto.WxOrderDto;
 import cn.xueden.wechat.service.WxPayService;
-import cn.xueden.wechat.utils.ConstantPropertiesUtil;
-import cn.xueden.wechat.utils.WxPayUtil;
+
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import io.swagger.annotations.Api;

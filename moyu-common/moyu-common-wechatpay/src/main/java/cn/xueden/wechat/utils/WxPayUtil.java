@@ -2,7 +2,7 @@ package cn.xueden.wechat.utils;
 
 import com.wechat.pay.contrib.apache.httpclient.WechatPayHttpClientBuilder;
 import com.wechat.pay.contrib.apache.httpclient.util.PemUtil;
-import com.yungouos.pay.wxpay.WxPay;
+
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.springframework.stereotype.Component;
 
@@ -19,24 +19,7 @@ import java.util.List;
  */
 @Component
 public class WxPayUtil {
-    /**
-     * 微信扫码支付
-     * @return
-     */
-    public static String nativePay(String orderNo,String totalFee,String remark,String notifyUrl){
 
-        String code =  WxPay.nativePay(orderNo,
-                totalFee,
-                ConstantPropertiesUtil.YUNGOUOSWECHATMCHID,
-                remark,"1",
-                null,notifyUrl,
-                null,null,
-                "0",null,ConstantPropertiesUtil.YUNGOUOSKEY);
-
-        System.out.println("返回支付信息："+code);
-        return code;
-
-    }
 
     /**
      *
