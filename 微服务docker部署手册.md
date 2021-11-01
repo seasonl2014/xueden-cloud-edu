@@ -172,7 +172,7 @@ docker pull bladex/sentinel-dashboard
 
 
 ```shell
-docker run --name sentinel --network xueden-network  -d -p 8858:8858 -d  bladex/sentinel-dashboard
+docker run --name sentinel --network xueden  -d -p 8858:8858 -d  bladex/sentinel-dashboard
 ```
 
 默认账号和密码都是：sentinel
@@ -198,6 +198,6 @@ docker pull goodym/moyu-gateway:1.0
 ## 6.2 运行网关微服务
 
 ```shell
-docker run --network xueden-network --restart always --name gateway -it -p 7000:7000 goodym/moyu-gateway:1.0
+docker run --network xueden --restart always --name gateway -it -p 7000:7000 goodym/moyu-gateway:1.0
 ```
 

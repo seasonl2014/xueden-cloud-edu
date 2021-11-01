@@ -9,20 +9,20 @@ spring:
     name: moyu-edu
   profiles:
     # 环境配置
-    active: prod
+    active: dev
   cloud:
     nacos:
       discovery:
         # 服务注册地址
-        server-addr: xueden-network:8848
+        server-addr: nacos:8848
       config:
         # 配置中心地址
-        server-addr: xueden-network:8848
+        server-addr: nacos:8848
         # 配置文件格式
         file-extension: yml
         # 共享配置
         shared-dataids: application-${spring.profiles.active}.${spring.cloud.nacos.config.file-extension}
         #本地 默认为Public命名空间,可以省略不写，新建的命名空间，需要使用命名空间ID， 不能使用名称
-        namespace: xueden-edu-prod
+        namespace: 5c3c4829-f937-4d50-aec1-95f0afc1ef73
         #指定配置群组 --如果是Public命名空间 则可以省略群组配置
         group: EDU_GROUP
