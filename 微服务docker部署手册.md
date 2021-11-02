@@ -582,10 +582,65 @@ docker-compose up  nginx
 
 ![image-20211101204846642](images/image-20211101204846642.png)
 
-* 新建一个edu.conf文件，如下所示：
+* 新建一个edu.conf文件
 
+  在/data/nginx/conf.d目录下创建edu.conf文件，如下所示：
+  
   ```nginx
+server {
+      listen       80;
+      listen  [::]:80;
+      server_name  192.168.56.12;
+  
+      location / {
+          root   /usr/share/nginx/html/xueden-cloud-edu-vue-portal/;
+          try_files $uri $uri/ /index.html;
+      }
+  	
+  	location /edu {
+  				proxy_pass http://192.168.56.12:7000/edu;
+  				proxy_set_header   Host    $host:$server_port;
+  				proxy_set_header   X-Real-IP   $remote_addr; 
+  				proxy_set_header   X-Forwarded-For $proxy_add_x_forwarded_for; 
+  			}
+  	
+  	location /auth {  
+  					proxy_pass http://192.168.56.12:7000/auth;
+  					proxy_set_header   Host    $host:$server_port;
+  					proxy_set_header   X-Real-IP   $remote_addr; 
+  					proxy_set_header   X-Forwarded-For $proxy_add_x_forwarded_for; 
+  				}
+  	location /captcha {
+  					proxy_pass http://192.168.56.12:7000/captcha;
+  					proxy_set_header   Host    $host:$server_port;
+  					proxy_set_header   X-Real-IP   $remote_addr; 
+  					proxy_set_header   X-Forwarded-For $proxy_add_x_forwarded_for; 
+  				}
+  
+      error_page   500 502 503 504  /50x.html;
+      location = /50x.html {
+          root   /usr/share/nginx/html;
+      }
+  
+     
+  
+   
+  
+  
+  }
+  
   
   ```
-
   
+  * 重新启动nginx：
+  
+    ```shell
+    docker restart nginx
+    ```
+  
+    测试账号：13733619009
+  
+    测试密码：aA123456
+
+## 11.3 部署系统管理前端项目
+
