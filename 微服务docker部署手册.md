@@ -460,5 +460,132 @@ docker-compose up -d edu
 
 
 
-# 
+#  第10章 安装nginx
 
+## 10.1 修改docker-compose.yml文件
+
+添加如下代码：
+
+```yaml
+nginx:
+    restart: always
+    container_name: nginx
+    image: nginx:1.21.3
+    ports:
+      - "80:80"
+    volumes:
+      - /usr/local/moyu:/usr/share/nginx/html
+    networks:
+      - xueden
+```
+
+## 10.2 启动nginx
+
+输入如下命令：
+
+```shell
+docker-compose up  nginx
+
+```
+
+
+
+## 10.3 复制配置文件到宿主机
+
+输入如下命令：
+
+```shell
+docker cp -a nginx:/etc/nginx/ /data/
+```
+
+
+
+## 10.4 挂载配置文件
+
+在 volumes中添加如下代码：
+
+```shell
+- /data/nginx/:/etc/nginx/
+```
+
+完整代码如下所示：
+
+```yaml
+nginx:
+    restart: always
+    container_name: nginx
+    image: nginx:1.21.3
+    ports:
+      - "80:80"
+    volumes:
+      - /data/nginx/:/etc/nginx/
+      - /usr/local/moyu:/usr/share/nginx/html
+    networks:
+      - xueden
+```
+
+
+
+重新运行命令：
+
+```shell
+docker-compose up  nginx
+```
+
+# 第11章 部署前端项目
+
+## 11.1 部署讲师平台前端项目xueden-cloud-edu-vue-techer
+
+* 修改base_url下的api请求基础路径，如下图所示：
+
+  ![](images/image-20211101203746134.png)
+
+* 打包系统后台前端项目，并上传到/usr/local/moyu文件夹下
+
+![image-20211101200635313](images/image-20211101200635313.png)
+
+* 修改hosts文件，添加如下映射
+
+  ```shell
+  192.168.56.12   gateway
+  ```
+
+  其中192.168.56.12改成自己的ip地址
+
+
+
+* 在浏览器输入访问地址：http://192.168.56.12/xueden-edu-teacher-pro/#/login?redirect=/dashboard
+
+
+
+![image-20211101200737174](images/image-20211101200737174.png)
+
+
+
+测试账号：13733619009
+
+测试密码：aA123456
+
+
+
+
+
+
+
+## 11.2 部署门户前端项目
+
+* 门户前端目前暂时没有开源，大家可以使用编译后的门户前端项目，在doc目录下前端门户网站
+
+![image-20211101203900908](images/image-20211101203900908.png)
+
+* 把它上传到/usr/local/moyu文件夹下
+
+![image-20211101204846642](images/image-20211101204846642.png)
+
+* 新建一个edu.conf文件，如下所示：
+
+  ```nginx
+  
+  ```
+
+  
