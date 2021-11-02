@@ -644,3 +644,12 @@ server {
 
 ## 11.3 部署系统管理前端项目
 
+* 修改.env.production文件，如图所示：
+
+  ![image-20211102182456846](images/image-20211102182456846.png)
+
+* 打包后把它上传到/usr/local/moyu文件夹下
+
+  
+
+![](images/image-20211102182600009.png)
