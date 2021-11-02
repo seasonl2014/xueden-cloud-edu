@@ -1,0 +1,111 @@
+version: "3.2"
+services:
+  redis:
+    restart: always
+    container_name: redis # 给容器起名 相当于--name
+    image: redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - /data/redis/data:/data
+      - /data/redis/conf/redis.conf:/etc/redis/redis.conf
+    networks:
+      - xueden
+    command: "redis-server --appendonly yes"
+  mysql:
+    restart: always
+    container_name: mysql
+    image: mysql:5.7
+    ports:
+      - "3306:3306"
+    volumes:
+      - /data/mysql/log:/var/log/mysql
+      - /data/mysql/data:/var/lib/mysql
+      - /data/mysql/conf:/etc/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+    networks:
+      - xueden
+  nginx:
+    restart: always
+    container_name: nginx
+    image: nginx:1.21.3
+    ports:
+      - "80:80"
+    volumes:
+      - /data/nginx/:/etc/nginx/
+      - /usr/local/moyu:/usr/share/nginx/html
+    networks:
+      - xueden
+  nacos:
+    restart: always
+    container_name: nacos
+    image: nacos/nacos-server
+    ports:
+    - "8848:8848"
+    networks:
+      - xueden
+    env_file:
+      - nacos.env
+    depends_on:
+      - mysql
+  gateway:
+    build:
+      context: moyu-gateway # 指定上下文目录dockerfile所在目录
+      dockerfile: Dockerfile
+    container_name: gateway
+    ports:
+      - "7000:7000"
+    networks:
+      - xueden
+    depends_on:
+      - nacos
+      - redis
+      - mysql
+  auth:
+    build:
+      context: moyu-auth # 指定上下文目录dockerfile所在目录
+      dockerfile: Dockerfile
+    container_name: auth
+    ports:
+      - "8000:8000"
+    networks:
+      - xueden
+    depends_on:
+      - nacos
+      - mysql
+      - redis
+  edu:
+    build:
+      context: moyu-edu # 指定上下文目录dockerfile所在目录
+      dockerfile: Dockerfile
+    container_name: edu
+    ports:
+      - "6000:6000"
+    networks:
+      - xueden
+    depends_on:
+      - nacos
+      - mysql
+      - redis
+    volumes:
+      - /usr/local/xueden-edu:/usr/local/xueden-edu:ro
+  system:
+    build:
+      context: moyu-system # 指定上下文目录dockerfile所在目录
+      dockerfile: Dockerfile
+    container_name: system
+    ports:
+      - "9000:9000"
+    networks:
+      - xueden
+    depends_on:
+      - nacos
+      - mysql
+      - redis
+
+
+networks:
+  xueden:
+    external:
+      true
