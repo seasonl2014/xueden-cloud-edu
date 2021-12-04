@@ -96,6 +96,7 @@ public class RedisConfig extends CachingConfigurerSupport {
         redisCacheConfigurationMap.put("getRecommendedCache", this.getRedisCacheConfigurationWithTtl(86400)); // 24小时后失效
         redisCacheConfigurationMap.put("getMemberTotal", this.getRedisCacheConfigurationWithTtl(86400)); // 24小时后失效
         redisCacheConfigurationMap.put("getIndexColumnCourses", this.getRedisCacheConfigurationWithTtl(86400)); // 24小时后失效
+        redisCacheConfigurationMap.put("findIndexCourseList", this.getRedisCacheConfigurationWithTtl(86400)); // 24小时后失效
         return redisCacheConfigurationMap;
     }
 

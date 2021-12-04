@@ -161,8 +161,10 @@ public class EduCourseController {
             return RestResponse.failure("更新失败");
         }else{
             EduCourse dbEduCourse = educourseService.getById(id);
-            if(loginUser.getUserid()!=dbEduCourse.getCreateId()){
-                return RestResponse.failure("更新失败,不能更新他人的课程");
+            if(!loginUser.getUsername().equals("admin")){
+                if(loginUser.getUserid()!=dbEduCourse.getCreateId()){
+                    return RestResponse.failure("更新失败,不能更新他人的课程");
+                }
             }
 
         }
@@ -196,9 +198,14 @@ public class EduCourseController {
             return RestResponse.failure("更新失败");
         }else{
             EduCourse dbEduCourse = educourseService.getById(id);
-            if(loginUser.getUserid()!=dbEduCourse.getCreateId()){
-                return RestResponse.failure("更新失败,不能更新他人的课程");
+
+            if(!loginUser.getUsername().equals("admin")){
+                if(loginUser.getUserid()!=dbEduCourse.getCreateId()){
+                    return RestResponse.failure("更新失败,不能更新他人的课程");
+                }
             }
+
+
 
         }
         eduCourse.setId(id);

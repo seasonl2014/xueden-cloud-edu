@@ -18,6 +18,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -34,6 +35,7 @@ import java.util.*;
  * @version:1.0
  */
 @Service
+@CacheConfig(cacheNames = "eduCourse")
 public class EduCourseServiceImpl extends ServiceImpl<EduCourseDao, EduCourse> implements IEduCourseService {
 
 
@@ -75,6 +77,7 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseDao, EduCourse> i
      * @return
      */
     @Override
+    @Cacheable(value = "findIndexCourseList",unless = "#result == null or #result.size() == 0")
     public List<EduCourseVO> findIndexCourseList(Integer pageNum, Integer pageSize, EduCourseVO eduCourseVO) {
 
         List<EduCourse> eduCourses = new ArrayList<EduCourse>();
