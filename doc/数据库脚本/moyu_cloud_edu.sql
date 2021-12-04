@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50731
 File Encoding         : 65001
 
-Date: 2021-02-21 12:47:12
+Date: 2021-12-01 14:58:56
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -69,6 +69,31 @@ INSERT INTO `edu_banner` VALUES ('1', 'http://localhost:9524/details/49', 'sprin
 INSERT INTO `edu_banner` VALUES ('2', 'http://localhost:9524/details/47', '图书借阅管理系统', 'http://imgoss.goodym.cn/goodymimgupload/202007/1593822076416.jpg', '0', '2020-05-22 07:56:26', null, null, null, '0', null);
 
 -- ----------------------------
+-- Table structure for edu_cashout_details
+-- ----------------------------
+DROP TABLE IF EXISTS `edu_cashout_details`;
+CREATE TABLE `edu_cashout_details` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '自增ID',
+  `teacher_id` bigint(20) NOT NULL DEFAULT '0' COMMENT '讲师ID',
+  `bank_card` varchar(255) NOT NULL COMMENT '提款账号',
+  `name` varchar(255) CHARACTER SET utf8mb4 NOT NULL COMMENT '开户人',
+  `cash_out` double(10,2) NOT NULL DEFAULT '0.00' COMMENT '提现金额',
+  `status` int(1) NOT NULL DEFAULT '0' COMMENT '提现状态，0表示待审核，1表示付款完成',
+  `update_by` bigint(20) DEFAULT NULL COMMENT '更新人',
+  `create_by` bigint(20) DEFAULT NULL COMMENT '创建人',
+  `create_date` datetime NOT NULL COMMENT '提现申请时间',
+  `update_date` datetime DEFAULT NULL COMMENT '审核付款时间',
+  `del_flag` tinyint(1) DEFAULT '0' COMMENT '逻辑删除 1（true）已删除， 0（false）未删除',
+  `remarks` text CHARACTER SET utf8mb4 COMMENT '备注',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1 COMMENT='讲师提现记录表';
+
+-- ----------------------------
+-- Records of edu_cashout_details
+-- ----------------------------
+INSERT INTO `edu_cashout_details` VALUES ('2', '2', '456321654987', '张三', '10.00', '0', '2', '2', '2021-05-28 19:03:25', '2021-05-28 19:03:25', '0', null);
+
+-- ----------------------------
 -- Table structure for edu_chapter
 -- ----------------------------
 DROP TABLE IF EXISTS `edu_chapter`;
@@ -86,7 +111,7 @@ CREATE TABLE `edu_chapter` (
   `remarks` varchar(255) DEFAULT NULL COMMENT '备注说明',
   PRIMARY KEY (`id`),
   KEY `idx_course_id` (`course_id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=136 DEFAULT CHARSET=utf8mb4 COMMENT='课程';
+) ENGINE=InnoDB AUTO_INCREMENT=139 DEFAULT CHARSET=utf8mb4 COMMENT='课程';
 
 -- ----------------------------
 -- Records of edu_chapter
@@ -226,6 +251,9 @@ INSERT INTO `edu_chapter` VALUES ('132', '55', '第5章 mybatis高级查询', '1
 INSERT INTO `edu_chapter` VALUES ('133', '55', '第6章 mybatis缓存配置', '1', '0', '2021-02-06 09:02:15', '1', '2021-02-06 09:02:15', '1', '0', null);
 INSERT INTO `edu_chapter` VALUES ('134', '56', '第1章 maven快速入门', '1', '0', '2021-02-06 09:55:27', '1', '2021-02-06 09:55:27', '1', '0', null);
 INSERT INTO `edu_chapter` VALUES ('135', '56', '第2章 Maven核心知识', '1', '0', '2021-02-06 09:55:35', '1', '2021-02-06 09:55:35', '1', '0', null);
+INSERT INTO `edu_chapter` VALUES ('136', '59', '第1章 课程介绍', '1', '0', '2021-05-25 15:32:27', '2', '2021-05-26 08:02:15', '2', '0', null);
+INSERT INTO `edu_chapter` VALUES ('137', '59', '第2章 前端框架搭建', '2', '0', '2021-05-25 15:34:23', '2', '2021-05-26 08:02:27', '2', '0', null);
+INSERT INTO `edu_chapter` VALUES ('138', '59', '第3章 后端项目搭建', '3', '0', '2021-05-26 08:22:56', '2', '2021-05-26 08:22:56', '2', '0', null);
 
 -- ----------------------------
 -- Table structure for edu_course
@@ -255,19 +283,19 @@ CREATE TABLE `edu_course` (
   `create_by` bigint(20) DEFAULT NULL,
   `update_by` bigint(20) DEFAULT NULL,
   `update_date` datetime NOT NULL COMMENT '更新时间',
-  `remarks` varchar(255) DEFAULT NULL COMMENT '课程备注',
+  `remarks` text COMMENT '课程备注',
   `del_flag` tinyint(1) DEFAULT '0' COMMENT '逻辑删除 1（true）已删除， 0（false）未删除',
   PRIMARY KEY (`id`),
   KEY `idx_title` (`title`) USING BTREE,
   KEY `idx_subject_id` (`subject_id`) USING BTREE,
   KEY `idx_teacher_id` (`teacher_id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=57 DEFAULT CHARSET=utf8mb4 COMMENT='课程';
+) ENGINE=InnoDB AUTO_INCREMENT=60 DEFAULT CHARSET=utf8mb4 COMMENT='课程';
 
 -- ----------------------------
 -- Records of edu_course
 -- ----------------------------
-INSERT INTO `edu_course` VALUES ('4', '2', '22', 'Intellij IDEA开发工具使用基础入门教程', 'Intellij IDEA基础入门教程', '9.00', '14', 'http://xuedenedu.oss-cn-qingdao.aliyuncs.com/2020/09/06/career/ae128d26-c156-4195-8ea0-4c33a9c5987633.jpg', '0', '0', '15', '0', 'Normal', '0', '5', '0', 'Intellij IDEA开发工具使用基础入门教程', 'course/c4d34b63-09aa-40ee-9ef6-313e3d1de618-2021-02-07-4.zip', '5e3900cdb90d1e0c66bb95de094885c1', '2020-09-02 08:21:35', '1', '1', '2021-02-17 09:14:44', '<p>Intellij IDEA基础入门教程</p>', '0');
-INSERT INTO `edu_course` VALUES ('34', '2', '8', 'java基础教程 第一季', 'java基础教程 第一季', '9.00', '43', 'http://alioss.xueden.cn/2021/01/24/career/238f4384-0b15-4fdf-a485-9ecf0f3e596a35.jpg', '0', '0', '2', '1', 'Normal', '0', '5', '0', 'java基础教程 第一季', null, null, '2021-01-23 19:29:18', '1', '1', '2021-02-16 22:12:50', '<p>java基础教程 第一季</p>', '0');
+INSERT INTO `edu_course` VALUES ('4', '2', '22', 'Intellij IDEA开发工具使用基础入门教程', 'Intellij IDEA基础入门教程', '1.00', '14', 'http://xuedenedu.oss-cn-qingdao.aliyuncs.com/2020/09/06/career/ae128d26-c156-4195-8ea0-4c33a9c5987633.jpg', '0', '1', '65', '0', 'Normal', '0', '5', '0', 'Intellij IDEA开发工具使用基础入门教程', 'course/c4d34b63-09aa-40ee-9ef6-313e3d1de618-2021-02-07-4.zip', '5e3900cdb90d1e0c66bb95de094885c1', '2020-09-02 08:21:35', '1', '1', '2021-05-22 09:33:44', '<p>Intellij IDEA基础入门教程</p><figure class=\"image image_resized\" style=\"width:64.33%;\"><img src=\"http://alioss.xueden.cn/2021/03/30/career/9d47c472-e8bf-412a-a605-c99e085c400518.jpg\"></figure><p>&nbsp;</p><figure class=\"image image_resized\" style=\"width:62.5%;\"><img src=\"http://alioss.xueden.cn/2021/04/02/career/131bc3ae-19ed-4ea7-b39a-ab80c05efe0510.jpg\"></figure>', '0');
+INSERT INTO `edu_course` VALUES ('34', '2', '8', 'java基础教程 第一季', 'java基础教程 第一季', '1.00', '43', 'http://alioss.xueden.cn/2021/01/24/career/238f4384-0b15-4fdf-a485-9ecf0f3e596a35.jpg', '0', '0', '6', '1', 'Normal', '0', '5', '0', 'java基础教程 第一季', null, null, '2021-01-23 19:29:18', '1', '1', '2021-05-22 09:56:42', '<p>java基础教程 第一季</p>', '0');
 INSERT INTO `edu_course` VALUES ('35', '2', '8', 'Java基础教程 第二季', 'Java基础教程 第二季', '9.00', '25', 'http://alioss.xueden.cn/2021/01/28/career/7582ef8b-958c-4e10-90ea-1ee102299ba01.jpg', '0', '0', '0', '1', 'Normal', '0', '5', '0', 'Java基础教程 第二季', null, null, '2021-01-28 11:23:36', '1', '1', '2021-02-12 10:25:34', '<p>java基础 第二季</p>', '0');
 INSERT INTO `edu_course` VALUES ('36', '2', '8', 'java基础教程 第三季', 'java基础教程 第三季', '9.00', '31', 'http://alioss.xueden.cn/2021/01/28/career/1a3d9656-a8fd-4dbc-8f0e-4a4a1d9b66de2.jpg', '0', '0', '0', '1', 'Normal', '0', '5', '0', 'java基础教程 第三季', null, null, '2021-01-28 13:15:17', '1', '1', '2021-02-12 10:26:52', '<p>java基础教程 第三季</p>', '0');
 INSERT INTO `edu_course` VALUES ('37', '2', '21', 'Mysql入门教程 第一季', 'Mysql入门教程 第一季', '0.00', '46', 'http://alioss.xueden.cn/2021/01/28/career/459340dc-e489-4f4e-945b-6a53a4e658b51.jpg', '0', '0', '80', '1', 'Normal', '1', '7', '1', 'Mysql入门教程 第一季', null, null, '2021-01-28 18:51:01', '1', '1', '2021-02-12 10:27:56', '<p>Mysql入门教程 第一季</p>', '0');
@@ -283,13 +311,50 @@ INSERT INTO `edu_course` VALUES ('46', '2', '8', 'jsp基础教程', 'jsp基础�
 INSERT INTO `edu_course` VALUES ('47', '2', '28', 'Vue+ElementUI+SSM图书借阅管理系统', 'Vue+ElementUI+SSM图书借阅管理系统', '99.00', '89', 'http://alioss.xueden.cn/2021/01/30/career/87923402-9a3c-4f18-84e6-78de3a4b522e11.jpg', '0', '0', '122', '1', 'Normal', '2', '5', '3', 'Vue+ElementUI+SSM图书借阅管理系统', 'course/6c4017df-9887-457c-af0c-43085bf74f20-2021-02-07-47.zip', '2508e63af7f255ad2451f2b4a5d03b5e', '2021-01-30 10:45:32', '1', '1', '2021-02-19 10:02:56', '<p>Vue+ElementUI+SSM图书借阅管理系统</p>', '0');
 INSERT INTO `edu_course` VALUES ('48', '2', '28', 'spring+springMVC+mybatis+jsp整合在线选课系统', '基于ssm+jsp整合在线选课系统', '99.00', '56', 'http://alioss.xueden.cn/2021/01/30/career/aed2c204-14b6-4d4e-815a-f1e630db0b9e12.jpg', '0', '1', '15', '1', 'Normal', '2', '5', '3', 'spring+springMVC+mybatis+jsp整合在线选课系统', null, null, '2021-01-30 12:26:29', '1', '1', '2021-02-14 09:31:40', '<p>spring+springMVC+mybatis+jsp整合在线选课系统</p>', '0');
 INSERT INTO `edu_course` VALUES ('49', '2', '11', '基于springboot+mybatisplus+shiro+layui整合的前后端分离权限管理系统', '基于springboot+layui整合的前后端分离权限管理系统', '199.00', '89', 'http://alioss.xueden.cn/2021/01/30/career/3fad21ef-a55d-46e4-bd41-d9c57aca253613.jpg', '0', '1', '33', '1', 'Normal', '2', '5', '3', '基于springboot+mybatisplus+shiro+layui整合的前后端分离权限管理系统', 'course/92b7b7ed-e328-4021-92b0-d05c7e18cbe3-2021-02-07-49.zip', '2508e63af7f255ad2451f2b4a5d03b5e', '2021-01-30 12:35:20', '1', '1', '2021-02-19 10:03:07', '<p>基于springboot+mybatisplus+shiro+layui整合的前后端分离权限管理系统</p>', '0');
-INSERT INTO `edu_course` VALUES ('50', '2', '11', '基于SpringBoot+Jpa+JWT+Spring Security+Vue+ElementUI前后端分离后台管理系统', '基于SpringBoot2.x+Vue2.x前后端分离后台管理系统', '199.00', '136', 'http://alioss.xueden.cn/2021/01/30/career/f391fc45-0968-49f3-a3b1-341e3b7cc3f714.jpg', '0', '0', '63', '1', 'Normal', '2', '5', '3', '基于SpringBoot+Jpa+JWT+Spring Security+Vue+ElementUI前后端分离后台管理系统', null, null, '2021-01-30 12:49:55', '1', '1', '2021-02-14 09:32:15', '<p>基于SpringBoot+Jpa+JWT+Spring Security+Vue+ElementUI前后端分离后台管理系统</p>', '0');
+INSERT INTO `edu_course` VALUES ('50', '2', '11', '基于SpringBoot+Jpa+JWT+Spring Security+Vue+ElementUI前后端分离后台管理系统', '基于SpringBoot2.x+Vue2.x前后端分离后台管理系统', '1.00', '136', 'http://alioss.xueden.cn/2021/01/30/career/f391fc45-0968-49f3-a3b1-341e3b7cc3f714.jpg', '0', '2', '102', '1', 'Normal', '2', '5', '3', '基于SpringBoot+Jpa+JWT+Spring Security+Vue+ElementUI前后端分离后台管理系统', null, null, '2021-01-30 12:49:55', '1', '1', '2021-05-22 20:20:27', '<p>基于SpringBoot+Jpa+JWT+Spring Security+Vue+ElementUI前后端分离后台管理系统</p>', '0');
 INSERT INTO `edu_course` VALUES ('51', '2', '8', 'jsp常用标签', 'jsp常用标签', '9.00', '21', 'http://alioss.xueden.cn/2021/01/30/career/cac094db-ce23-4abd-bd12-b0078a5dd21715.jpg', '0', '0', '0', '1', 'Normal', '1', '5', '0', 'jsp常用标签', null, null, '2021-01-30 13:05:37', '1', '1', '2021-02-12 10:50:02', '<p>jsp常用标签</p>', '0');
 INSERT INTO `edu_course` VALUES ('52', '2', '8', 'servlet基础教程', 'servlet基础教程', '9.00', '26', 'http://alioss.xueden.cn/2021/01/30/career/bdd6b324-8488-4e5b-8a7d-28dbabf7c1b216.jpg', '0', '0', '0', '1', 'Normal', '1', '5', '0', 'servlet基础教程', null, null, '2021-01-30 13:11:57', '1', '1', '2021-02-12 10:51:21', '<p>servlet基础教程</p>', '0');
 INSERT INTO `edu_course` VALUES ('53', '2', '28', 'spring基础教程', 'spring基础教程', '19.00', '34', 'http://alioss.xueden.cn/2021/01/30/career/9aefc9b8-8b33-43b1-b526-d86a73fb6aab17.jpg', '0', '0', '3', '1', 'Normal', '1', '5', '2', 'spring基础教程', null, null, '2021-01-30 13:17:47', '1', '1', '2021-02-17 20:18:12', '<p>spring基础教程</p>', '0');
 INSERT INTO `edu_course` VALUES ('54', '2', '28', 'springMVC基础教程', 'springMVC基础教程', '19.00', '22', 'http://alioss.xueden.cn/2021/01/30/career/e8d7866b-9027-4711-a2f4-4ab282f1795118.jpg', '0', '0', '1', '1', 'Normal', '1', '5', '2', 'springMVC基础教程', null, null, '2021-01-30 13:23:42', '1', '1', '2021-02-12 10:54:15', '<p>springMVC基础教程</p>', '0');
 INSERT INTO `edu_course` VALUES ('55', '2', '28', 'mybatis基础教程', 'mybatis基础教程', '19.00', '49', 'http://alioss.xueden.cn/2021/01/30/career/ea1a3868-c22d-450f-b2c7-413e132349eb19.jpg', '0', '0', '1', '1', 'Normal', '1', '5', '2', 'mybatis基础教程', null, null, '2021-01-30 14:59:31', '1', '1', '2021-02-14 21:26:25', '<p>mybatis基础教程</p>', '0');
-INSERT INTO `edu_course` VALUES ('56', '2', '28', 'maven基础教程', 'maven基础教程', '19.00', '9', 'http://alioss.xueden.cn/2021/01/30/career/2dd2f4ca-3c61-4701-98eb-6f0912559c8e20.jpg', '0', '0', '0', '1', 'Normal', '1', '5', '2', 'maven基础教程', null, null, '2021-01-30 15:02:47', '1', '1', '2021-02-12 10:56:43', '<p>maven基础教程</p>', '0');
+INSERT INTO `edu_course` VALUES ('56', '2', '28', 'maven基础教程', 'maven基础教程', '19.00', '9', 'http://alioss.xueden.cn/2021/01/30/career/aed2c204-14b6-4d4e-815a-f1e630db0b9e12.jpg', '0', '0', '0', '1', 'Draft', '1', '5', '2', 'maven基础教程', null, null, '2021-01-30 15:02:47', '2', '2', '2021-05-23 20:42:38', '<p>maven基础教程</p>', '0');
+INSERT INTO `edu_course` VALUES ('58', '2', '11', '这是一个非常好的课程', '这是一个非常好的课程', '1.00', '1', 'http://alioss.xueden.cn/2021/01/30/career/aed2c204-14b6-4d4e-815a-f1e630db0b9e12.jpg', '0', '0', '0', '1', 'Draft', '2', '5', '2', '这是一个非常好的课程', null, null, '2021-05-23 20:32:17', '2', '2', '2021-05-23 20:32:17', '', '0');
+INSERT INTO `edu_course` VALUES ('59', '2', '11', '基于ssm整合的图书管理系统', '基于ssm整合的图书管理系统', '1.00', '1', 'http://alioss.xueden.cn/2021/01/30/career/aed2c204-14b6-4d4e-815a-f1e630db0b9e12.jpg', '0', '0', '0', '1', 'Draft', '2', '5', '2', '基于ssm整合的图书管理系统', null, null, '2021-05-23 20:37:38', '2', '2', '2021-05-24 08:45:39', '<p>还不错的项目</p><p><img src=\"http://alioss.xueden.cn/2021/05/24/career/0c4805b7-3c95-4516-80d5-76372d16587618.jpg\" style=\"max-width:100%;\" width=\"783\" height=\"439.89\"><br></p>', '0');
+
+-- ----------------------------
+-- Table structure for edu_daily_report
+-- ----------------------------
+DROP TABLE IF EXISTS `edu_daily_report`;
+CREATE TABLE `edu_daily_report` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `create_time` datetime NOT NULL COMMENT '创建日期',
+  `date` varchar(100) NOT NULL DEFAULT '' COMMENT '日期',
+  `income_money` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '收入金额',
+  `order_num` int(10) NOT NULL DEFAULT '0' COMMENT '订单数量',
+  `day_no` varchar(100) NOT NULL DEFAULT '' COMMENT '天号',
+  `teacher_id` bigint(20) NOT NULL DEFAULT '0' COMMENT '讲师ID',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COMMENT='每日统计讲师收益和订单表';
+
+-- ----------------------------
+-- Records of edu_daily_report
+-- ----------------------------
+INSERT INTO `edu_daily_report` VALUES ('1', '2021-05-01 20:23:34', '2021-05-01', '1500.00', '3', '1日', '2');
+INSERT INTO `edu_daily_report` VALUES ('2', '2021-05-02 20:24:23', '2021-05-02', '1600.00', '7', '2日', '2');
+INSERT INTO `edu_daily_report` VALUES ('3', '2021-05-03 20:25:02', '2021-05-03', '1400.00', '5', '3日', '2');
+INSERT INTO `edu_daily_report` VALUES ('4', '2021-05-04 20:25:39', '2021-05-04', '1700.00', '9', '4日', '2');
+INSERT INTO `edu_daily_report` VALUES ('5', '2021-05-05 20:26:05', '2021-05-05', '2000.00', '10', '5日', '2');
+INSERT INTO `edu_daily_report` VALUES ('6', '2021-05-06 20:26:37', '2021-05-06', '1900.00', '8', '6日', '2');
+INSERT INTO `edu_daily_report` VALUES ('7', '2021-05-07 20:27:00', '2021-05-07', '2100.00', '11', '7日', '2');
+INSERT INTO `edu_daily_report` VALUES ('8', '2021-05-08 20:27:28', '2021-05-08', '2200.00', '12', '8日', '2');
+INSERT INTO `edu_daily_report` VALUES ('9', '2021-04-01 20:23:34', '2021-04-01', '1000.00', '5', '1日', '2');
+INSERT INTO `edu_daily_report` VALUES ('10', '2021-04-02 20:24:23', '2021-04-02', '1800.00', '6', '2日', '2');
+INSERT INTO `edu_daily_report` VALUES ('11', '2021-04-03 20:25:02', '2021-04-03', '1900.00', '9', '3日', '2');
+INSERT INTO `edu_daily_report` VALUES ('12', '2021-04-04 20:25:39', '2021-04-04', '1100.00', '12', '4日', '2');
+INSERT INTO `edu_daily_report` VALUES ('13', '2021-04-05 20:26:05', '2021-04-05', '1000.00', '5', '5日', '2');
+INSERT INTO `edu_daily_report` VALUES ('14', '2021-04-06 20:26:37', '2021-04-06', '2900.00', '3', '6日', '2');
+INSERT INTO `edu_daily_report` VALUES ('15', '2021-04-07 20:27:00', '2021-04-07', '1100.00', '7', '7日', '2');
+INSERT INTO `edu_daily_report` VALUES ('16', '2021-04-08 20:27:28', '2021-04-08', '3200.00', '8', '8日', '2');
 
 -- ----------------------------
 -- Table structure for edu_deal_money
@@ -314,7 +379,7 @@ CREATE TABLE `edu_deal_money` (
   `del_flag` tinyint(2) DEFAULT '0' COMMENT '逻辑删除 1（true）已删除， 0（false）未删除',
   `remarks` varchar(255) DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COMMENT='成交金额汇总表';
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COMMENT='成交金额汇总表';
 
 -- ----------------------------
 -- Records of edu_deal_money
@@ -322,6 +387,13 @@ CREATE TABLE `edu_deal_money` (
 INSERT INTO `edu_deal_money` VALUES ('1', '2021020900001000860020112039', '26', '199.00', '1', 'wxpay', null, null, null, null, null, '2021-02-09 20:12:09', '26', '2021-02-09 20:12:09', '26', '0', '会员购买【基于springboot+mybatisplus+shiro+layui整合的前后端分离权限管理系统】课程');
 INSERT INTO `edu_deal_money` VALUES ('3', '2021020900001000660020144547', '26', '99.00', '1', 'wxpay', null, null, null, null, null, '2021-02-09 20:15:02', '26', '2021-02-09 20:15:02', '26', '0', '会员购买【spring+springMVC+mybatis+jsp整合在线选课系统】课程');
 INSERT INTO `edu_deal_money` VALUES ('4', '2021021000001000410022133560', '26', '99.00', '2', 'wxpay', '中国', '华南', '广西壮族自治区', '北海市', '电信', '2021-02-10 22:14:24', '26', '2021-02-10 22:14:24', '26', '0', '用户加入VIP【铜牌会员】');
+INSERT INTO `edu_deal_money` VALUES ('5', '2021052200001000260009331025', '26', '1.00', '1', 'wxpay', '内网IP', '0', '0', '内网IP', '内网IP', '2021-05-22 09:33:44', '26', '2021-05-22 09:33:44', '26', '0', '会员购买【Intellij IDEA开发工具使用基础入门教程】课程');
+INSERT INTO `edu_deal_money` VALUES ('6', '2021052200001000440009413613', '26', '1.00', '1', 'wxpay', '内网IP', '0', '0', '内网IP', '内网IP', '2021-05-22 09:42:03', '26', '2021-05-22 09:42:03', '26', '0', '会员购买【基于SpringBoot+Jpa+JWT+Spring Security+Vue+ElementUI前后端分离后台管理系统】课程');
+INSERT INTO `edu_deal_money` VALUES ('7', '2021052200001000180017062770', '26', '1.00', '1', 'alipay', '内网IP', '0', '0', '内网IP', '内网IP', '2021-05-22 17:06:48', '26', '2021-05-22 17:06:48', '26', '0', '会员购买【基于SpringBoot+Jpa+JWT+Spring Security+Vue+ElementUI前后端分离后台管理系统】课程');
+INSERT INTO `edu_deal_money` VALUES ('8', '2021052200001000570020094842', '26', '1.00', '2', 'wxpay', '内网IP', '0', '0', '内网IP', '内网IP', '2021-05-22 20:11:03', '26', '2021-05-22 20:11:03', '26', '0', '用户加入VIP【铜牌会员】');
+INSERT INTO `edu_deal_money` VALUES ('9', '2021052200001000090020133856', '26', '1.00', '3', 'alipay', '内网IP', '0', '0', '内网IP', '内网IP', '2021-05-22 20:14:06', '26', '2021-05-22 20:14:06', '26', '0', '用户加入VIP【银牌会员】');
+INSERT INTO `edu_deal_money` VALUES ('10', '2021052200001000780020223236', '26', '1.00', '4', 'wxpay', '内网IP', '0', '0', '内网IP', '内网IP', '2021-05-22 20:23:03', '26', '2021-05-22 20:23:03', '26', '0', '用户加入VIP【金牌会员】');
+INSERT INTO `edu_deal_money` VALUES ('11', '2021052200001000390020274229', '26', '1.00', '5', 'alipay', '内网IP', '0', '0', '内网IP', '内网IP', '2021-05-22 20:28:08', '26', '2021-05-22 20:28:08', '26', '0', '用户加入VIP【钻石会员】');
 
 -- ----------------------------
 -- Table structure for edu_environmen_param
@@ -339,14 +411,14 @@ CREATE TABLE `edu_environmen_param` (
   `del_flag` tinyint(1) DEFAULT '0' COMMENT '逻辑删除 1（true）已删除， 0（false）未删除',
   `remarks` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=725 DEFAULT CHARSET=utf8mb4 COMMENT='环境参数表';
+) ENGINE=InnoDB AUTO_INCREMENT=736 DEFAULT CHARSET=utf8mb4 COMMENT='环境参数表';
 
 -- ----------------------------
 -- Records of edu_environmen_param
 -- ----------------------------
-INSERT INTO `edu_environmen_param` VALUES ('621', 'Tomcat', '8.0及以上的都行', '4', '2021-02-11 20:50:51', '1', '2021-02-12 10:12:05', '1', '0', null);
-INSERT INTO `edu_environmen_param` VALUES ('622', 'JDK', '1.8', '4', '2021-02-11 21:01:21', '1', '2021-02-12 10:12:05', '1', '0', null);
-INSERT INTO `edu_environmen_param` VALUES ('623', '开发工具', 'IntelliJ IDEA ', '4', '2021-02-12 10:01:55', '1', '2021-02-12 10:12:05', '1', '0', null);
+INSERT INTO `edu_environmen_param` VALUES ('621', 'Tomcat', '8.0及以上的都行', '4', '2021-02-11 20:50:51', '1', '2021-04-02 21:28:18', '1', '0', null);
+INSERT INTO `edu_environmen_param` VALUES ('622', 'JDK', '1.8', '4', '2021-02-11 21:01:21', '1', '2021-04-02 21:28:18', '1', '0', null);
+INSERT INTO `edu_environmen_param` VALUES ('623', '开发工具', 'IntelliJ IDEA ', '4', '2021-02-12 10:01:55', '1', '2021-04-02 21:28:18', '1', '0', null);
 INSERT INTO `edu_environmen_param` VALUES ('624', '开发工具', 'IntelliJ IDEA ', '34', '2021-02-12 10:22:26', '1', '2021-02-12 10:22:26', '1', '0', null);
 INSERT INTO `edu_environmen_param` VALUES ('625', 'JDK', '1.8及以上', '34', '2021-02-12 10:22:26', '1', '2021-02-12 10:22:26', '1', '0', null);
 INSERT INTO `edu_environmen_param` VALUES ('626', 'MySQL', '5.7', '34', '2021-02-12 10:22:26', '1', '2021-02-12 10:22:26', '1', '0', null);
@@ -448,6 +520,37 @@ INSERT INTO `edu_environmen_param` VALUES ('721', '开发工具', 'IntelliJ IDEA
 INSERT INTO `edu_environmen_param` VALUES ('722', 'JDK', '1.8', '56', '2021-02-12 10:56:43', '1', '2021-02-12 10:56:43', '1', '0', null);
 INSERT INTO `edu_environmen_param` VALUES ('723', 'Maven', '3.3.9', '56', '2021-02-12 10:56:43', '1', '2021-02-12 10:56:43', '1', '0', null);
 INSERT INTO `edu_environmen_param` VALUES ('724', 'Tomcat', '8.0及以上', '56', '2021-02-12 10:56:43', '1', '2021-02-12 10:56:43', '1', '0', null);
+INSERT INTO `edu_environmen_param` VALUES ('731', '数据库', 'mysql5.7', '59', '2021-05-24 13:51:32', '2', '2021-05-24 20:05:52', '2', '0', null);
+INSERT INTO `edu_environmen_param` VALUES ('732', 'jdk', '1.8', '59', '2021-05-24 13:59:11', '2', '2021-05-24 20:05:52', '2', '0', null);
+INSERT INTO `edu_environmen_param` VALUES ('733', '测试1', '测试1', '59', '2021-05-24 19:44:59', '2', '2021-05-24 19:44:59', '2', '1', null);
+INSERT INTO `edu_environmen_param` VALUES ('734', '测试2', '测试2', '59', '2021-05-24 19:44:59', '2', '2021-05-24 19:44:59', '2', '1', null);
+INSERT INTO `edu_environmen_param` VALUES ('735', 'maven', '3.5', '59', '2021-05-24 20:05:52', '2', '2021-05-24 20:05:52', '2', '0', null);
+
+-- ----------------------------
+-- Table structure for edu_income_details
+-- ----------------------------
+DROP TABLE IF EXISTS `edu_income_details`;
+CREATE TABLE `edu_income_details` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '自增ID',
+  `member_id` bigint(20) NOT NULL COMMENT '购买者ID',
+  `teacher_id` bigint(20) NOT NULL COMMENT '讲师ID',
+  `order_no` varchar(255) NOT NULL COMMENT '订单编号',
+  `course_id` bigint(20) NOT NULL COMMENT '课程ID',
+  `price` decimal(10,2) NOT NULL COMMENT '课程价格',
+  `income` decimal(10,2) NOT NULL COMMENT '课程收益',
+  `create_date` datetime DEFAULT NULL,
+  `create_by` bigint(20) DEFAULT NULL,
+  `update_by` bigint(20) DEFAULT NULL,
+  `update_date` datetime DEFAULT NULL,
+  `del_flag` tinyint(1) DEFAULT NULL,
+  `remarks` text CHARACTER SET utf8mb4,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1 COMMENT='讲师收益记录表';
+
+-- ----------------------------
+-- Records of edu_income_details
+-- ----------------------------
+INSERT INTO `edu_income_details` VALUES ('1', '23', '2', '2021052200001000180017062770', '59', '200.00', '100.00', '2021-05-26 19:53:04', '2', '2', '2021-05-26 19:53:13', '0', '看看那');
 
 -- ----------------------------
 -- Table structure for edu_keyword
@@ -508,7 +611,7 @@ CREATE TABLE `edu_member` (
 -- ----------------------------
 INSERT INTO `edu_member` VALUES ('23', null, '13733619007', '$2a$10$ue/33ZZsVp0666IitLsITueJMcClks4xmoSnfac.tPuAsMDEFfSry', '学灯网', null, '1', 'http://java.goodym.cn/touxiang.png', null, '0', '0', '2', '2021-02-10 22:14:24', null, '2020-09-11 13:39:14', null, null, '0');
 INSERT INTO `edu_member` VALUES ('25', null, '13733619008', '$2a$10$4Ia/QBz1y9KcHIRGewW46.lkFElhEXDAGP6XQT5wOBSq5qqmdQxJC', '墨鱼课堂', null, '0', 'http://www.xueden.cn/128.png', null, '0', '0', '1', '2020-09-23 07:47:11', null, '2020-09-23 07:47:11', null, null, '1');
-INSERT INTO `edu_member` VALUES ('26', null, '15011975772', '$2a$10$xxxJtbxUpJHKeMwfLyAvXOt0ng3fI6oljbqlW/XKRy/fwiFZN45fS', '墨鱼老师', '11184629@qq.com', '2', 'http://www.xueden.cn/128.png', 'java软件开发工程师', '0', null, '1', '2021-02-20 09:25:07', '26', '2021-02-18 08:44:49', null, null, '0');
+INSERT INTO `edu_member` VALUES ('26', null, '15011975772', '$2a$10$POqJi09on0suqaSsWL8wTeA9yedeLoTV4TOdmPGirwe5Wf/nw6iaW', '墨鱼老师', '11184629@qq.com', '2', 'http://www.xueden.cn/128.png', 'java软件开发工程师', '1', '5', '5', '2021-05-29 09:31:25', '26', '2021-02-18 08:44:49', null, null, '0');
 
 -- ----------------------------
 -- Table structure for edu_member_buy_course
@@ -519,6 +622,7 @@ CREATE TABLE `edu_member_buy_course` (
   `order_no` varchar(255) NOT NULL COMMENT '订单编号',
   `course_id` bigint(20) NOT NULL COMMENT '课程ID',
   `member_id` bigint(20) NOT NULL COMMENT '会员ID',
+  `teacher_id` bigint(20) DEFAULT '0' COMMENT '讲师ID',
   `price` decimal(10,2) NOT NULL COMMENT '购买金额',
   `is_payment` tinyint(2) NOT NULL DEFAULT '0' COMMENT '是否付款，0表示未付款，1表示已付款，2表示已退款',
   `buy_type` tinyint(2) NOT NULL DEFAULT '0' COMMENT '0表示普通用户购买，1表示VIP用户购买',
@@ -535,15 +639,14 @@ CREATE TABLE `edu_member_buy_course` (
   `remarks` varchar(255) DEFAULT NULL COMMENT '备注',
   `del_flag` tinyint(1) DEFAULT '0' COMMENT '逻辑删除 1（true）已删除， 0（false）未删除',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of edu_member_buy_course
 -- ----------------------------
-INSERT INTO `edu_member_buy_course` VALUES ('1', '2021020900001000300013500445', '47', '26', '99.00', '1', '3', 'wxpay', null, null, null, null, null, '2021-02-09 13:50:04', '23', '23', '2021-02-09 13:50:11', '会员购买【Vue+ElementUI+SSM图书借阅管理系统】课程', '0');
-INSERT INTO `edu_member_buy_course` VALUES ('4', '2021020900001000860020112039', '49', '26', '199.00', '1', '1', 'wxpay', null, null, null, null, null, '2021-02-09 20:11:21', '23', '23', '2021-02-09 20:12:09', '会员购买【基于springboot+mybatisplus+shiro+layui整合的前后端分离权限管理系统】课程', '0');
-INSERT INTO `edu_member_buy_course` VALUES ('5', '2021020900001000660020144547', '48', '26', '99.00', '1', '1', 'wxpay', null, null, null, null, null, '2021-02-09 20:14:46', '23', '23', '2021-02-09 20:15:02', '会员购买【spring+springMVC+mybatis+jsp整合在线选课系统】课程', '0');
-INSERT INTO `edu_member_buy_course` VALUES ('8', '2021021000001000980013473998', '50', '26', '199.00', '1', '1', 'wxpay', '内网IP', '0', '0', '内网IP', '内网IP', '2021-02-10 13:47:39', '23', '23', '2021-02-10 13:47:39', '会员购买【基于SpringBoot+Jpa+JWT+Spring Security+Vue+ElementUI前后端分离后台管理系统】课程', '0');
+INSERT INTO `edu_member_buy_course` VALUES ('9', '2021052200001000260009331025', '4', '26', '2', '1.00', '1', '1', 'wxpay', '内网IP', '0', '0', '内网IP', '内网IP', '2021-05-22 07:28:48', '26', '26', '2021-05-22 09:33:44', '会员购买【Intellij IDEA开发工具使用基础入门教程】课程', '0');
+INSERT INTO `edu_member_buy_course` VALUES ('12', '2021052200001000920009382720', '34', '26', '2', '0.00', '1', '1', null, '内网IP', '0', '0', '内网IP', '内网IP', '2021-05-22 09:38:30', '26', '26', '2021-05-22 09:40:07', '会员购买【java基础教程 第一季】课程', '0');
+INSERT INTO `edu_member_buy_course` VALUES ('14', '2021052200001000180017062770', '50', '26', '2', '1.00', '1', '1', 'alipay', '内网IP', '0', '0', '内网IP', '内网IP', '2021-05-22 12:58:36', '26', '26', '2021-05-22 17:06:48', '会员购买【基于SpringBoot+Jpa+JWT+Spring Security+Vue+ElementUI前后端分离后台管理系统】课程', '0');
 
 -- ----------------------------
 -- Table structure for edu_member_buy_vip
@@ -569,13 +672,15 @@ CREATE TABLE `edu_member_buy_vip` (
   `del_flag` tinyint(2) DEFAULT '0' COMMENT '逻辑删除 1（true）已删除， 0（false）未删除',
   `remarks` varchar(255) DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COMMENT='会员加入VIP记录表';
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COMMENT='会员加入VIP记录表';
 
 -- ----------------------------
 -- Records of edu_member_buy_vip
 -- ----------------------------
-INSERT INTO `edu_member_buy_vip` VALUES ('3', '2021021000001000410022133560', '2', '23', '99.00', '1', 'wxpay', '中国', '华南', '广西壮族自治区', '北海市', '电信', '2021-02-10 22:13:36', '23', '2021-02-10 22:14:24', '23', '0', '用户加入VIP【铜牌会员】');
-INSERT INTO `edu_member_buy_vip` VALUES ('5', '2021021700001000000019545508', '3', '23', '100.00', '0', 'wxpay', '中国', '华南', '广西壮族自治区', '北海市', '电信', '2021-02-17 19:54:56', '23', '2021-02-17 19:54:56', '23', '0', '用户加入VIP【银牌会员】');
+INSERT INTO `edu_member_buy_vip` VALUES ('8', '2021052200001000570020094842', '2', '26', '1.00', '1', 'wxpay', '内网IP', '0', '0', '内网IP', '内网IP', '2021-05-22 18:45:49', '26', '2021-05-22 20:11:03', '26', '0', '用户加入VIP【铜牌会员】');
+INSERT INTO `edu_member_buy_vip` VALUES ('9', '2021052200001000090020133856', '3', '26', '1.00', '1', 'alipay', '内网IP', '0', '0', '内网IP', '内网IP', '2021-05-22 20:13:39', '26', '2021-05-22 20:14:06', '26', '0', '用户加入VIP【银牌会员】');
+INSERT INTO `edu_member_buy_vip` VALUES ('10', '2021052200001000780020223236', '4', '26', '1.00', '1', 'wxpay', '内网IP', '0', '0', '内网IP', '内网IP', '2021-05-22 20:22:32', '26', '2021-05-22 20:23:03', '26', '0', '用户加入VIP【金牌会员】');
+INSERT INTO `edu_member_buy_vip` VALUES ('11', '2021052200001000390020274229', '5', '26', '1.00', '1', 'alipay', '内网IP', '0', '0', '内网IP', '内网IP', '2021-05-22 20:24:14', '26', '2021-05-22 20:28:08', '26', '0', '用户加入VIP【钻石会员】');
 
 -- ----------------------------
 -- Table structure for edu_subject
@@ -638,6 +743,11 @@ CREATE TABLE `edu_teacher` (
   `level` int(10) unsigned NOT NULL COMMENT '头衔 1高级讲师 2首席讲师',
   `avatar` varchar(255) DEFAULT NULL COMMENT '讲师头像',
   `sort` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '排序',
+  `income_amount` decimal(10,2) DEFAULT '0.00' COMMENT '累计收入',
+  `cash_out_money` decimal(10,2) DEFAULT '0.00' COMMENT '可提现金额',
+  `payee_name` varchar(50) DEFAULT NULL COMMENT '收款人姓名',
+  `card_number` varchar(255) DEFAULT NULL COMMENT '银行卡号',
+  `bank` varchar(255) DEFAULT NULL COMMENT '收款银行',
   `del_flag` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '逻辑删除 1（true）已删除， 0（false）未删除',
   `create_date` datetime NOT NULL COMMENT '创建时间',
   `create_by` bigint(20) DEFAULT NULL,
@@ -646,14 +756,15 @@ CREATE TABLE `edu_teacher` (
   `remarks` text COMMENT '讲师简介',
   PRIMARY KEY (`id`),
   KEY `idx_name` (`name`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COMMENT='讲师';
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COMMENT='讲师';
 
 -- ----------------------------
 -- Records of edu_teacher
 -- ----------------------------
-INSERT INTO `edu_teacher` VALUES ('2', '墨鱼老师', '具备深厚的数学思维功底、丰富的小学教育经验，授课风格生动活泼，擅长用形象生动的比喻帮助理解、简单易懂的语言讲解难题，深受学生喜欢', '2', 'http://xuedenedu.oss-cn-qingdao.aliyuncs.com/2020/08/31/career/a0cf19e9-e1a4-4bd2-bf83-21da264b4d5dfile.png', '1', '0', '2021-01-22 21:37:42', null, null, '2020-08-31 19:19:25', '毕业于师范大学数学系，热爱教育事业，执教数学思维6年有余');
-INSERT INTO `edu_teacher` VALUES ('3', '葡萄师兄', '有几十年的种植葡萄经验', '2', 'http://alioss.xueden.cn/2021/01/23/career/502ab6e0-c4f6-47e8-9218-9cfcc36aa7ealogo.png', '2', '0', '2021-01-22 19:42:45', null, '1', '2021-01-23 08:54:28', '有几十年的种植葡萄经验');
-INSERT INTO `edu_teacher` VALUES ('4', '耕田大师', '专门耕田的', '1', 'http://alioss.xueden.cn/2021/01/23/career/9e0fd76e-752d-44c4-9d66-73adb1b02d39墨鱼课堂2.png', '0', '0', '2021-01-23 08:28:00', '1', '1', '2021-01-23 08:28:00', '有几十年的耕田经验，擅长耕水田，梯田等');
+INSERT INTO `edu_teacher` VALUES ('2', '墨鱼老师', '具备深厚的数学思维功底、丰富的小学教育经验，授课风格生动活泼，擅长用形象生动的比喻帮助理解、简单易懂的语言讲解难题，深受学生喜欢', '2', 'http://xuedenedu.oss-cn-qingdao.aliyuncs.com/2020/08/31/career/a0cf19e9-e1a4-4bd2-bf83-21da264b4d5dfile.png', '1', '17500.00', '17490.00', '张三', '456321654987', '中国工商银行', '0', '2021-01-22 21:37:42', null, '2', '2021-05-28 19:03:25', '毕业于师范大学数学系，热爱教育事业，执教数学思维6年有余');
+INSERT INTO `edu_teacher` VALUES ('3', '葡萄师兄', '有几十年的种植葡萄经验', '2', 'http://alioss.xueden.cn/2021/01/23/career/502ab6e0-c4f6-47e8-9218-9cfcc36aa7ealogo.png', '2', '0.00', '0.00', null, null, null, '0', '2021-01-22 19:42:45', null, '1', '2021-01-23 08:54:28', '有几十年的种植葡萄经验');
+INSERT INTO `edu_teacher` VALUES ('4', '耕田大师', '专门耕田的', '1', 'http://alioss.xueden.cn/2021/01/23/career/9e0fd76e-752d-44c4-9d66-73adb1b02d39墨鱼课堂2.png', '0', '0.00', '0.00', null, null, null, '0', '2021-01-23 08:28:00', '1', '1', '2021-01-23 08:28:00', '有几十年的耕田经验，擅长耕水田，梯田等');
+INSERT INTO `edu_teacher` VALUES ('5', '梁志杰', '非常好的', '1', 'http://www.xueden.cn/128.png', '0', '0.00', '0.00', null, null, null, '0', '2021-05-29 09:31:04', '26', '26', '2021-05-29 09:31:04', '非常好的');
 
 -- ----------------------------
 -- Table structure for edu_video
@@ -684,7 +795,7 @@ CREATE TABLE `edu_video` (
   PRIMARY KEY (`id`),
   KEY `idx_course_id` (`course_id`) USING BTREE,
   KEY `idx_chapter_id` (`chapter_id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=926 DEFAULT CHARSET=utf8mb4 COMMENT='课程视频';
+) ENGINE=InnoDB AUTO_INCREMENT=927 DEFAULT CHARSET=utf8mb4 COMMENT='课程视频';
 
 -- ----------------------------
 -- Records of edu_video
@@ -1611,6 +1722,7 @@ INSERT INTO `edu_video` VALUES ('922', '50', '112', '15-4 使用图表展示数�
 INSERT INTO `edu_video` VALUES ('923', '50', '112', '15-2 获取统计数据（二）', '2', '0', '1', '2127fd01de8945fa8a76034ea1716c1d', '1005.96', '0', '', '69213392', '1', null, '4718827009c620ce1f2721a8d67a16ed', '2021-02-06 21:27:36', '1', '2021-02-06 21:28:46', '1', null, '0');
 INSERT INTO `edu_video` VALUES ('924', '50', '112', '15-6 地图流量统计功能实现', '6', '0', '1', '32a91abaff7e4d21b579ccea3e7c2b9a', '955.292', '0', '', '58408037', '1', null, '3c0c9c791146b54f4afb961b54ff050d', '2021-02-06 21:27:40', '1', '2021-02-06 21:28:51', '1', null, '0');
 INSERT INTO `edu_video` VALUES ('925', '50', '112', '15-1 获取统计数据', '1', '0', '1', '4c0bef17bddd4e8f89d10e12c589c31f', '1105.22', '0', '', '64238883', '1', null, 'fba7f9d459c2e7b6e525d41ce91ff90b', '2021-02-06 21:28:04', '1', '2021-02-06 21:28:53', '1', null, '0');
+INSERT INTO `edu_video` VALUES ('926', '59', '136', '1-1 课程介绍', '1', '0', '0', 'faa7ad6f7ad0486fb0e30eb98d2135fa', '844.463', '0', '', '53279786', '1', null, '8342fcdd1d70eb40565ac6dc538d396e', '2021-05-25 20:02:31', '2', '2021-05-26 09:25:07', '2', null, '0');
 
 -- ----------------------------
 -- Table structure for edu_video_member
@@ -1679,10 +1791,10 @@ CREATE TABLE `edu_vip_type` (
 -- Records of edu_vip_type
 -- ----------------------------
 INSERT INTO `edu_vip_type` VALUES ('1', '注册会员', '0', '2020-09-07 21:50:22', '1', '1', '2020-09-07 21:50:24', '0', null);
-INSERT INTO `edu_vip_type` VALUES ('2', '铜牌会员', '99', '2020-09-07 21:50:35', '1', '1', '2020-09-07 21:50:37', '0', null);
-INSERT INTO `edu_vip_type` VALUES ('3', '银牌会员', '199', '2020-09-07 21:50:52', '1', '1', '2020-09-07 21:50:55', '0', null);
-INSERT INTO `edu_vip_type` VALUES ('4', '金牌会员', '299', '2020-09-07 21:51:24', '1', '1', '2020-09-07 21:51:27', '0', null);
-INSERT INTO `edu_vip_type` VALUES ('5', '钻石会员', '399', '2020-09-07 21:51:36', '1', '1', '2020-09-07 21:51:38', '0', null);
+INSERT INTO `edu_vip_type` VALUES ('2', '铜牌会员', '1', '2020-09-07 21:50:35', '1', '1', '2020-09-07 21:50:37', '0', null);
+INSERT INTO `edu_vip_type` VALUES ('3', '银牌会员', '2', '2020-09-07 21:50:52', '1', '1', '2020-09-07 21:50:55', '0', null);
+INSERT INTO `edu_vip_type` VALUES ('4', '金牌会员', '3', '2020-09-07 21:51:24', '1', '1', '2020-09-07 21:51:27', '0', null);
+INSERT INTO `edu_vip_type` VALUES ('5', '钻石会员', '4', '2020-09-07 21:51:36', '1', '1', '2020-09-07 21:51:38', '0', null);
 INSERT INTO `edu_vip_type` VALUES ('9', '测试会员', '1', '2021-02-01 11:09:50', '1', '1', '2021-02-01 11:09:50', '1', null);
 INSERT INTO `edu_vip_type` VALUES ('10', '测试会员2', '2', '2021-02-01 21:09:48', '1', '1', '2021-02-01 21:10:53', '1', null);
 
