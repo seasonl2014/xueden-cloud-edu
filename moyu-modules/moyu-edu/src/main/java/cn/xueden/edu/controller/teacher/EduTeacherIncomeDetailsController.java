@@ -51,8 +51,8 @@ public class EduTeacherIncomeDetailsController {
     @ApiOperation(value = "分页获取讲师收益列表",notes = "分页获取讲师收益列表")
     @GetMapping("/list")
     @XudenOtherSystemLog("分页获取讲师收益列表")
-    public LayerData<EduIncomeDetailsVO> list(@RequestParam(value = "page",defaultValue = "1")Integer page,
-                                              @RequestParam(value = "limit",defaultValue = "15")Integer limit,
+    public LayerData<EduIncomeDetailsVO> list(@RequestParam(value = "pageIndex",defaultValue = "1")Integer page,
+                                              @RequestParam(value = "pageSize",defaultValue = "10")Integer limit,
                                               EduIncomeDetailsVO eduIncomeDetailsVO, HttpServletRequest request){
 
         String token = request.getHeader("Authorization");
