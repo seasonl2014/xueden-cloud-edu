@@ -25,7 +25,7 @@
 
 # 项目介绍
 
-xueden-cloud-edu（学灯网）是基于springcloud alibaba+vue3.0整合开发的在线教育平台 ,架构思想来源于( [RuoYi-Cloud](https://gitee.com/y_project/RuoYi-Cloud))。
+xueden-cloud-edu（学灯网）是基于springcloud alibaba+vue3.X整合开发的在线教育平台 ,架构思想来源于( [RuoYi-Cloud](https://gitee.com/y_project/RuoYi-Cloud))。
 - 以Spring Framework为核心容器；
 - Spring MVC为模型视图控制器；
 - Mybatis Plus为数据访问层；
