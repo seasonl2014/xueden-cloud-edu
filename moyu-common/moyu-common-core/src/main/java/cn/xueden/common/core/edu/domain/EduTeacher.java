@@ -23,10 +23,10 @@ public class EduTeacher extends DataEntity<EduTeacher> {
     @ApiModelProperty(value = "讲师资历,一句话说明讲师")
     private String intro;
 
-    @ApiModelProperty(value = "头衔 1高级讲师 2首席讲师")
+    @ApiModelProperty(value = "")
     private Integer level;
 
-    @ApiModelProperty(value = "讲师头像")
+    @ApiModelProperty(value = "")
     private String avatar;
 
     @ApiModelProperty(value = "排序")

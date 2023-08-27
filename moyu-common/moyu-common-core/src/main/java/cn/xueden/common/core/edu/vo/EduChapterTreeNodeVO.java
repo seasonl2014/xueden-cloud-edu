@@ -14,7 +14,7 @@ import java.util.List;
  * @version:1.0
  */
 @Data
-public class EduChapterTreeNodeVO {
+public class  EduChapterTreeNodeVO {
     private Long id;
 
     private String title;

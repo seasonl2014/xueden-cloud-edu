@@ -62,7 +62,7 @@ public class SendSms {
         request.setSysVersion("2017-05-25");
         request.setSysAction("SendSms");
         request.putQueryParameter("RegionId", "cn-hangzhou");
-        request.putQueryParameter("PhoneNumbers", "15011975772");
+        request.putQueryParameter("PhoneNumbers", "13558395109");
         request.putQueryParameter("SignName", "墨鱼课堂");
         request.putQueryParameter("TemplateCode", "SMS_209832260");
         request.putQueryParameter("TemplateParam", "{\"code\":\"256049\"}");

@@ -51,8 +51,8 @@ public class EduTeacherCashOutDetailsController {
     @ApiOperation(value = "分页获取讲师提现列表",notes = "分页获取讲师提现列表")
     @GetMapping("/list")
     @XudenOtherSystemLog("分页获取讲师提现列表")
-    public LayerData<EduCashOutDetails> list(@RequestParam(value = "page",defaultValue = "1")Integer page,
-                                              @RequestParam(value = "limit",defaultValue = "15")Integer limit,
+    public LayerData<EduCashOutDetails> list(@RequestParam(value = "pageIndex",defaultValue = "1")Integer page,
+                                              @RequestParam(value = "pageSize",defaultValue = "10")Integer limit,
                                               EduCashOutDetailsVO eduCashOutDetailsVO, HttpServletRequest request){
 
         String token = request.getHeader("Authorization");
