@@ -178,7 +178,7 @@ xueden-cloud-edu使用 Apache-2.0 License 协议.
 
 # 演示地址
 
-后台演示地址：http://cms.xueden.cn/  测试账号： test02  测试密码：123456
+后台演示地址：http://cms.xueden.cn/  测试账号： test02  测试密码：123456（暂时无法使用）
 
 
 
@@ -186,7 +186,7 @@ xueden-cloud-edu使用 Apache-2.0 License 协议.
 
 
 
-讲师平台演示地址： http://teacher.xueden.cn/  测试请自行注册账号即可
+讲师平台演示地址： http://teacher.xueden.cn/  测试请自行注册账号即可（暂时无法使用）
 
 
 
