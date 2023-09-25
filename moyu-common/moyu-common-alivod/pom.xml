@@ -36,18 +36,20 @@
        <dependency>
            <groupId>com.aliyun.oss</groupId>
            <artifactId>aliyun-sdk-oss</artifactId>
-           <version>3.1.0</version>
+           <version>3.16.3</version>
        </dependency>
        <!--阿里云视频点播-->
        <dependency>
            <groupId>com.aliyun</groupId>
            <artifactId>aliyun-java-sdk-vod</artifactId>
-           <version>2.15.2</version>
+           <version>2.16.16</version>
        </dependency>
        <dependency>
            <groupId>com.aliyun</groupId>
            <artifactId>aliyun-sdk-vod-upload</artifactId>
-           <version>1.4.11</version>
+           <version>1.4.15</version>
+           <scope>system</scope>
+           <systemPath>${project.basedir}/src/main/resources/aliyun-java-vod-upload-1.4.15.jar</systemPath>
        </dependency>
 
 
