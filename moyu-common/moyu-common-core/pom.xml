@@ -5,7 +5,7 @@
     <parent>
         <artifactId>moyu-common</artifactId>
         <groupId>cn.xueden</groupId>
-        <version>1.0.0</version>
+        <version>3.0.0</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -78,6 +78,7 @@
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
+            <version>32.1.2-jre</version>
         </dependency>
 
         <!-- Apache Lang3 -->
@@ -109,12 +110,6 @@
             <artifactId>poi-ooxml</artifactId>
         </dependency>
 
-        <!-- Java Servlet -->
-        <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>javax.servlet-api</artifactId>
-        </dependency>
-
         <!-- Swagger -->
         <dependency>
             <groupId>io.swagger</groupId>
@@ -142,6 +137,13 @@
             <groupId>org.json</groupId>
             <artifactId>json</artifactId>
             <version>20200518</version>
+        </dependency>
+
+        <dependency>
+            <groupId>jakarta.servlet</groupId>
+            <artifactId>jakarta.servlet-api</artifactId>
+            <version>6.0.0</version>
+            <scope>provided</scope>
         </dependency>
 
 

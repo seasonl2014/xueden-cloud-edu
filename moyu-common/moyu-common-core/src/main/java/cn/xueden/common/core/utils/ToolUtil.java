@@ -1,7 +1,6 @@
 package cn.xueden.common.core.utils;
 
-import cn.xueden.common.core.constant.Constants;
-import cn.xueden.common.core.web.domain.SysUser;
+
 
 import com.google.common.collect.Maps;
 
@@ -9,7 +8,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.servlet.http.HttpServletRequest;
+
+import jakarta.servlet.http.HttpServletRequest;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.*;

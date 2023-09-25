@@ -5,13 +5,13 @@
   <parent>
     <artifactId>moyu-common</artifactId>
     <groupId>cn.xueden</groupId>
-    <version>1.0.0</version>
+    <version>3.0.0</version>
   </parent>
 
   <modelVersion>4.0.0</modelVersion>
 
   <artifactId>moyu-common-alipay</artifactId>
-  <version>1.0.0</version>
+  <version>3.0.0</version>
 
   <name>moyu-common-alipay</name>
   <!-- FIXME change it to the project's website -->
